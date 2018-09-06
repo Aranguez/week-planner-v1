@@ -5,7 +5,7 @@ import config, { firestore } from '../firebase/config'
 
 export default class Modal extends Component {
 
-    constructor(props){
+    constructor(props){ //data, isOpen, onHandleModal, day, getData
         super();
         this.state = {
             task: '',
@@ -40,21 +40,23 @@ export default class Modal extends Component {
         this.setState({
             task: ''
         })
+        
         this.props.onHandleModal()
     }
 
     render() {
+
         return (
             <Fragment>
-                <div className={`modal medium ${this.state.isOpen === true ? 'show' : ''}`}>
+                <div className={`modal medium ${this.state.isOpen ? 'show' : ''}`}>
                     <div className="modal-header">
-                        <h1>Cuál es la tarea?</h1>
+                        <h1>What is the task?</h1>
                     </div>
                     <div className="modal-body">
                         <form onSubmit={e => this.onSubmit(e)}>
                             <input type="text" name="task" value={this.state.task} onChange={e => this.onChangeTask(e)}/>
-                            <button type="submit" className="btn btn-success">Agregar</button>
-                            <button type="button" className="btn btn-danger" onClick={this.props.onHandleModal}>Cancelar</button>
+                            <button type="submit" className="btn btn-success">ADD</button>
+                            <button type="button" className="btn btn-danger" onClick={this.props.onHandleModal}>CANCEL</button>
                         </form>
                     </div>
                 </div>
