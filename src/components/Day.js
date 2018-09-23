@@ -1,22 +1,41 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-//componentes
-//import AddModal from './modals/AddModal'
-//import ModalTasks from './modals/ModalTasks';
+class Day extends Component { 
 
-const Day = props => {
-    // eslint-disable-next-line
-    this.state = {
-        modal: false,
+    constructor(props){
+        super();
+        this.state = { //repensar
+            tasks: props.tasks,
+            day: props.day
+        }   
     }
-        
-    return (
-        <div className="day-box">
-            { props.tasks &&
-            <span className="task"></span> }
-            <span className={ props.today === props.day ? 'is-today' : '' }>{props.day}</span>
-        </div>
-    )
+
+    componentWillReceiveProps(newProps){ //evitar esto
+        this.setState({
+            tasks: newProps.tasks
+        })
+    }
+    
+    render(){
+        let tasks = []
+        if (this.state.tasks.length > 0)
+            tasks = this.state.tasks.filter(task => {
+                return task.day === this.state.day && !task.done
+            })
+
+        let height = tasks.length*12;
+        return (
+            <div className="box">
+                <div className={`day-box ${ this.props.today ? 'is-today' : '' }`}
+                     id={this.props.day}
+                     onClick={ () => this.props.onHandleModal(this.props.day, false) }>
+                    <span className='day'>{this.props.day.substr(0,3)}</span>
+                </div>
+                { tasks.length > 0 && (<span className="task" style={{'height': height + '%'}}></span>) }
+            </div>
+        )
+    }
+    
 }
 
 export default Day

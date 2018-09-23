@@ -1,32 +1,140 @@
-import React from 'react';
-import { deleteTask } from '../../firebase/actions';
+import React, { Component, Fragment } from 'react';
 
-const ModalTasks = (props) => {
-    const showHideClass = props.isOpen ? "show" : "hide";
-    const tasksOfDay = props.data.filter(task => task.day === props.day)
+import Button from '../reusable/Button'
+import AddModal from './AddModal';
 
-    return (
-        <div className={`modal medium ${showHideClass}`}>
-            <div className="modal-body">
-            { tasksOfDay.length === 0 ?
-                (<div>
-                    <h3>It's empty!</h3>
-                    <p>There is no tasks for this day :)</p>
-                </div>)
-                : 
-                (<div>
-                    <h3>You have Tasks!</h3>
-                {tasksOfDay.map((task, i) => (
-                    <p key={i}>
-                        {task.name}
-                        <span onClick={deleteTask.bind(this, task)}>&times;</span>
-                    </p>
-                ))}
-                </div>)
-            }
-            </div>
-        </div>
-    );
+import { firestore } from '../../firebase/config'
+
+class ModalTasks extends Component {
+
+    constructor(props){
+        super();
+        this.state = {
+            loading: false,
+            addModal: false,
+            selectedDay: '',
+            tasksOfDay: [],
+            doneTasks: []
+        }
+    }
+
+    componentWillReceiveProps({selectedDay, tasks}){
+        this.setState({
+            selectedDay,
+            tasksOfDay: tasks.filter(task => task.day === selectedDay)
+        })
+    }
+
+    finishTask = id => {
+        firestore.collection('users')
+            .where('id', '==', this.props.userId)
+            .get()
+            .then(snapshot => {
+                //this.setState({loading: true})
+                snapshot.forEach( doc => {
+                  firestore.collection(`users/${doc.id}/tasks`)
+                    .where('id', '==', id)
+                    .get()
+                    .then( snapshot => snapshot.forEach(doc => {
+
+                        if (doc.data().done) {
+                            doc.ref.delete()
+                        } else{
+                            doc.ref.update({
+                                done: true
+                            })
+                        }
+                        
+                    }))
+                    .then( () => this.props.getData(doc.id))
+                    .catch(err => console.error(err))
+                })
+                //this.setState({loading: false})
+            })
+            .catch(err => console.error(err))
+    }
+
+    showAddModal = (day) => {
+        this.setState({
+            addModal: !this.state.addModal,
+            selectedDay: day
+        })
+    }
+
+    render(){
+        return (
+            <Fragment>
+                <div className={`modal animated ${ this.props.isOpen ? "show fadeIn" : "hide" }`}>
+                    <div className="modal-header col col-12">
+                        <h2>Tasks for {this.props.selectedDay}</h2>
+                        <div className="add-btn" onClick={ () => this.showAddModal() }>
+                            <span>Add a Task</span>
+                            <button type="button">
+                                    <i className="fas fa-plus-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="modal-body">
+                    { this.state.tasksOfDay.length === 0 ?
+                        (<div className="row">
+                            <div className="col col-12">
+                                <h3>It's empty! <i className="far fa-smile"></i></h3>
+                                <p>There is no tasks for this day :)</p>
+                            </div>
+                        </div>)
+                        : (
+                        <div className="row">
+                            <div className="col col-6">
+                            <h4>Todo List</h4>
+                            {this.state.tasksOfDay.map((task, i) => (
+                                !task.done && (
+                                    <p key={i}>
+                                        <span onClick={() => this.finishTask(task.id)}
+                                            className="delete-btn">
+                                            <i className="far fa-square"></i>
+                                        </span>
+                                        <span> {task.task}</span>
+                                    </p>
+                                )
+                                
+                                ))
+                            }
+                            </div>
+                            <div className="col col-6">
+                            <h4>Done Tasks</h4>
+                            {this.state.tasksOfDay.map((task, i) => (
+                                    task.done && (
+                                    <p key={i}>
+                                        <span onClick={() => this.finishTask(task.id)} className="clear-btn">
+                                            <i className="fas fa-check-square"></i>
+                                            <span> {task.task}</span>
+                                        </span>
+                                    </p>
+                            )))
+                            }
+                            </div>
+                        </div>
+                    )}
+                        <div className="row">
+                            <div className="col col-12">
+                                <Button onClick={() => this.props.showTasksModal(this.props.selectedDay, true) }  title="close"/>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                {/*<div className={`blackout ${ this.props.isOpen ? 'show' : 'hide' }`}></div>*/}
+    
+                {/* ADD TASK MODAL */}
+                <AddModal isOpen={this.state.addModal}
+                          userId={this.props.userId}
+                          selectedDay={this.props.selectedDay}
+                          showAddModal={this.showAddModal}
+                          getData={this.props.getData}/>
+
+            </Fragment>
+        );
+    }
 }
 
 export default ModalTasks;

@@ -3,23 +3,24 @@ import React, { Component } from 'react'
 // eslint-disable-next-line
 import { firestore } from '../../firebase/config'
 
-import ModalWrapper from './ModalWrapper'
 import AddButton from '../reusable/AddButton';
-import CancelButton from '../reusable/CancelButton';
+import Button from '../reusable/Button';
 
 export default class AddModal extends Component {
 
-    constructor(props){ //data, isOpen, onHandleModal, day, getData
+    constructor(props){
         super();
         this.state = {
             task: '',
-            day: ''
+            day: '',
+            isOpen: props.isOpen
         }
     }
 
-    componentWillReceiveProps(newProps){
+    componentWillReceiveProps({selectedDay, isOpen}){
         this.setState({
-            day: newProps.day
+            day: selectedDay,
+            isOpen,
         })
     }
 
@@ -29,38 +30,56 @@ export default class AddModal extends Component {
         })
     }
 
-    onSubmit = (e) => { //add new task
+    addTask = (e) => { //add new task
         e.preventDefault();
+        const { task, day } = this.state
 
-        const task = {
-            name: this.state.task,
-            day: this.state.day
-        }
-
-        firestore
-            .collection('tasks')
-                .add(task)
-                .then(this.props.getData())
-                .catch(err => console.error(err))
+        firestore.collection('users')
+            .where('id', '==', this.props.userId)
+            .get()
+            .then( snapshot => {
+                snapshot.forEach( doc => {
+                    firestore.collection(`users/${doc.id}/tasks`)
+                        .add({
+                            id: new Date().valueOf(),
+                            task,
+                            done: false,
+                            day
+                        })
+                        .then(() => {
+                            console.log('tarea creada')
+                            this.props.getData(doc.id)
+                        })
+                        .catch(err => console.error(err))
+                })
+            })
         
         this.setState({ task: '' })
-        this.props.onHandleModal()
+        this.props.showAddModal()
     }
 
     render() {
         return (
-            <ModalWrapper title="What is the task?"
-                            isOpen={this.props.isOpen}>
-
-                <form onSubmit={e => this.onSubmit(e)}>
-                    <input  type="text"
-                            name="task"
-                            value={this.state.task}
-                            onChange={e => this.onChangeTask(e)}/>
-                    <AddButton/>
-                    <CancelButton onClick={this.props.onHandleModal}/>
-                </form>
-            </ModalWrapper>
+            <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
+                <div className="modal-header">
+                    <h2>Add a Task</h2>
+                </div>
+                <div className="modal-body">
+                    <form onSubmit={e => this.addTask(e)}>
+                        <input  type="text"
+                                name="task"
+                                value={this.state.task}
+                                onChange={e => this.onChangeTask(e)}
+                                placeholder="Your task"
+                                maxLength="20"/>
+                        <div>
+                            <AddButton/>
+                            <Button onClick={() => this.props.showAddModal() } title="CANCEL"/>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
         )
     }
 }
