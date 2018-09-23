@@ -188,7 +188,7 @@ class Timeline extends Component {
             // tratar de no pasar tantos props
             // ó no ejecutar funciones dentro de los componentes
             <Fragment>
-                { logged && <h3>Bienvenido {user}</h3> }
+                { logged && <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>Bienvenido {user}</h3> }
 
                 { !logged ? 
                     (<button type="button"

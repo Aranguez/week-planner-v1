@@ -61,6 +61,12 @@ h1, h2, h3, h4, h5{
     top: -30px !important;
     left: 0px !important;
   }
+  .box > span.task{
+    left: 3px !important;
+  }
+  .day-box.active-day + span.task{
+    bottom: 0px !important;
+  }
 }
 
 .timeline .day-box span.day{
