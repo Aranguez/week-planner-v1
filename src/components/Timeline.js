@@ -13,7 +13,7 @@ const db = firestore
 
 
 //week data
-const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekdays = [/*"Sunday", */"Monday", "Tuesday", "Wednesday", "Thursday", "Friday",/* "Saturday"*/];
 const todayDate = new Date().getDay() //returns a number
 const today = weekdays[todayDate]
 

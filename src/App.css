@@ -45,6 +45,24 @@ h1, h2, h3, h4, h5{
   cursor: pointer !important;
 }
 
+@media (max-width: 400px) {
+  .timeline .day-box {
+    width: 50px;
+    height: 50px;
+    margin: 0 8px;
+  }
+  .timeline .day-box span.day{
+    font-size: 1em !important;
+  }
+  .day-box.is-today::after {
+    font-size: .7em !important;
+    border-radius: 17px !important;
+    padding: 3px 8px !important;
+    top: -30px !important;
+    left: 0px !important;
+  }
+}
+
 .timeline .day-box span.day{
   color: #666;
   font-weight: bold;
