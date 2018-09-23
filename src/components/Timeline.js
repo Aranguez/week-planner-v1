@@ -11,7 +11,6 @@ var provider = new firebase.auth.GoogleAuthProvider();
 
 const db = firestore
 
-
 //week data
 const weekdays = [/*"Sunday", */"Monday", "Tuesday", "Wednesday", "Thursday", "Friday",/* "Saturday"*/];
 const todayDate = new Date().getDay() //returns a number
@@ -34,20 +33,31 @@ class Timeline extends Component {
         }
     }
 
+    componentDidMount(){
+        firebase.auth().onAuthStateChanged( user => { 
+            if (user) { 
+                console.log('sesion iniciada')
+                console.log(user)
+                this.getUser(user.uid, user.displayName)
+            } else { 
+                console.log('sin sesion')
+            } 
+        }); 
+    }
+    
     googleLogIn = () => {
-        firebase.auth().signInWithPopup(provider).then( result => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          //var token = result.credential.accessToken;
-          var user = result.user;
-        
-          this.setState({
-              userId: user.uid,
-              userName: user.displayName,
-              logged: true
-          })
-          this.getUser(user.uid, user.displayName)
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+                .then(() => {
+                    return firebase.auth().signInWithPopup(provider).then( result => {
+                        // This gives you a Google Access Token. You can use it to access the Google API.
+                        //var token = result.credential.accessToken;
+                        var user = result.user;
 
-        }).catch(err => console.error(err))
+                        this.getUser(user.uid, user.displayName)
+
+                        }).catch(err => console.error(err))
+                }).catch(err => console.error(err))
+        
     }
 
     googleSignOut = () => { //chequear si realmente cierra sesión
@@ -86,6 +96,11 @@ class Timeline extends Component {
     }
 
     getUser = (id, name)=> { //get user enrealidad
+        this.setState({
+            userId: id,
+            userName: name,
+            logged: true
+        })
 
         db.collection('users')
             .where('id', '==', id)
@@ -152,8 +167,8 @@ class Timeline extends Component {
 
         document.querySelectorAll('.day-box').forEach( item => item.classList.remove('active-day'))
 
-        const el = document.querySelector(`#${day}`)
-        if (el.classList.contains('active-day')) {
+        const el = document.querySelector(`#${day}`) // check condicional
+        if (el.classList.contains('active-day') || close) {
             el.classList.remove('active-day')
         } else{
             el.classList.add('active-day')
@@ -175,10 +190,7 @@ class Timeline extends Component {
 
         if (tasksDays.length !== 0) {
             undoneTasks = tasksDays.filter(task => !task.done)
-            console.log('estas son tus tareas sin terminar', undoneTasks)
-        }  else if (tasksDays.length > 0){
-            undoneTasks = tasksDays.filter(task => !task.done)
-            console.log('estas son tus tareas sin terminar', undoneTasks)
+            //console.log('estas son tus tareas sin terminar', undoneTasks)
         }
 
         const user = this.state.userName.split(' ').splice(0, 1)
@@ -188,7 +200,10 @@ class Timeline extends Component {
             // tratar de no pasar tantos props
             // ó no ejecutar funciones dentro de los componentes
             <Fragment>
-                { logged && <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>Bienvenido {user}</h3> }
+                { 
+                    logged && tasksDays.length > 0 ? <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, estas son tus tareas de la semana</h3> :
+                    logged && tasksDays.length === 0 && <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, añade tareas a tu semana</h3>  
+                }
 
                 { !logged ? 
                     (<button type="button"

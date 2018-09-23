@@ -26,6 +26,7 @@ class ModalTasks extends Component {
     }
 
     finishTask = id => {
+        console.log('borrado')
         firestore.collection('users')
             .where('id', '==', this.props.userId)
             .get()
@@ -89,9 +90,9 @@ class ModalTasks extends Component {
                             {this.state.tasksOfDay.map((task, i) => (
                                 !task.done && (
                                     <p key={i}>
-                                        <span onClick={() => this.finishTask(task.id)}
-                                            className="delete-btn">
-                                            <i className="far fa-square"></i>
+                                        <span className="delete-btn" onClick={() => this.finishTask(task.id)}>
+                                            <i className="far fa-square" ></i>
+                                            
                                         </span>
                                         <span> {task.task}</span>
                                     </p>
