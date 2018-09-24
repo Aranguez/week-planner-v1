@@ -200,10 +200,13 @@ class Timeline extends Component {
                             <button type="button" onClick={this.logout}
                             style={{'position': 'absolute', 'top': '100px'}}>Log out</button> }
                     
-                { loading ?
+                { loading && logged &&
                     <div className="loading animated fadeIn">
                         <i className="fas fa-spinner fa-spin"></i>
-                    </div> :
+                    </div>    
+                }
+                
+                { !loading && logged &&
                     <div className="timeline animated slideInUp">
                         { weekdays.map((day, i) => (
                         <Day key={i}
