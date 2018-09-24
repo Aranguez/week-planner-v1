@@ -37,7 +37,6 @@ class Timeline extends Component {
         firebase.auth().onAuthStateChanged( user => { 
             if (user) { 
                 console.log('sesion iniciada')
-                console.log(user)
                 this.getUser(user.uid, user.displayName)
             } else { 
                 console.log('sin sesion')
@@ -106,19 +105,14 @@ class Timeline extends Component {
             .where('id', '==', id)
             .get()
             .then( snapshot => {
-
                 if (snapshot.docs.length === 0) {
                     const user = { id, name }
                     console.log(user)
                     db.collection('users')
                         .add(user)
                         .then(() => {
-                            /*this.setState({
-                                userId: user.uid,
-                                logged: true
-                            })*/
-                            getUserTasks(snapshot, id)
                             console.log('usuario agregado')
+                            return this.getUser(user.id, user.name)
                         })
                         .catch(err => console.error(err))
                 } else {
@@ -201,8 +195,10 @@ class Timeline extends Component {
             // ó no ejecutar funciones dentro de los componentes
             <Fragment>
                 { 
-                    logged && tasksDays.length > 0 ? <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, estas son tus tareas de la semana</h3> :
-                    logged && tasksDays.length === 0 && <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, añade tareas a tu semana</h3>  
+                    logged && tasksDays.length > 0 ?
+                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, estas son tus tareas de la semana</h3> :
+                    logged && tasksDays.length === 0 &&
+                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, añade tareas a tu semana</h3>  
                 }
 
                 { !logged ? 
