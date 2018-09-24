@@ -3,11 +3,11 @@ import React, { Component, Fragment } from 'react'
 //componentes
 import Day from './Day'
 import ModalTasks from './modals/ModalTasks';
+import LoginModal from './modals/LoginModal';
 
 //firebase
 import { firestore } from '../firebase/config'
 import firebase from 'firebase/app';
-var provider = new firebase.auth.GoogleAuthProvider();
 
 const db = firestore
 
@@ -27,6 +27,7 @@ class Timeline extends Component {
             today,
             weekdays,
             tasksModal: false,
+            loginModal: false,
             selectedDay: '',
             tasksDays: [],
             logged: false
@@ -43,62 +44,13 @@ class Timeline extends Component {
             } 
         }); 
     }
-    
-    googleLogIn = () => {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-                .then(() => {
-                    return firebase.auth().signInWithPopup(provider).then( result => {
-                        // This gives you a Google Access Token. You can use it to access the Google API.
-                        //var token = result.credential.accessToken;
-                        var user = result.user;
-
-                        this.getUser(user.uid, user.displayName)
-
-                        }).catch(err => console.error(err))
-                }).catch(err => console.error(err))
-        
-    }
-
-    googleSignOut = () => { //chequear si realmente cierra sesión
-        firebase.auth().signOut().then( () => {
-            this.setState({
-                loading: true,
-                userId: '',
-                selectedDay: '',
-                tasksDays: [],
-                logged: false,
-                tasksModal: false,
-            })
-            console.log('sesion terminada')
-        })
-    }
-
-    getData = docId => {
-        firestore.collection(`users/${docId}/tasks`)
-            .get()
-            .then(snapshot => {
-                let data = []
-                snapshot.forEach(doc => {
-                    data.push( doc.data() )
-                })
-                setState(data)
-            })
-            .catch(err => console.error(err))
-        
-        const setState = (data) => {
-            this.setState( prevState => ({
-                // eslint-disable-next-line
-                tasksDays: [...prevState.tasksDays], tasksDays: data, //escribirlo mejor y evitar el warning
-                loading: false,
-            }))
-        }
-    }
 
     getUser = (id, name)=> { //get user enrealidad
         this.setState({
             userId: id,
             userName: name,
-            logged: true
+            logged: true,
+            loginModal: false,
         })
 
         db.collection('users')
@@ -145,8 +97,47 @@ class Timeline extends Component {
         }
     }
 
-    showTasksModal = (day, close) => {
+    logout = () => { //chequear si realmente cierra sesión
+        firebase.auth().signOut().then( () => {
+            this.setState({
+                loading: true,
+                userId: '',
+                selectedDay: '',
+                tasksDays: [],
+                logged: false,
+                tasksModal: false,
+            })
+        })
+    }
 
+    getData = docId => {
+        firestore.collection(`users/${docId}/tasks`)
+            .get()
+            .then(snapshot => {
+                let data = []
+                snapshot.forEach(doc => {
+                    data.push( doc.data() )
+                })
+                setState(data)
+            })
+            .catch(err => console.error(err))
+        
+        const setState = (data) => {
+            this.setState( prevState => ({
+                // eslint-disable-next-line
+                tasksDays: [...prevState.tasksDays], tasksDays: data, //escribirlo mejor y evitar el warning
+                loading: false,
+            }))
+        }
+    }
+
+    showLoginModal = () => {
+        this.setState({
+            loginModal: !this.state.loginModal
+        })
+    }
+
+    showTasksModal = (day, close) => {
         if (close) {
             this.setState({
                 tasksModal: false,
@@ -158,8 +149,10 @@ class Timeline extends Component {
                 selectedDay: day
             })
         }
-
-        document.querySelectorAll('.day-box').forEach( item => item.classList.remove('active-day'))
+        document.querySelectorAll('.day-box')
+                .forEach( item => {
+                    item.classList.remove('active-day')
+                })
 
         const el = document.querySelector(`#${day}`) // check condicional
         if (el.classList.contains('active-day') || close) {
@@ -173,6 +166,7 @@ class Timeline extends Component {
         const { 
             today,
             tasksModal,
+            loginModal,
             selectedDay,
             tasksDays,
             weekdays,
@@ -194,25 +188,18 @@ class Timeline extends Component {
             // tratar de no pasar tantos props
             // ó no ejecutar funciones dentro de los componentes
             <Fragment>
+
                 { 
                     logged && tasksDays.length > 0 ?
                         <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, estas son tus tareas de la semana</h3> :
                     logged && tasksDays.length === 0 &&
-                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, añade tareas a tu semana</h3>  
+                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, añade tareas a tu semana</h3>
                 }
 
-                { !logged ? 
-                    (<button type="button"
-                             onClick={this.googleLogIn}
-                             className="btn btn-sm btn-success"
-                             style={{ 'position': 'absolute','top': '135px'}}>Login</button>)
-                    :
-                    (<button type="button"
-                             onClick={() => this.googleSignOut()}
-                             className="btn btn-sm btn-success"
-                             style={{ 'position': 'absolute','top': '135px'}}>Log Out</button>)
-                }
-
+                { !logged ? <button type="button" onClick={this.showLoginModal}>Login</button> :
+                            <button type="button" onClick={this.logout}
+                            style={{'position': 'absolute', 'top': '100px'}}>Log out</button> }
+                    
                 { loading ?
                     <div className="loading animated fadeIn">
                         <i className="fas fa-spinner fa-spin"></i>
@@ -234,6 +221,9 @@ class Timeline extends Component {
                             tasks={tasksDays}
                             getData={this.getData}
                             showTasksModal={this.showTasksModal}/>
+
+                <LoginModal isOpen={loginModal}
+                            getUser={this.getUser}/>
             
             </Fragment>
         )
