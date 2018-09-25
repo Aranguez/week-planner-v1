@@ -24,6 +24,8 @@ h1, h2, h3, h4, h5{
 
 .timeline{
   animation-duration: .8s;
+  display: flex;
+  justify-content: space-around;
 }
 
 .box {
