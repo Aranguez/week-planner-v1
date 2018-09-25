@@ -30,7 +30,6 @@ class ModalTasks extends Component {
             .where('id', '==', this.props.userId)
             .get()
             .then(snapshot => {
-                //this.setState({loading: true})
                 snapshot.forEach( doc => {
                   firestore.collection(`users/${doc.id}/tasks`)
                     .where('id', '==', id)
@@ -49,7 +48,6 @@ class ModalTasks extends Component {
                     .then( () => this.props.getData(doc.id))
                     .catch(err => console.error(err))
                 })
-                //this.setState({loading: false})
             })
             .catch(err => console.error(err))
     }

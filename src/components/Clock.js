@@ -6,7 +6,8 @@ export default class Clock extends Component {
         super();
         this.state = {
             hours: '',
-            mins: ''
+            mins: '',
+            secs: ''
         }
     }
 
@@ -17,28 +18,35 @@ export default class Clock extends Component {
 
     clock = () => {
         let time = new Date();
-        let hours = time.getHours();
-        let mins = time.getMinutes();
+        let hours = Math.abs(time.getHours() - 24);
+        let mins = Math.abs(time.getMinutes() - 60);
+        let secs = Math.abs(time.getSeconds() - 60);
     
         if (hours < 10) {
             hours = '0' + hours
         }
+
         if (mins < 10) {
             mins = '0' + mins
         }
 
-        if (this.state.mins !== mins) {
+        if (secs < 10) {
+            secs = '0' + secs
+        }
+
+        //if (this.state.mins !== mins) {
             this.setState({
                 hours,
-                mins
+                mins,
+                secs
             })
-        }
+        //}
     }
     
     render(){
         return (
             <div className="clock">
-                <h1><span>{this.state.hours}</span>:<span>{this.state.mins}</span></h1>
+                <h1>Faltan <span>{this.state.hours}</span><span>:{this.state.mins}</span><span>:{this.state.secs}</span> para que termine el día</h1>
             </div>
         );
     }
