@@ -79,10 +79,6 @@ class ModalTasks extends Component {
             .catch(err => console.error(err))
     }
 
-    edit = id => {
-
-    }
-
     showAddModal = (day) => {
         this.setState({
             addModal: !this.state.addModal,
