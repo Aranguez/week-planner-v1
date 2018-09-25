@@ -14,7 +14,7 @@ const db = firestore
 //week data
 const weekdays = [/*"Sunday", */"Monday", "Tuesday", "Wednesday", "Thursday", "Friday",/* "Saturday"*/];
 const todayDate = new Date().getDay() //returns a number
-const today = weekdays[todayDate]
+const today = weekdays[todayDate-1]
 
 class Timeline extends Component {
 
@@ -36,16 +36,11 @@ class Timeline extends Component {
 
     componentDidMount(){
         firebase.auth().onAuthStateChanged( user => { 
-            if (user) { 
-                console.log('sesion iniciada')
-                this.getUser(user.uid, user.displayName)
-            } else { 
-                console.log('sin sesion')
-            } 
+            if (user) this.getUser(user.uid)
         }); 
     }
 
-    getUser = (id, name)=> { //get user enrealidad
+    getUser = (id, name) => {
         this.setState({
             userId: id,
             userName: name,
@@ -53,48 +48,37 @@ class Timeline extends Component {
             loginModal: false,
         })
 
-        db.collection('users')
-            .where('id', '==', id)
-            .get()
+        db.collection('users').where('id', '==', id).get()
             .then( snapshot => {
                 if (snapshot.docs.length === 0) {
-                    const user = { id, name }
-                    console.log(user)
                     db.collection('users')
-                        .add(user)
+                        .add({ id, name })
                         .then(() => {
                             console.log('usuario agregado')
-                            return this.getUser(user.id, user.name)
+                            this.getUser(id, name)
                         })
                         .catch(err => console.error(err))
-                } else {
-                    getUserTasks(snapshot, id)
                 }
+                this.getData(snapshot.docs[0].id)
             })
-            .catch(err => console.log(err))
-        
-        const getUserTasks = snapshot => {
-            snapshot.forEach( doc => {
-                db.collection(`users/${doc.id}/tasks`)
-                    .get()
-                    .then( snapshot => {
-                        let data = []
-                        snapshot.forEach(doc => {
-                            data.push( doc.data() )
-                        })
-                        setState(data)
-                    })
-                    .catch(err => console.log('error: ' + err))
-            })
-        }
+            .catch( err => console.log(err)) 
+    }
 
-        const setState = (data) => {
-            this.setState( prevState => ({
-                // eslint-disable-next-line
-                tasksDays: [...prevState.tasksDays], tasksDays: data, //escribirlo mejor y evitar el warning
-                loading: false,
-            }))
-        }
+    getData = id => {
+        db.collection(`users/${id}/tasks`)
+            .get()
+            .then( snapshot => {
+                let data = []
+                snapshot.forEach( doc => {
+                    data.push(doc.data())
+                })
+                this.setState( prevState => ({
+                    // eslint-disable-next-line
+                    tasksDays: [...prevState.tasksDays], tasksDays: data,
+                    loading: false,
+                }))
+            })
+            .catch(err => console.error(err))
     }
 
     logout = () => { //chequear si realmente cierra sesión
@@ -108,27 +92,6 @@ class Timeline extends Component {
                 tasksModal: false,
             })
         })
-    }
-
-    getData = docId => {
-        firestore.collection(`users/${docId}/tasks`)
-            .get()
-            .then(snapshot => {
-                let data = []
-                snapshot.forEach(doc => {
-                    data.push( doc.data() )
-                })
-                setState(data)
-            })
-            .catch(err => console.error(err))
-        
-        const setState = (data) => {
-            this.setState( prevState => ({
-                // eslint-disable-next-line
-                tasksDays: [...prevState.tasksDays], tasksDays: data, //escribirlo mejor y evitar el warning
-                loading: false,
-            }))
-        }
     }
 
     showLoginModal = () => {
@@ -163,6 +126,7 @@ class Timeline extends Component {
     }
 
     render() {
+
         const { 
             today,
             tasksModal,
@@ -174,14 +138,8 @@ class Timeline extends Component {
             loading
         } = this.state
 
-        let undoneTasks;
-
-        if (tasksDays.length !== 0) {
-            undoneTasks = tasksDays.filter(task => !task.done)
-            //console.log('estas son tus tareas sin terminar', undoneTasks)
-        }
-
-        const user = this.state.userName.split(' ').splice(0, 1)
+        console.log(this.state.tasksDays)
+        const user = 'leandro'
 
         return (
             

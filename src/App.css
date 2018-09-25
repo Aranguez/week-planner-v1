@@ -219,23 +219,24 @@ h1, h2, h3, h4, h5{
   background: none;
   font-size: 1.5em;
   color: #ff3c3c;
-  /*position: absolute;
-  top: -10px;
-  right: -10px;*/
 }
 
-.delete-btn{
+.delete-btn i{
   cursor: pointer;
   margin-right: 10px;
   padding: 0;
   color: #ff3c3c;
 }
 
-.clear-btn i {
+.clear-task i {
   cursor: pointer;
   margin-right: 10px;
   padding: 0;
   color: #5ed100;
+}
+.clear-task span.clear:hover{
+  cursor: pointer;
+  text-decoration: line-through;
 }
 
 /* EFFECTS */
