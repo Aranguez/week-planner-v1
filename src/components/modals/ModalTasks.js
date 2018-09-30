@@ -26,27 +26,49 @@ class ModalTasks extends Component {
     }
 
     finishTask = id => {
-        console.log('borrado')
         firestore.collection('users')
             .where('id', '==', this.props.userId)
             .get()
             .then(snapshot => {
-                //this.setState({loading: true})
                 snapshot.forEach( doc => {
                   firestore.collection(`users/${doc.id}/tasks`)
                     .where('id', '==', id)
                     .get()
-                    .then( snapshot => snapshot.forEach(doc => {
+                    .then( snapshot => {
+                        snapshot.forEach(doc => {
+                            if (doc.data().done) {
+                                doc.ref.delete()
+                            } else{
+                                doc.ref.update({
+                                    done: true
+                                })
+                            }
+                        })
+                    })
+                    .then( () => this.props.getData(doc.id))
+                    .catch(err => console.error(err))
+                })
+            })
+            .catch(err => console.error(err))
+    }
 
-                        if (doc.data().done) {
-                            doc.ref.delete()
-                        } else{
+    undone = id => {
+        console.log(id)
+        firestore.collection('users')
+            .where('id', '==', this.props.userId)
+            .get()
+            .then(snapshot => {
+                snapshot.forEach( doc => {
+                  firestore.collection(`users/${doc.id}/tasks`)
+                    .where('id', '==', id)
+                    .get()
+                    .then( snapshot => {
+                        snapshot.forEach(doc => {
                             doc.ref.update({
-                                done: true
+                                done: false
                             })
-                        }
-                        
-                    }))
+                        })
+                    })
                     .then( () => this.props.getData(doc.id))
                     .catch(err => console.error(err))
                 })
@@ -54,6 +76,8 @@ class ModalTasks extends Component {
             })
             .catch(err => console.error(err))
     }
+
+    
 
     showAddModal = (day) => {
         this.setState({
@@ -79,8 +103,8 @@ class ModalTasks extends Component {
                     { this.state.tasksOfDay.length === 0 ?
                         (<div className="row">
                             <div className="col col-12">
-                                <h3>It's empty! <i className="far fa-smile"></i></h3>
-                                <p>There is no tasks for this day :)</p>
+                                <h3>It's empty!</h3>
+                                <p>There is no tasks for this day</p>
                             </div>
                         </div>)
                         : (
@@ -90,9 +114,9 @@ class ModalTasks extends Component {
                             {this.state.tasksOfDay.map((task, i) => (
                                 !task.done && (
                                     <p key={i}>
-                                        <span className="delete-btn" onClick={() => this.finishTask(task.id)}>
-                                            <i className="far fa-square" ></i>
-                                            
+                                        <span className="delete-btn">
+                                            <i className="far fa-square" onClick={() => this.finishTask(task.id)}></i>
+                                            <i className="far fa-edit"></i>
                                         </span>
                                         <span> {task.task}</span>
                                     </p>
@@ -106,9 +130,10 @@ class ModalTasks extends Component {
                             {this.state.tasksOfDay.map((task, i) => (
                                     task.done && (
                                     <p key={i}>
-                                        <span onClick={() => this.finishTask(task.id)} className="clear-btn">
-                                            <i className="fas fa-check-square"></i>
-                                            <span> {task.task}</span>
+                                        <span className="clear-task">
+                                            <i className="fas fa-check-square" onClick={() => this.undone(task.id)}></i>
+                                            <span onClick={() => this.finishTask(task.id)}
+                                                  className="clear">{task.task}</span>
                                         </span>
                                     </p>
                             )))

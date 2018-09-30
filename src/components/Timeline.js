@@ -37,7 +37,36 @@ class Timeline extends Component {
     componentDidMount(){
         firebase.auth().onAuthStateChanged( user => { 
             if (user) this.getUser(user.uid)
+<<<<<<< HEAD
         }); 
+=======
+
+            //check for changes
+            db.collection('users')
+                .where('id', '==', user.uid).get()
+                .then( snapshot => {
+                    db.collection(`users/${snapshot.docs[0].id}/tasks`)
+                        .onSnapshot( snapshot => {
+                            let cambios = snapshot.docChanges()
+                            
+                            cambios.forEach(cambio => {
+                                if(cambio.type === 'added'){
+                                    console.log('añadido')
+                                }
+                            
+                                if(cambio.type === 'deleted'){
+                                    console.log('borrado')
+                                }
+
+                                if(cambio.type === 'updated'){
+                                    console.log('actualzado')
+                                }
+                            })
+                        })
+                }).catch(err=>console.log(err))
+                
+        });
+>>>>>>> c53e38a8f730ef5814f13dc049014443f3a84b7e
     }
 
     getUser = (id, name) => {
@@ -61,7 +90,11 @@ class Timeline extends Component {
                 }
                 this.getData(snapshot.docs[0].id)
             })
+<<<<<<< HEAD
             .catch( err => console.log(err))
+=======
+            .catch( err => console.log(err)) 
+>>>>>>> c53e38a8f730ef5814f13dc049014443f3a84b7e
     }
 
     getData = id => {
