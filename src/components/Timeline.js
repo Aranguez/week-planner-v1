@@ -48,15 +48,15 @@ class Timeline extends Component {
                             
                             cambios.forEach(cambio => {
                                 if(cambio.type === 'added'){
-                                    console.log('añadido')
+                                    //console.log('añadido')
                                 }
                             
                                 if(cambio.type === 'deleted'){
-                                    console.log('borrado')
+                                    //console.log('borrado')
                                 }
 
                                 if(cambio.type === 'updated'){
-                                    console.log('actualzado')
+                                    //console.log('actualzado')
                                 }
                             })
                         })
@@ -126,28 +126,24 @@ class Timeline extends Component {
     }
 
     showTasksModal = (day, close) => {
-        if (close) {
-            this.setState({
-                tasksModal: false,
-                selectedDay: day
-            })
-        } else {
-            this.setState({
-                tasksModal: true,
-                selectedDay: day
-            })
-        }
-        document.querySelectorAll('.day-box')
+        this.setState({
+            tasksModal: true,
+            selectedDay: day
+        })
+        
+        document.querySelectorAll('.box')
                 .forEach( item => {
                     item.classList.remove('active-day')
                 })
-
+        
         const el = document.querySelector(`#${day}`) // check condicional
         if (el.classList.contains('active-day') || close) {
             el.classList.remove('active-day')
         } else{
             el.classList.add('active-day')
         }
+
+        
     }
 
     render() {
@@ -163,21 +159,20 @@ class Timeline extends Component {
             loading
         } = this.state
 
-        console.log(this.state.tasksDays)
         const user = 'leandro'
 
         return (
-            
-            // tratar de no pasar tantos props
-            // ó no ejecutar funciones dentro de los componentes
+
             <Fragment>
 
-                { 
+                { /*
                     logged && tasksDays.length > 0 ?
-                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, estas son tus tareas de la semana</h3> :
+                        <h3 style={{'marginBottom': '40px', 'marginLeft': '35px'}}>
+                            <span className="color-red">Hello {user}</span><br/> hope you have a great week</h3> :
                     logged && tasksDays.length === 0 &&
-                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, añade tareas a tu semana</h3>
-                }
+                        <h3 style={{'marginBottom': '40px', 'marginLeft': '35px'}}>
+                            <span className="color-red">Hello {user}</span><br/> add tasks for your week</h3>
+                */}
 
                 { !logged ? <button type="button" onClick={this.showLoginModal}>Login</button> :
                             <button type="button" onClick={this.logout}

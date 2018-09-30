@@ -25,9 +25,8 @@ class Day extends Component {
 
         let height = tasks.length*12;
         return (
-            <div className="box">
+            <div className="box" id={this.props.day}>
                 <div className={`day-box ${ this.props.today ? 'is-today' : '' }`}
-                     id={this.props.day}
                      onClick={ () => this.props.onHandleModal(this.props.day, false) }>
                     <span className='day'>{this.props.day.substr(0,3)}</span>
                 </div>
