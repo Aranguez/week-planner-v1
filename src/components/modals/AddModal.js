@@ -32,6 +32,7 @@ export default class AddModal extends Component {
 
     addTask = (e) => { //add new task
         e.preventDefault();
+        console.log(this.props)
         const { task, day } = this.state
 
         firestore.collection('users')
@@ -39,6 +40,7 @@ export default class AddModal extends Component {
             .get()
             .then( snapshot => {
                 snapshot.forEach( doc => {
+                    
                     firestore.collection(`users/${doc.id}/tasks`)
                         .add({
                             id: new Date().valueOf(),
@@ -52,7 +54,7 @@ export default class AddModal extends Component {
                         })
                         .catch(err => console.error(err))
                 })
-            })
+            }).catch(err => console.error(err))
         
         this.setState({ task: '' })
         this.props.showAddModal()

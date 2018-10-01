@@ -72,7 +72,6 @@ class ModalTasks extends Component {
                     .then( () => this.props.getData(doc.id))
                     .catch(err => console.error(err))
                 })
-                //this.setState({loading: false})
             })
             .catch(err => console.error(err))
     }
