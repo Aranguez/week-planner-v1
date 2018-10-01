@@ -88,7 +88,8 @@ h1, h2, h3, h4, h5{
     overflow-x: scroll;
   }
   .timeline{
-    width:200%;
+    width: 775px;
+    padding: 0 22px;
     margin: 45px 0 45px 0;
   }
   .timeline .box.active {
