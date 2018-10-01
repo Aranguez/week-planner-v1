@@ -3,13 +3,6 @@ import React, { Component, Fragment } from 'react'
 //componentes
 import Day from './Day'
 import ModalTasks from './modals/ModalTasks';
-import LoginModal from './modals/LoginModal';
-
-//firebase
-import { firestore } from '../firebase/config'
-import firebase from 'firebase/app';
-
-const db = firestore
 
 //week data
 const weekdays = [/*"Sunday", */"Monday", "Tuesday", "Wednesday", "Thursday", "Friday",/* "Saturday"*/];
@@ -21,108 +14,19 @@ class Timeline extends Component {
     constructor(){
         super();
         this.state = {
-            userId: '',
-            userName: '',
             loading: true,
             today,
             weekdays,
-            tasksModal: false,
-            loginModal: false,
-            selectedDay: '',
-            tasksDays: [],
-            logged: false
+            selectedDay: ''
         }
     }
 
-    componentDidMount(){
-        firebase.auth().onAuthStateChanged( user => { 
-            if (user) this.getUser(user.uid)
-
-            //check for changes
-            db.collection('users')
-                .where('id', '==', user.uid).get()
-                .then( snapshot => {
-                    db.collection(`users/${snapshot.docs[0].id}/tasks`)
-                        .onSnapshot( snapshot => {
-                            let cambios = snapshot.docChanges()
-                            
-                            cambios.forEach(cambio => {
-                                if(cambio.type === 'added'){
-                                    console.log('añadido')
-                                }
-                            
-                                if(cambio.type === 'deleted'){
-                                    console.log('borrado')
-                                }
-
-                                if(cambio.type === 'updated'){
-                                    console.log('actualzado')
-                                }
-                            })
-                        })
-                }).catch(err=>console.log(err))
-                
-        });
-    }
-
-    getUser = (id, name) => {
-        this.setState({
-            userId: id,
-            userName: name,
-            logged: true,
-            loginModal: false,
-        })
-
-        db.collection('users').where('id', '==', id).get()
-            .then( snapshot => {
-                if (snapshot.docs.length === 0) {
-                    db.collection('users')
-                        .add({ id, name })
-                        .then(() => {
-                            console.log('usuario agregado')
-                            this.getUser(id, name)
-                        })
-                        .catch(err => console.error(err))
-                }
-                this.getData(snapshot.docs[0].id)
-            })
-            .catch( err => console.log(err)) 
-    }
-
-    getData = id => {
-        db.collection(`users/${id}/tasks`)
-            .get()
-            .then( snapshot => {
-                let data = []
-                snapshot.forEach( doc => {
-                    data.push(doc.data())
-                })
-                this.setState( prevState => ({
-                    // eslint-disable-next-line
-                    tasksDays: [...prevState.tasksDays], tasksDays: data,
-                    loading: false,
-                }))
-            })
-            .catch(err => console.error(err))
-    }
-
-    logout = () => { //chequear si realmente cierra sesión
-        firebase.auth().signOut().then( () => {
+    componentWillReceiveProps(newProps){
+        if(newProps.tasksDays.length > 0){
             this.setState({
-                loading: true,
-                userId: '',
-                selectedDay: '',
-                tasksDays: [],
-                logged: false,
-                tasksModal: false,
+                loading: false,
             })
-        })
-    }
-
-    showLoginModal = () => {
-        this.setState({
-            loginModal: !this.state.loginModal
-        })
+        }
     }
 
     showTasksModal = (day, close) => {
@@ -155,16 +59,10 @@ class Timeline extends Component {
         const { 
             today,
             tasksModal,
-            loginModal,
             selectedDay,
-            tasksDays,
             weekdays,
-            logged,
             loading
         } = this.state
-
-        console.log(this.state.tasksDays)
-        const user = 'leandro'
 
         return (
             
@@ -172,44 +70,31 @@ class Timeline extends Component {
             // ó no ejecutar funciones dentro de los componentes
             <Fragment>
 
-                { 
-                    logged && tasksDays.length > 0 ?
-                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, estas son tus tareas de la semana</h3> :
-                    logged && tasksDays.length === 0 &&
-                        <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>{user}, añade tareas a tu semana</h3>
-                }
-
-                { !logged ? <button type="button" onClick={this.showLoginModal}>Login</button> :
-                            <button type="button" onClick={this.logout}
-                            style={{'position': 'absolute', 'top': '100px'}}>Log out</button> }
                     
-                { loading && logged &&
+                { loading &&
                     <div className="loading animated fadeIn">
                         <i className="fas fa-spinner fa-spin"></i>
                     </div>    
                 }
                 
-                { !loading && logged &&
+                { !loading &&
                     <div className="timeline animated slideInUp">
                         { weekdays.map((day, i) => (
                         <Day key={i}
                              today={today === day}
                              day={day}
-                             tasks={tasksDays}
+                             tasks={this.props.tasksDays}
                              onHandleModal={this.showTasksModal}/>
                         ))} 
                     </div>
                 }
 
                 <ModalTasks isOpen={tasksModal}
-                            userId={this.state.userId}
+                            userId={this.props.userId}
                             selectedDay={selectedDay}
-                            tasks={tasksDays}
-                            getData={this.getData}
+                            tasks={this.props.tasksDays}
+                            getData={this.props.getData}
                             showTasksModal={this.showTasksModal}/>
-
-                <LoginModal isOpen={loginModal}
-                            getUser={this.getUser}/>
             
             </Fragment>
         )
