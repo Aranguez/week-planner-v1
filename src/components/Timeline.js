@@ -72,15 +72,18 @@ class Timeline extends Component {
                 }
                 
                 { !loading &&
-                    <div className="timeline animated slideInUp">
-                        { weekdays.map((day, i) => (
-                        <Day key={i}
-                             today={today === day}
-                             day={day}
-                             tasks={this.props.tasksDays}
-                             onHandleModal={this.showTasksModal}/>
-                        ))} 
+                    <div className="slider">
+                        <div className="timeline animated slideInUp">
+                            { weekdays.map((day, i) => (
+                            <Day key={i}
+                                today={today === day}
+                                day={day}
+                                tasks={this.props.tasksDays}
+                                onHandleModal={this.showTasksModal}/>
+                            ))} 
+                        </div>
                     </div>
+                    
                 }
 
                 <ModalTasks isOpen={tasksModal}

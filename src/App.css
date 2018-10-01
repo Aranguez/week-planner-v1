@@ -82,11 +82,14 @@ h1, h2, h3, h4, h5{
   .nav{
     display: flex;
   }
+  .slider {
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: scroll;
+  }
   .timeline{
     width: 150%;
-    position: relative;
     margin: 45px 0 45px 0;
-    left: -73px;
   }
   .timeline .box.active {
     transform: scale(1.3);

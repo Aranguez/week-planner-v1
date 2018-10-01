@@ -8,6 +8,7 @@ import LoginModal from './modals/LoginModal';
 //firebase
 import { firestore } from '../firebase/config';
 import firebase from 'firebase/app';
+import Nav from './Nav';
 const db = firestore
 
 export default class WeekPlanner extends Component {
@@ -119,6 +120,7 @@ export default class WeekPlanner extends Component {
 
         return (
         <div>
+            <Nav/>
             { 
                 this.state.logged ?
                     (<div>
