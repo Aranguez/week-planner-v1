@@ -35,9 +35,17 @@ h1, h2, h3, h4, h5{
   color: gray;
 }
 .nav span.logo {
+  position: relative;
   color: #000;
   font-family: 'Nunito', sans-serif;
   font-size: 1.2em;
+}
+
+span.logo .badge{
+  position: absolute;
+  top: -12px;
+  right: -11px;
+  font-size: 13px;
 }
 
 .timeline{

@@ -13,7 +13,7 @@ export default class Nav extends Component {
         return (
         <div className="nav"> {/* flex */}
             <i className="fas fa-bars"></i>
-            <span className="logo">WeeklyPlanner</span>
+            <span className="logo">WeeklyPlanner<small className="color-red badge">Alpha</small></span>
             <i className="fas fa-bell"></i>
         </div>
         )

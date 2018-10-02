@@ -124,8 +124,9 @@ export default class WeekPlanner extends Component {
             { 
                 this.state.logged ?
                     (<div>
-                    <h3 style={{'marginBottom': '40px', 'textAlign': 'center'}}>
-                        Hello { user }<br/>hope you have a great week
+                    <h3 style={{'marginBottom': '40px', 'marginLeft': '35px'}}>
+                        <span className="color-red">Hello { user }</span><br/>
+                        <span>hope you have a great week</span>
                     </h3>
                     <button type="button"
                             onClick={this.logout}

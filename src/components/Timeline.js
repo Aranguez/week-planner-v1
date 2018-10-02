@@ -7,7 +7,7 @@ import ModalTasks from './modals/ModalTasks';
 //week data
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const todayDate = new Date().getDay() //returns a number
-const today = weekdays[todayDate-1]
+const today = weekdays[todayDate]
 
 class Timeline extends Component {
 
@@ -22,7 +22,7 @@ class Timeline extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        if(newProps.tasksDays.length > 0){
+        if(newProps.tasksDays){
             this.setState({
                 loading: false,
             })
