@@ -142,7 +142,8 @@ export default class WeekPlanner extends Component {
 
             <Timeline tasksDays={this.state.tasksDays}
                       getData={this.getData}
-                      userId={this.state.userId}/>
+                      userId={this.state.userId}
+                      loading={this.state.loading}/>
                       
             <LoginModal isOpen={this.state.loginModal} getUser={this.getUser}/>
         </div>

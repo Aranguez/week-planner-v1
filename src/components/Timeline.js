@@ -11,7 +11,7 @@ const today = weekdays[todayDate]
 
 class Timeline extends Component {
 
-    constructor(){
+    constructor(props){
         super();
         this.state = {
             loading: true,
@@ -22,7 +22,7 @@ class Timeline extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        if(newProps.tasksDays){
+        if(newProps.tasksDays.length > 0 || !newProps.loading){
             this.setState({
                 loading: false,
             })
