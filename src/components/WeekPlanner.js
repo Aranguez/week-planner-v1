@@ -54,6 +54,7 @@ export default class WeekPlanner extends Component {
     }
 
     getUser = (id, name) => {
+        console.log(id, name)
         this.setState({
             userId: id,
             userName: name,
