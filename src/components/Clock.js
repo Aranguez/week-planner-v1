@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 export default class Clock extends Component {
 
@@ -45,24 +45,16 @@ export default class Clock extends Component {
     
     render(){
         return (
-            <Fragment>
-                 <div className="clock" style={{'marginLeft': '35px'}}>
+            <div className="panel">
+                <div>
                     <h1>
                         <span> {this.state.hours}</span>
                         <span>:{this.state.mins}</span>
-                        <span>:{this.state.secs} </span>
+                        <span>:{this.state.secs}</span>
                     </h1>
                     <span>to finish this day</span>
                 </div>
-                <div className="clock" style={{'marginLeft': '20px'}}>
-                    <h1>
-                        <span> {this.state.hours}</span>
-                        <span>:{this.state.mins}</span>
-                        <span>:{this.state.secs} </span>
-                    </h1>
-                    <span>to finish this day</span>
-                </div>
-            </Fragment>
+            </div>
         );
     }
 };
