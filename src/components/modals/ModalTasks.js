@@ -108,10 +108,10 @@ class ModalTasks extends Component {
                         </div>)
                         : (
                         <div className="row">
-                            <div className="col col-6">
+                            <div className="col col-12">
                             <h4>Todo List</h4>
                             {this.state.tasksOfDay.map((task, i) => (
-                                !task.done && (
+                                !task.done ? (
                                     <p key={i}>
                                         <span className="delete-btn">
                                             <i className="far fa-square" onClick={() => this.finishTask(task.id)}></i>
@@ -119,23 +119,17 @@ class ModalTasks extends Component {
                                         </span>
                                         <span> {task.task}</span>
                                     </p>
-                                )
+                                ) : <p key={i}>
+                                        <span className="delete-btn">
+                                            <i className="far fa-check-square"
+                                               onClick={() => this.undone(task.id)}></i>
+                                            <i className="fa fa-trash"
+                                               onClick={() => this.finishTask(task.id)}></i>
+                                        </span>
+                                        <span>{task.task}</span>
+                                    </p>
                                 
                                 ))
-                            }
-                            </div>
-                            <div className="col col-6">
-                            <h4>Done Tasks</h4>
-                            {this.state.tasksOfDay.map((task, i) => (
-                                    task.done && (
-                                    <p key={i}>
-                                        <span className="clear-task">
-                                            <i className="fas fa-check-square" onClick={() => this.undone(task.id)}></i>
-                                            <span onClick={() => this.finishTask(task.id)}
-                                                  className="clear">{task.task}</span>
-                                        </span>
-                                    </p>
-                            )))
                             }
                             </div>
                         </div>

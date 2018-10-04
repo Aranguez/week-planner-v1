@@ -285,17 +285,6 @@ span.logo .badge{
   color: #FF3A69;
 }
 
-.clear-task i {
-  cursor: pointer;
-  margin-right: 10px;
-  padding: 0;
-  color: #22E570;
-}
-.clear-task span.clear:hover{
-  cursor: pointer;
-  text-decoration: line-through;
-}
-
 /* EFFECTS */
 .blurred{
   filter: blur(2px)
