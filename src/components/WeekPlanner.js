@@ -74,6 +74,7 @@ export default class WeekPlanner extends Component {
                         .catch(err => console.error(err))
                 }
                 this.getData(snapshot.docs[0].id)
+                console.log(snapshot.docs[0].id)
             })
             .catch( err => console.log(err)) 
     }
@@ -139,15 +140,18 @@ export default class WeekPlanner extends Component {
                         
                 }
 
-                <div className="row">
+                { !this.state.loading &&
+                    <div className="row animated slideInUp">
                         <div className="panel">
-                            <div> 
+                            <div>
                                 <h1>{this.state.tasksDays.length}</h1>
-                                <span>tasks to do</span>
+                                <span>total tasks</span>
                             </div>
                         </div>
                         <Clock/>
-                </div>
+                    </div>
+                }
+                
                 
 
                 
