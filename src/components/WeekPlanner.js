@@ -121,24 +121,39 @@ export default class WeekPlanner extends Component {
 
         return (
         <div>
-            <Nav/>
-            { 
-                this.state.logged ?
-                    (<div>
-                    <h3 style={{'marginBottom': '40px', 'marginLeft': '35px'}}>
-                        <span className="color-red">Hello { user }</span><br/>
-                        <span>hope you have a great week</span>
-                    </h3>
-                    <button type="button"
-                            onClick={this.logout}
-                            style={{'position': 'absolute', 'top': '100px'}}>Log out</button>
-                    </div>)
-                    : 
-                    (<button type="button" onClick={this.showLoginModal}>Login</button>)
-                    
-            }
+            <div className="container">
+                <Nav/>
+                { 
+                    this.state.logged ?
+                        (<div>
+                        <h3 style={{'marginBottom': '40px'}}>
+                            <span className="color-red">Hello { user }</span><br/>
+                            <span>hope you have a great week</span>
+                        </h3>
+                        <button type="button"
+                                onClick={this.logout}
+                                style={{'position': 'absolute', 'top': '100px'}}>Log out</button>
+                        </div>)
+                        : 
+                        (<button type="button" onClick={this.showLoginModal}>Login</button>)
+                        
+                }
 
-            <Clock/>
+                <div className="row">
+                        <div className="panel">
+                            <div> 
+                                <h1>{this.state.tasksDays.length}</h1>
+                                <span>tasks to do</span>
+                            </div>
+                        </div>
+                        <Clock/>
+                </div>
+                
+
+                
+
+            </div>
+            
 
             <Timeline tasksDays={this.state.tasksDays}
                       getData={this.getData}

@@ -9,10 +9,10 @@ body {
   background-color: #F1F1F1;
 }
 
-.App {
-  width: 100vw;
-  position: relative;
-  z-index: 1;
+.container {
+  width: 80%;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
 h1, h2, h3, h4, h5{
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5{
   display: none;
   justify-content: space-between;
   align-items: center;
-  padding: 35px 35px;
+  padding: 35px 0px;
   margin-bottom: 20px;
 }
 .nav i {
@@ -338,6 +338,27 @@ span.logo .badge{
 }
 
 .clock h1{
+  font-weight: bold;
+  color: #FF3A69;
+  font-size: 1.2em;
+  margin-bottom: 0;
+  font-family: 'Nunito', sans-serif;
+}
+
+.panel{
+  width: 46%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+  height: 110px;
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.panel h1{
   font-weight: bold;
   color: #FF3A69;
   font-size: 1.2em;
