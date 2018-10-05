@@ -13,7 +13,6 @@ class LoginModal extends Component {
             return firebase.auth().signInWithPopup(provider).then( result => {
                 var user = result.user;
                 this.props.getUser(user.uid, user.displayName)
-    
                 }).catch(err => console.error(err))
         }).catch(err => console.error(err))
     }

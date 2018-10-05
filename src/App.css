@@ -111,15 +111,15 @@ span.logo .badge{
     margin: 0 12px;
   }
   .timeline .day-box span.day{
-    font-size: 1em !important;
+    font-size: 1.2em !important;
   }
-  .day-box.is-today::after {
+  /*.day-box.is-today::after {
     font-size: .7em !important;
     border-radius: 17px !important;
     padding: 3px 8px !important;
     top: -30px !important;
     left: 0px !important;
-  }
+  }*/
   .box > span.task{
     left: 7px !important;
   }
@@ -132,11 +132,20 @@ span.logo .badge{
   }
 }
 
+.day .is-today {
+  margin-top: -4px;
+  font-size: 0.5em;
+  color: #FF3A69;
+  display: block;
+  text-align: center;
+}
+
 .timeline .day-box span.day{
   color: #666;
   font-weight: bold;
   text-transform: lowercase;
   font-family: 'Nunito', sans-serif;
+  text-align: center;
   font-size: 1.5em;
   position: absolute;
   top: 50%;
@@ -155,11 +164,35 @@ span.logo .badge{
   background-color: #FF3A69;
 }
 
-.day-box.is-today span{
-  color:#FF3A69 !important;
+.undone-tasks{
+  position: absolute;
+  bottom: 5px;
+  left: 7px;
+  font-size: 0.6em;
+  font-weight: bold;
 }
 
-.day-box.is-today::after{
+.done-tasks{
+  position: absolute;
+  bottom: 5px;
+  right: 7px;
+  font-size: 0.6em;
+  font-weight: bold;
+}
+
+.max-tasks {
+  position: absolute;
+  top: 5px;
+  left: 7px;
+  font-size: 0.6em;
+  font-weight: 400;
+}
+
+/*.day-box.is-today span{
+  color:#FF3A69 !important;
+}*/
+
+/*.day-box.is-today::after{
   content: 'Today';
   font-family: 'Nunito', sans-serif;
   font-weight: 400;
@@ -172,7 +205,7 @@ span.logo .badge{
   z-index: 1 !important;
   top: -30px;
   left: 15px;
-}
+}*/
 
 /* MODAL */
 .show{
@@ -298,6 +331,10 @@ span.logo .badge{
 .active-day{
   position: relative;
   transform: scale(1.3);
+}
+
+.active-day .day {
+  color: #222 !important;
 }
 
 .day-box.active-day + span.task{
