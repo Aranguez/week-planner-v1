@@ -128,7 +128,6 @@ span.logo .badge{
   }
   .modal{
     padding: 35px 30px;
-    border-radius: 0px !important;
   }
 }
 
@@ -214,13 +213,19 @@ span.logo .badge{
 .hide{
   display: none !important;
 }
+
+/*tasks display*/
 .modal{
-  margin-top: 30px;
   animation-duration: .5s;
   display: none;
   background-color: white;
   padding: 35px;
-  border-radius: 10px;
+  border-radius: 8px;
+  z-index: 5;
+  position: fixed;
+  top: 25%;
+  left: 10%;
+  width: 80%;
 }
 
 .modal .modal-header{
@@ -239,6 +244,7 @@ span.logo .badge{
   text-transform: capitalize;
 }
 .modal .modal-body input[type="text"]{
+  width: 100%;
   font-size: 1.8em;
   font-family: 'Nunito', sans-serif;
   outline: none;
@@ -248,18 +254,51 @@ span.logo .badge{
   display: inline-block;
   margin: 20px auto 30px auto;
 }
-/*.modal.medium{
-  width: 500px;
-}*/
+
 .blackout{
   display: none;
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 2;
   background-color: rgba(0, 0, 0, .4)
+}
+
+/*tasks display*/
+.tasks-display{
+  margin-top: 30px;
+  animation-duration: .5s;
+  display: none;
+  background-color: white;
+  padding: 35px;
+}
+
+.tasks-display .header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.tasks-display .header h2{
+  margin: 0;
+}
+
+.tasks-display .body p {
+  color: #868686;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+.tasks-display .body input[type="text"]{
+  font-size: 1.8em;
+  font-family: 'Nunito', sans-serif;
+  outline: none;
+  padding: 10px 0px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  display: inline-block;
+  margin: 20px auto 30px auto;
 }
 
 /* BUTTONS */
@@ -328,7 +367,7 @@ span.logo .badge{
   font-weight: bold;
 }
 
-.active-day{
+.active-day{ 
   position: relative;
   transform: scale(1.3);
 }

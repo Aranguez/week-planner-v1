@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 // eslint-disable-next-line
 import { firestore } from '../../firebase/config'
@@ -12,6 +12,8 @@ export default class AddModal extends Component {
         super();
         this.state = {
             task: '',
+            priority: false,
+            reminder: '',
             day: '',
             isOpen: props.isOpen
         }
@@ -62,26 +64,34 @@ export default class AddModal extends Component {
 
     render() {
         return (
-            <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
-                <div className="modal-header">
-                    <h2>Add a Task</h2>
+            <Fragment>
+                <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
+                    <div className="modal-header">
+                        <h2>Add a Task</h2>
+                    </div>
+                    <div className="modal-body">
+                        <form onSubmit={e => this.addTask(e)}>
+                            <input  type="text"
+                                    name="task"
+                                    value={this.state.task}
+                                    onChange={e => this.onChangeTask(e)}
+                                    placeholder="Your task"
+                                    maxLength="20"/>
+
+                            {/*<input  type="radio"
+                                    name="priority"
+        onChange={() => this.setState({priority: !this.state.priority})}/>*/}
+
+                            <div>
+                                <AddButton/>
+                                <Button onClick={() => this.props.showAddModal() } title="CANCEL"/>
+                            </div>
+                            
+                        </form>
+                    </div>
                 </div>
-                <div className="modal-body">
-                    <form onSubmit={e => this.addTask(e)}>
-                        <input  type="text"
-                                name="task"
-                                value={this.state.task}
-                                onChange={e => this.onChangeTask(e)}
-                                placeholder="Your task"
-                                maxLength="20"/>
-                        <div>
-                            <AddButton/>
-                            <Button onClick={() => this.props.showAddModal() } title="CANCEL"/>
-                        </div>
-                        
-                    </form>
-                </div>
-            </div>
+                <div className={`blackout ${ this.props.isOpen ? 'show' : 'hide' }`}></div>
+            </Fragment>
         )
     }
 }

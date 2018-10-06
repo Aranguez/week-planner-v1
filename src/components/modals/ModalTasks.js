@@ -88,8 +88,8 @@ class ModalTasks extends Component {
     render(){
         return (
             <Fragment>
-                <div className={`modal animated ${ this.props.isOpen ? "show fadeIn" : "hide" }`}>
-                    <div className="modal-header col col-12">
+                <div className={`tasks-display animated ${ this.props.isOpen ? "show fadeIn" : "hide" }`}>
+                    <div className="header col col-12">
                         <h2>Tasks for <span className="color-red">{this.props.selectedDay}</span></h2>
                         <div className="add-btn" onClick={ () => this.showAddModal() }>
                             <span>Add a Task</span>
@@ -98,7 +98,7 @@ class ModalTasks extends Component {
                             </button>
                         </div>
                     </div>
-                    <div className="modal-body">
+                    <div className="body">
                     { this.state.tasksOfDay.length === 0 ?
                         (<div className="row">
                             <div className="col col-12">
