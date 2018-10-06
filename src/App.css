@@ -187,25 +187,6 @@ span.logo .badge{
   font-weight: 400;
 }
 
-/*.day-box.is-today span{
-  color:#FF3A69 !important;
-}*/
-
-/*.day-box.is-today::after{
-  content: 'Today';
-  font-family: 'Nunito', sans-serif;
-  font-weight: 400;
-  font-size: .8em;
-  border-radius: 5px;
-  color: white;
-  background-color: #FF3A69;
-  padding: 5px 5px 5px 5px;
-  position: absolute;
-  z-index: 1 !important;
-  top: -30px;
-  left: 15px;
-}*/
-
 /* MODAL */
 .show{
   display: block !important;
