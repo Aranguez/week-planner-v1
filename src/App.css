@@ -226,14 +226,26 @@ span.logo .badge{
 }
 .modal .modal-body input[type="text"]{
   width: 100%;
-  font-size: 1.8em;
+  font-size: 1em;
   font-family: 'Nunito', sans-serif;
   outline: none;
   padding: 10px 0px;
   border: none;
   border-bottom: 1px solid #ddd;
   display: inline-block;
-  margin: 20px auto 30px auto;
+  margin: 0 auto 10px auto;
+}
+
+.shadow {
+  width: 80%;
+  height: 15px;
+  display: block;
+  position: absolute;
+  z-index: 1;
+  bottom: -5px;
+  left: 30px;
+  background-color: rgba(0, 0, 0, .2);
+  filter: blur(6px);
 }
 
 .blackout{
@@ -284,6 +296,7 @@ span.logo .badge{
 
 /* BUTTONS */
 .btn{
+  width: 100%;
   margin-top: 20px;
   font-size: .9em;
   padding: 5px 20px;
@@ -336,6 +349,17 @@ span.logo .badge{
   margin-right: 10px;
   padding: 0;
   color: #FF3A69;
+}
+
+.btn.facebook {
+  background-color: #3B5998;
+  color: #fff;
+  padding: 5px 10px;
+}
+.btn.google {
+  background-color: #d62d20;
+  color: #fff;
+  padding: 5px 10px;
 }
 
 /* EFFECTS */
@@ -417,6 +441,10 @@ span.logo .badge{
   text-align: center;
   font-size: 2em;
   color: #FF3A69;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 46%;
 }
 
 /* GRID */
