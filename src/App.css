@@ -139,6 +139,20 @@ span.logo .badge{
   text-align: center;
 }
 
+.day-over::after{
+  content: '';
+  width: 135%;
+  height: 3px;
+  background-color: #000;
+  position: absolute;
+  z-index: 5;
+  opacity: .2;
+  top: 50%;
+  left: -16%;
+  transform: translate(-50%, -50%);
+  transform: rotate(-45deg);
+}
+
 .timeline .day-box span.day{
   color: #666;
   font-weight: bold;
@@ -284,15 +298,17 @@ span.logo .badge{
   text-transform: capitalize;
 }
 .tasks-display .body input[type="text"]{
-  font-size: 1.8em;
   font-family: 'Nunito', sans-serif;
   outline: none;
-  padding: 10px 0px;
+  padding: 0px 0px;
   border: none;
-  border-bottom: 1px solid #ddd;
   display: inline-block;
-  margin: 20px auto 30px auto;
 }
+
+.tasks-display .body input[type="text"].edit{
+  border: 1px solid #ccc;
+}
+
 
 /* BUTTONS */
 .btn{

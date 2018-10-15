@@ -53,7 +53,6 @@ class ModalTasks extends Component {
     }
 
     undone = id => {
-        console.log(id)
         firestore.collection('users')
             .where('id', '==', this.props.userId)
             .get()
@@ -76,7 +75,18 @@ class ModalTasks extends Component {
             .catch(err => console.error(err))
     }
 
-    
+    edit = (e, id) => {
+        e.preventDefault();
+        /*const elem = document.getElementById(id);
+
+        if(!elem.classList.contains('edit')){
+            elem.classList.add('edit')
+            elem.attributes.removeNamedItem('readonly')
+        } else{
+            elem.classList.remove('edit')
+            elem.setAttribute('readonly', true)
+        }*/
+    }
 
     showAddModal = (day) => {
         this.setState({
@@ -114,10 +124,12 @@ class ModalTasks extends Component {
                                 !task.done ? (
                                     <p key={i}>
                                         <span className="delete-btn">
-                                            <i className="far fa-square" onClick={() => this.finishTask(task.id)}></i>
-                                            <i className="far fa-edit"></i>
+                                            <i className="far fa-square"
+                                               onClick={() => this.finishTask(task.id)}></i>
+                                            <i className="far fa-edit"
+                                               onClick={e => this.edit(e, task.id)}></i>
                                         </span>
-                                        <span> {task.task}</span>
+                                        <input type="text" className="task-name" id={task.id} value={task.task} readOnly/>
                                     </p>
                                 ) : <p key={i}>
                                         <span className="delete-btn">
@@ -126,9 +138,8 @@ class ModalTasks extends Component {
                                             <i className="fa fa-trash"
                                                onClick={() => this.finishTask(task.id)}></i>
                                         </span>
-                                        <span>{task.task}</span>
+                                        <input type="text" className="task-name" id={task.id} value={task.task} readOnly/>
                                     </p>
-                                
                                 ))
                             }
                             </div>
@@ -136,13 +147,13 @@ class ModalTasks extends Component {
                     )}
                         <div className="row">
                             <div className="col col-12">
-                                <Button onClick={() => this.props.showTasksModal(this.props.selectedDay, true) }  title="close"/>
+                                <Button onClick={() => this.props.showTasksModal(this.props.selectedDay, true) }
+                                        title="close"/>
                             </div>
                         </div>
                         
                     </div>
                 </div>
-                {/*<div className={`blackout ${ this.props.isOpen ? 'show' : 'hide' }`}></div>*/}
     
                 {/* ADD TASK MODAL */}
                 <AddModal isOpen={this.state.addModal}

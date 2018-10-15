@@ -29,7 +29,7 @@ class Day extends Component {
         let height = undoneTasks.length*12;
         return (
             <div className="box" id={this.props.day}>
-                <div className={`day-box ${ this.props.today ? 'is-today' : '' }`}
+                <div className={`day-box ${ this.props.today ? 'is-today' : '' || this.props.over ? 'day-over' : '' }`}
                      onClick={ () => this.props.onHandleModal(this.props.day, false) }>
                     <span className='day'>
                         {this.props.day.substr(0,3)}

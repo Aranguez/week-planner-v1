@@ -57,14 +57,14 @@ class LoginModal extends Component {
                             <button type="button"
                                     className="btn facebook"
                                     onClick={() => this.login(FacebookProvider)}>
-                                        <i class="fab fa-facebook-f"></i> facebook
+                                        <i className="fab fa-facebook-f"></i> facebook
                             </button>
                         </div>
                         <div className="col col-6">
                             <button type="button"
                                     className="btn google"                                
                                     onClick={() => this.login(GoogleProvider)}>
-                                        <i class="fab fa-google"></i> Google
+                                        <i className="fab fa-google"></i> Google
                             </button>
                         </div>
                     </div>

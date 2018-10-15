@@ -30,6 +30,7 @@ class Timeline extends Component {
     }
 
     showTasksModal = (day, close) => {
+
         this.setState({
             tasksModal: true,
             selectedDay: day
@@ -40,14 +41,13 @@ class Timeline extends Component {
                     item.classList.remove('active-day')
                 })
         
-        const el = document.querySelector(`#${day}`) // check condicional
+        const el = document.querySelector(`#${day}`)
+
         if (el.classList.contains('active-day') || close) {
             el.classList.remove('active-day')
         } else{
             el.classList.add('active-day')
         }
-
-        
     }
 
     render() {
@@ -77,6 +77,7 @@ class Timeline extends Component {
                             { weekdays.map((day, i) => (
                             <Day key={i}
                                 today={today === day}
+                                over={todayDate > i ? true : false}
                                 day={day}
                                 tasks={this.props.tasksDays}
                                 onHandleModal={this.showTasksModal}/>
