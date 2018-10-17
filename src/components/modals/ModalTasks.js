@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 
-import Button from '../reusable/Button'
 import AddModal from './AddModal';
 
 import { firestore } from '../../firebase/config'
@@ -100,9 +99,8 @@ class ModalTasks extends Component {
             <Fragment>
                 <div className={`tasks-display animated ${ this.props.isOpen ? "show fadeIn" : "hide" }`}>
                     <div className="header col col-12">
-                        <h2>Tasks for <span className="color-red">{this.props.selectedDay}</span></h2>
+                        <h2 style={{'fontSize': '1.2em'}}>Tasks for <span className="color-red">{this.props.selectedDay}</span></h2>
                         <div className="add-btn" onClick={ () => this.showAddModal() }>
-                            <span>Add a Task</span>
                             <button type="button">
                                     <i className="fas fa-plus-circle"></i>
                             </button>
@@ -119,7 +117,6 @@ class ModalTasks extends Component {
                         : (
                         <div className="row">
                             <div className="col col-12">
-                            <h4>Todo List</h4>
                             {this.state.tasksOfDay.map((task, i) => (
                                 !task.done ? (
                                     <p key={i}>
@@ -145,12 +142,6 @@ class ModalTasks extends Component {
                             </div>
                         </div>
                     )}
-                        <div className="row">
-                            <div className="col col-12">
-                                <Button onClick={() => this.props.showTasksModal(this.props.selectedDay, true) }
-                                        title="close"/>
-                            </div>
-                        </div>
                         
                     </div>
                 </div>

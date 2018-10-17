@@ -3,9 +3,6 @@ import React, { Component, Fragment } from 'react'
 // eslint-disable-next-line
 import { firestore } from '../../firebase/config'
 
-import AddButton from '../reusable/AddButton';
-import Button from '../reusable/Button';
-
 export default class AddModal extends Component {
 
     constructor(props){
@@ -67,24 +64,43 @@ export default class AddModal extends Component {
             <Fragment>
                 <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
                     <div className="modal-header">
-                        <h2>Add a Task</h2>
+                        <h2 className="modal-title">Add a Task</h2>
                     </div>
                     <div className="modal-body">
                         <form onSubmit={e => this.addTask(e)}>
+                            <span className={`length-counter ${this.state.task.length === 25 ? 'red' : this.state.task.length > 12 && 'orange'}`}>
+                                    {this.state.task.length}/25 left
+                            </span>
                             <input  type="text"
                                     name="task"
                                     value={this.state.task}
                                     onChange={e => this.onChangeTask(e)}
-                                    placeholder="Your task"
-                                    maxLength="20"/>
+                                    placeholder="Write your task"
+                                    maxLength="25"/>
 
-                            {/*<input  type="radio"
-                                    name="priority"
-        onChange={() => this.setState({priority: !this.state.priority})}/>*/}
+                            <div className="row">
+                                <div className="col col-6">
+                                    <label htmlFor="priority">Reminder</label>
+                                    <input  type="checkbox"
+                                            name="priority"
+                                            onChange={() => this.setState({priority: !this.state.priority})}/>
+                                </div>
+                                <div className="col col-6">
+                                    <label htmlFor="priority">Priority</label>
+                                    <input  type="checkbox"
+                                            name="priority"
+                                            onChange={() => this.setState({priority: !this.state.priority})}/>
+                                </div>
+                            </div>
 
-                            <div>
-                                <AddButton/>
-                                <Button onClick={() => this.props.showAddModal() } title="CANCEL"/>
+                            <div className="flex flex-center">
+                                <div>
+                                    <button type="submit"
+                                            className="btn btn-confirm">Add</button>
+                                    <button type="button"
+                                            onClick={() => this.props.showAddModal()}
+                                            className="btn btn-cancel">Cancel</button>
+                                </div>
                             </div>
                             
                         </form>

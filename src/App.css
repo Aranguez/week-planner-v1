@@ -209,6 +209,12 @@ span.logo .badge{
   display: none !important;
 }
 
+.modal-title{
+  color: #ff3a69;
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
 /*tasks display*/
 .modal{
   animation-duration: .5s;
@@ -312,13 +318,12 @@ span.logo .badge{
 
 /* BUTTONS */
 .btn{
-  width: 100%;
-  margin-top: 20px;
-  font-size: .9em;
-  padding: 5px 20px;
+  margin-top: 40px;
+  font-size: 1.2em;
+  padding: 0 15px;
   font-family: 'Nunito', sans-serif;
   border: none;
-  border-radius: 3px;
+  background: none;
   outline: none;
   cursor: pointer;
 }
@@ -333,15 +338,12 @@ span.logo .badge{
   border: none;
   border-radius: 3px;
 }
-.btn-success{
-  background-color: #148dff;
-  color: white;
+.btn-confirm{
+  color: #FF3A69;
   font-weight: bold;
 }
-.btn-danger{
-  background-color: #FF3A69;
-  color: white;
-  font-weight: bold;
+.btn-cancel{
+  color: #666;
 }
 
 .add-btn{
@@ -383,6 +385,14 @@ span.logo .badge{
   filter: blur(2px)
 }
 
+.red{
+  color: #FF3A69 !important;
+}
+
+.orange{
+  color: #ffa33a !important;
+}
+
 .color-red{
   color: #FF3A69;
   font-weight: bold;
@@ -401,11 +411,15 @@ span.logo .badge{
   bottom: 3px;
 }
 
+.length-counter{
+  color: #ccc;
+  float: right;
+  font-size: .7em;
+}
+
 /* flex */
 .flex{
   display: flex;
-  justify-items: center;
-  justify-content: center;
 }
 
 .flex-center{
@@ -471,9 +485,9 @@ span.logo .badge{
   justify-content: space-between;
 }
 
-.col{
+/*.col{
   padding: 0 10px;
-}
+}*/
 
 .col-12{
   width: 100%;
