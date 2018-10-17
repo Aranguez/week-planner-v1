@@ -9,6 +9,7 @@ import LoginModal from './modals/LoginModal';
 import { firestore } from '../firebase/config';
 import firebase from 'firebase/app';
 import Nav from './Nav';
+import SlideMenu from './SlideMenu';
 const db = firestore
 
 export default class WeekPlanner extends Component {
@@ -18,6 +19,7 @@ export default class WeekPlanner extends Component {
         userId: '',
         userName: '',
         loginModal: false,
+        slideMenu: false,
         loading: true,
         logged: false,
         tasksDays: [],
@@ -116,25 +118,31 @@ export default class WeekPlanner extends Component {
         })
     }
 
+    showSlideMenu = () => {
+        this.setState({
+            slideMenu: !this.state.slideMenu
+        })
+    }
+
     render() {
         console.log(this.state)
         const user = this.state.userName.split(' ').splice(0,1)
 
         return (
         <div>
+            <SlideMenu isOpen={this.state.slideMenu}
+                       showMenu={this.showSlideMenu}
+                       logOut={this.logout}/>
+
             <div className="container">
-                <Nav/>
+                <Nav showMenu={this.showSlideMenu}/>
                 { 
                     this.state.logged ?
-                        (<div>
+                        (
                         <h3 style={{'marginBottom': '40px'}}>
                             <span className="color-red">Hello { user }</span><br/>
                             <span>hope you have a great week</span>
-                        </h3>
-                        <button type="button"
-                                onClick={this.logout}
-                                style={{'position': 'absolute', 'top': '100px'}}>Log out</button>
-                        </div>)
+                        </h3>)
                         : 
                         (<button type="button" onClick={this.showLoginModal}>Login</button>)
                         
@@ -152,10 +160,6 @@ export default class WeekPlanner extends Component {
                     </div>
                 }
                 
-                
-
-                
-
             </div>
             
 

@@ -496,3 +496,36 @@ span.logo .badge{
 .col-6{
   width: 50%;
 }
+
+/* slideMenu */
+
+.slideMenu{
+  animation-duration: .6s;
+  animation-timing-function: ease;
+  width: 70%;
+  padding: 30px;
+  position: absolute;
+  z-index: 5;
+  background-color: #fff;
+  height: 100%;
+}
+
+.slideMenu > div {
+  margin-top: 30px;
+}
+
+.slideMenu button {
+  display: block;
+  font-size: 1em;
+  color: #868686;
+  text-decoration: none;
+  border: none;
+  background: none;
+  margin: 15px 0;
+  outline: none;
+}
+
+.slideMenu button i{
+  color: #ff3a69;
+  margin-right: 10px;
+}
