@@ -24,8 +24,11 @@ export default class AddModal extends Component {
     }
 
     onChangeTask = (e) => {
+        const { value, maxLength } = e.target;
+        const message = value.slice(0, maxLength);
+
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: message
         })
     }
 
