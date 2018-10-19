@@ -2,7 +2,7 @@ import React from 'react'
 
  const Nav = props => (
         <div className="nav">
-            <i className="fas fa-bars" onClick={props.showMenu}></i>
+            <i className="fas fa-bars" onClick={() => props.handleShow('slideMenu', true)}></i>
             <span className="logo">WeeklyPlanner<small className="color-red badge">Alpha</small></span>
             <i className="fas fa-bell"></i>
         </div>

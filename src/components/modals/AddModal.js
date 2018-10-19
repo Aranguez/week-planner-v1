@@ -37,26 +37,18 @@ export default class AddModal extends Component {
         console.log(this.props)
         const { task, day } = this.state
 
-        firestore.collection('users')
-            .where('id', '==', this.props.userId)
-            .get()
-            .then( snapshot => {
-                snapshot.forEach( doc => {
-                    
-                    firestore.collection(`users/${doc.id}/tasks`)
-                        .add({
-                            id: new Date().valueOf(),
-                            task,
-                            done: false,
-                            day
-                        })
-                        .then(() => {
-                            console.log('tarea creada')
-                            this.props.getData(doc.id)
-                        })
-                        .catch(err => console.error(err))
-                })
-            }).catch(err => console.error(err))
+        firestore.collection(`users/${this.props.userId}/tasks`)
+            .add({
+                id: new Date().valueOf(),
+                task,
+                done: false,
+                day
+            })
+            .then(() => {
+                console.log('tarea creada')
+                this.props.getData(this.props.userId)
+            })
+            .catch(err => console.error(err))
         
         this.setState({ task: '' })
         this.props.showAddModal()

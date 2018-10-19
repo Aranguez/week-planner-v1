@@ -14,7 +14,6 @@ const db = firestore
 
 export default class WeekPlanner extends Component {
 
-
     state = {
         userId: '',
         userName: '',
@@ -27,42 +26,11 @@ export default class WeekPlanner extends Component {
 
     componentDidMount(){
         firebase.auth().onAuthStateChanged( user => { 
-            if (user) this.getUser(user.uid, user.displayName)
-
-            //check for changes
-            /*db.collection('users')
-                .where('id', '==', user.uid).get()
-                .then( snapshot => {
-                    db.collection(`users/${snapshot.docs[0].id}/tasks`)
-                        .onSnapshot( snapshot => {
-                            let cambios = snapshot.docChanges()
-                            cambios.forEach(cambio => {
-                                if(cambio.type === 'added'){
-                                    console.log('añadido')
-                                }
-                            
-                                if(cambio.type === 'deleted'){
-                                    console.log('borrado')
-                                }
-
-                                if(cambio.type === 'updated'){
-                                    console.log('actualzado')
-                                }
-                            })
-                        })
-                }).catch(err=>console.log(err))*/
-                
+            if (user) this.getUser(user.uid, user.displayName)    
         });
     }
 
     getUser = (id, name) => {
-        console.log(id, name)
-        this.setState({
-            userId: id,
-            userName: name,
-            logged: true,
-            loginModal: false,
-        })
 
         db.collection('users').where('id', '==', id).get()
             .then( snapshot => {
@@ -74,32 +42,38 @@ export default class WeekPlanner extends Component {
                             this.getUser(id, name)
                         })
                         .catch(err => console.error(err))
+                } else {
+                    this.setState({
+                        userId: snapshot.docs[0].id,
+                        userName: name,
+                    })
+                    this.getData(snapshot.docs[0].id)
                 }
-                this.getData(snapshot.docs[0].id)
-                console.log(snapshot.docs[0].id)
             })
-            .catch( err => console.log(err)) 
+            .catch( err => console.error('error al encontrar usuario', err))
+
     }
 
     getData = id => {
-        console.log(id)
         db.collection(`users/${id}/tasks`)
-            .get()
-            .then( snapshot => {
-                let data = []
-                snapshot.forEach( doc => {
-                    data.push(doc.data())
-                })
-                this.setState( prevState => ({
-                    // eslint-disable-next-line
-                    tasksDays: [...prevState.tasksDays], tasksDays: data,
-                    loading: false,
-                }))
+        .get()
+        .then( snapshot => {
+            let data = []
+            snapshot.forEach( doc => {
+                data.push(doc.data())
             })
-            .catch(err => console.error(err))
+            this.setState( prevState => ({
+                // eslint-disable-next-line
+                tasksDays: [...prevState.tasksDays], tasksDays: data,
+                loading: false,
+                logged: true,
+                loginModal: false,
+            }))
+        })
+        .catch(err => console.error('error cargando tasks', err))
     }
 
-    logout = () => { //chequear si realmente cierra sesión
+    logout = () => {
         firebase.auth().signOut().then( () => {
             this.setState({
                 loading: true,
@@ -112,15 +86,9 @@ export default class WeekPlanner extends Component {
         })
     }
 
-    showLoginModal = () => {
+    handleShow = (thingToShow, value) => {
         this.setState({
-            loginModal: !this.state.loginModal
-        })
-    }
-
-    showSlideMenu = () => {
-        this.setState({
-            slideMenu: !this.state.slideMenu
+            [thingToShow]: value
         })
     }
 
@@ -129,47 +97,49 @@ export default class WeekPlanner extends Component {
         const user = this.state.userName.split(' ').splice(0,1)
 
         return (
-        <div>
-            <SlideMenu isOpen={this.state.slideMenu}
-                       showMenu={this.showSlideMenu}
-                       logOut={this.logout}/>
+            <div>
+                <SlideMenu isOpen={this.state.slideMenu}
+                        showMenu={this.showSlideMenu}
+                        logOut={this.logout}
+                        logged={this.state.logged}
+                        handleShow={this.handleShow}/>
 
-            <div className="container">
-                <Nav showMenu={this.showSlideMenu}/>
-                { 
-                    this.state.logged ?
-                        (
-                        <h3 style={{'marginBottom': '40px'}}>
-                            <span className="color-red">Hello { user }</span><br/>
-                            <span>hope you have a great week</span>
-                        </h3>)
-                        : 
-                        (<button type="button" onClick={this.showLoginModal}>Login</button>)
-                        
-                }
+                <div className="container">
+                    <Nav handleShow={this.handleShow}/>
+                    { 
+                        this.state.logged ?
+                            (
+                            <h3 style={{'marginBottom': '40px'}}>
+                                <span className="color-red">Hello { user }</span><br/>
+                                <span>hope you have a great week</span>
+                            </h3>)
+                            : 
+                            (<button type="button" onClick={() => this.handleShow('loginModal', true)}>Login</button>)
+                            
+                    }
 
-                { !this.state.loading &&
-                    <div className="row animated slideInUp">
-                        <div className="panel">
-                            <div>
-                                <h1>{this.state.tasksDays.length}</h1>
-                                <span>total tasks</span>
+                    { !this.state.loading &&
+                        <div className="row animated slideInUp">
+                            <div className="panel">
+                                <div>
+                                    <h1>{this.state.tasksDays.length}</h1>
+                                    <span>total tasks</span>
+                                </div>
                             </div>
+                            <Clock/>
                         </div>
-                        <Clock/>
-                    </div>
-                }
+                    }
+                    
+                </div>
                 
-            </div>
-            
 
-            <Timeline tasksDays={this.state.tasksDays}
-                      getData={this.getData}
-                      userId={this.state.userId}
-                      loading={this.state.loading}/>
-                      
-            <LoginModal isOpen={this.state.loginModal} getUser={this.getUser}/>
-        </div>
+                <Timeline tasksDays={this.state.tasksDays}
+                          getData={this.getData}
+                          userId={this.state.userId}
+                          loading={this.state.loading}/>
+                        
+                <LoginModal isOpen={this.state.loginModal} getUser={this.getData}/>
+            </div>
         )
     }
 }
