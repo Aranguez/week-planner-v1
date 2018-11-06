@@ -34,7 +34,6 @@ export default class AddModal extends Component {
 
     addTask = (e) => { //add new task
         e.preventDefault();
-        console.log(this.props)
         const { task, day } = this.state
 
         firestore.collection(`users/${this.props.userId}/tasks`)

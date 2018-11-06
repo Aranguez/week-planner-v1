@@ -24,53 +24,39 @@ class ModalTasks extends Component {
         })
     }
 
-    finishTask = id => {
-        firestore.collection('users')
-            .where('id', '==', this.props.userId)
+    deleteTask = id => {
+        firestore.collection(`users/${this.props.userId}/tasks`)
+            .where('id', '==', id)
             .get()
-            .then(snapshot => {
-                snapshot.forEach( doc => {
-                  firestore.collection(`users/${doc.id}/tasks`)
-                    .where('id', '==', id)
-                    .get()
-                    .then( snapshot => {
-                        snapshot.forEach(doc => {
-                            if (doc.data().done) {
-                                doc.ref.delete()
-                            } else{
-                                doc.ref.update({
-                                    done: true
-                                })
-                            }
-                        })
-                    })
-                    .then( () => this.props.getData(doc.id))
-                    .catch(err => console.error(err))
+            .then( snapshot => {
+                snapshot.forEach(doc => {
+                    if (doc.data().done) {
+                        doc.ref.delete()
+                    }
                 })
             })
+            .then( () => this.props.getData(this.props.userId))
             .catch(err => console.error(err))
     }
 
-    undone = id => {
-        firestore.collection('users')
-            .where('id', '==', this.props.userId)
+    checkTask = id => {
+        firestore.collection(`users/${this.props.userId}/tasks`)
+            .where('id', '==', id)
             .get()
-            .then(snapshot => {
-                snapshot.forEach( doc => {
-                  firestore.collection(`users/${doc.id}/tasks`)
-                    .where('id', '==', id)
-                    .get()
-                    .then( snapshot => {
-                        snapshot.forEach(doc => {
-                            doc.ref.update({
-                                done: false
-                            })
+            .then( snapshot => {
+                snapshot.forEach(doc => {
+                    if (doc.data().done) {
+                        doc.ref.update({
+                            done: false
                         })
-                    })
-                    .then( () => this.props.getData(doc.id))
-                    .catch(err => console.error(err))
+                    } else{
+                        doc.ref.update({
+                            done: true
+                        })
+                    }
                 })
             })
+            .then( () => this.props.getData(this.props.userId))
             .catch(err => console.error(err))
     }
 
@@ -122,7 +108,7 @@ class ModalTasks extends Component {
                                     <p key={i}>
                                         <span className="delete-btn">
                                             <i className="far fa-square"
-                                               onClick={() => this.finishTask(task.id)}></i>
+                                               onClick={() => this.checkTask(task.id)}></i>
                                             <i className="far fa-edit"
                                                onClick={e => this.edit(e, task.id)}></i>
                                         </span>
@@ -131,9 +117,9 @@ class ModalTasks extends Component {
                                 ) : <p key={i}>
                                         <span className="delete-btn">
                                             <i className="far fa-check-square"
-                                               onClick={() => this.undone(task.id)}></i>
+                                               onClick={() => this.checkTask(task.id)}></i>
                                             <i className="fa fa-trash"
-                                               onClick={() => this.finishTask(task.id)}></i>
+                                               onClick={() => this.deleteTask(task.id)}></i>
                                         </span>
                                         <input type="text" className="task-name" id={task.id} value={task.task} readOnly/>
                                     </p>
