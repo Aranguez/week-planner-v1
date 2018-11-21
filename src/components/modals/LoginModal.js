@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 
 import firebase from 'firebase/app';
 const GoogleProvider = new firebase.auth.GoogleAuthProvider();
 const FacebookProvider = new firebase.auth.FacebookAuthProvider()
 
 //COMPONENTE
-class LoginModal extends Component {
+class LoginModal extends PureComponent {
 
     login = provider => {
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
@@ -18,6 +18,9 @@ class LoginModal extends Component {
     }
 
     render(){
+
+        //console.log('LoginModal renders');
+
         return (
             <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
                 <div className="modal-header">

@@ -7,7 +7,7 @@ import { firestore } from '../../firebase/config'
 class ModalTasks extends Component {
 
     constructor(props){
-        super();
+        super(props);
         this.state = {
             loading: false,
             addModal: false,
@@ -16,7 +16,7 @@ class ModalTasks extends Component {
             doneTasks: []
         }
     }
-
+    
     componentWillReceiveProps({selectedDay, tasks}){
         this.setState({
             selectedDay,
@@ -35,13 +35,12 @@ class ModalTasks extends Component {
                     }
                 })
             })
-            .then( () => this.props.getData(this.props.userId))
+            .then( () => this.props.realtimeUpdate(id))
             .catch(err => console.error(err))
     }
 
     checkTask = id => {
-        firestore.collection(`users/${this.props.userId}/tasks`)
-            .where('id', '==', id)
+        firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', id)
             .get()
             .then( snapshot => {
                 snapshot.forEach(doc => {
@@ -49,14 +48,15 @@ class ModalTasks extends Component {
                         doc.ref.update({
                             done: false
                         })
-                    } else{
+
+                    } else {
                         doc.ref.update({
                             done: true
                         })
                     }
                 })
             })
-            .then( () => this.props.getData(this.props.userId))
+            .then(this.props.realtimeUpdate(id))
             .catch(err => console.error(err))
     }
 
@@ -81,6 +81,8 @@ class ModalTasks extends Component {
     }
 
     render(){
+
+        //console.log('ModalTasks renders');
         return (
             <Fragment>
                 <div className={`tasks-display animated ${ this.props.isOpen ? "show fadeIn" : "hide" }`}>
@@ -137,7 +139,8 @@ class ModalTasks extends Component {
                           userId={this.props.userId}
                           selectedDay={this.props.selectedDay}
                           showAddModal={this.showAddModal}
-                          getData={this.props.getData}/>
+                          getData={this.props.getData}
+                          realtimeUpdate={this.props.realtimeUpdate}/>
 
             </Fragment>
         );

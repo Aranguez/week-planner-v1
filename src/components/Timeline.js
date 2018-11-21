@@ -12,20 +12,11 @@ const today = weekdays[todayDate]
 class Timeline extends Component {
 
     constructor(props){
-        super();
+        super(props);
         this.state = {
-            loading: true,
             today,
             weekdays,
             selectedDay: ''
-        }
-    }
-
-    componentWillReceiveProps(newProps){
-        if(newProps.tasksDays.length > 0 || !newProps.loading){
-            this.setState({
-                loading: false,
-            })
         }
     }
 
@@ -52,12 +43,13 @@ class Timeline extends Component {
 
     render() {
 
+        //console.log('Timeline renders');
+
         const { 
             today,
             tasksModal,
             selectedDay,
             weekdays,
-            loading
         } = this.state
 
         return (
@@ -65,13 +57,13 @@ class Timeline extends Component {
             <Fragment>
 
                     
-                { loading &&
+                { this.props.loading &&
                     <div className="loading animated fadeIn">
                         <i className="fas fa-spinner fa-spin"></i>
                     </div>    
                 }
                 
-                { !loading &&
+                { !this.props.loading &&
                     <div className="slider">
                         <div className="timeline animated slideInUp">
                             { weekdays.map((day, i) => (
@@ -92,7 +84,8 @@ class Timeline extends Component {
                             selectedDay={selectedDay}
                             tasks={this.props.tasksDays}
                             getData={this.props.getData}
-                            showTasksModal={this.showTasksModal}/>
+                            showTasksModal={this.showTasksModal}
+                            realtimeUpdate={this.props.realtimeUpdate}/>
             
             </Fragment>
         )

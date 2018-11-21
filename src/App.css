@@ -74,13 +74,13 @@ span.logo .badge{
 .timeline .day-box{
   height: 80px;
   width: 80px;
+  margin: 0 15px;
+  border-radius: 10px;
   background-color: white;
   border: none;
   outline: none;
-  border-radius: 10px;
-  margin: 0 15px;
-  position: relative;
   z-index: 3;
+  position: relative;
   cursor: pointer !important;
 }
 
@@ -113,13 +113,7 @@ span.logo .badge{
   .timeline .day-box span.day{
     font-size: 1.2em !important;
   }
-  /*.day-box.is-today::after {
-    font-size: .7em !important;
-    border-radius: 17px !important;
-    padding: 3px 8px !important;
-    top: -30px !important;
-    left: 0px !important;
-  }*/
+ 
   .box > span.task{
     left: 7px !important;
   }
@@ -169,12 +163,21 @@ span.logo .badge{
 .box > span.task{
   position: absolute;
   z-index: 1;
-  left: 10px;
-  bottom: 8px;
-  border-radius: 5px;
   max-height: 80%;
   width: 10px;
+  border-radius: 5px;
+}
+
+.box span.task.undone{
+  left: 10px;
+  bottom: 8px;
   background-color: #FF3A69;
+}
+
+.box span.task.done{
+  left: 87px !important;
+  bottom: 8px;
+  background-color: #00cf6f;
 }
 
 .undone-tasks{

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, Component } from 'react'
 
 // eslint-disable-next-line
 import { firestore } from '../../firebase/config'
@@ -6,7 +6,7 @@ import { firestore } from '../../firebase/config'
 export default class AddModal extends Component {
 
     constructor(props){
-        super();
+        super(props);
         this.state = {
             task: '',
             priority: false,
@@ -16,10 +16,9 @@ export default class AddModal extends Component {
         }
     }
 
-    componentWillReceiveProps({selectedDay, isOpen}){
+    componentWillReceiveProps(newProps){
         this.setState({
-            day: selectedDay,
-            isOpen,
+            day: newProps.selectedDay
         })
     }
 
@@ -35,18 +34,16 @@ export default class AddModal extends Component {
     addTask = (e) => { //add new task
         e.preventDefault();
         const { task, day } = this.state
+        let id = new Date().valueOf()
 
         firestore.collection(`users/${this.props.userId}/tasks`)
             .add({
-                id: new Date().valueOf(),
+                id,
                 task,
                 done: false,
                 day
             })
-            .then(() => {
-                console.log('tarea creada')
-                this.props.getData(this.props.userId)
-            })
+            .then(this.props.realtimeUpdate(id))
             .catch(err => console.error(err))
         
         this.setState({ task: '' })
@@ -54,6 +51,9 @@ export default class AddModal extends Component {
     }
 
     render() {
+
+        //console.log('AddModal renders')
+
         return (
             <Fragment>
                 <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>

@@ -34,16 +34,16 @@ export default class Clock extends Component {
             secs = '0' + secs
         }
 
-        //if (this.state.mins !== mins) {
-            this.setState({
-                hours,
-                mins,
-                secs
-            })
-        //}
+        this.setState({
+            hours,
+            mins,
+            secs
+        })
     }
     
     render(){
+        //console.log('Clock renders');
+
         return (
             <div className="panel">
                 <div>
