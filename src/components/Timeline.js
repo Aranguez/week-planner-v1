@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 
 //componentes
 import Day from './Day'
+import Slider from './Slider';
 import ModalTasks from './modals/ModalTasks';
 
 //week data
@@ -20,25 +21,11 @@ class Timeline extends Component {
         }
     }
 
-    showTasksModal = (day, close) => {
-
+    showTasksModal = (day) => {
+        console.log(day)
         this.setState({
-            tasksModal: true,
             selectedDay: day
         })
-        
-        document.querySelectorAll('.box')
-                .forEach( item => {
-                    item.classList.remove('active-day')
-                })
-        
-        const el = document.querySelector(`#${day}`)
-
-        if (el.classList.contains('active-day') || close) {
-            el.classList.remove('active-day')
-        } else{
-            el.classList.add('active-day')
-        }
     }
 
     render() {
@@ -47,7 +34,6 @@ class Timeline extends Component {
 
         const { 
             today,
-            tasksModal,
             selectedDay,
             weekdays,
         } = this.state
@@ -55,18 +41,10 @@ class Timeline extends Component {
         return (
 
             <Fragment>
-
-                    
-                { this.props.loading &&
-                    <div className="loading animated fadeIn">
-                        <i className="fas fa-spinner fa-spin"></i>
-                    </div>    
-                }
                 
                 { !this.props.loading &&
-                    <div className="slider">
-                        <div className="timeline animated slideInUp">
-                            { weekdays.map((day, i) => (
+                    <Slider showTasksModal={this.showTasksModal}>
+                        { weekdays.map((day, i) => (
                             <Day key={i}
                                 today={today === day}
                                 over={todayDate > i ? true : false}
@@ -74,12 +52,11 @@ class Timeline extends Component {
                                 tasks={this.props.tasksDays}
                                 onHandleModal={this.showTasksModal}/>
                             ))} 
-                        </div>
-                    </div>
+                    </Slider>
                     
                 }
 
-                <ModalTasks isOpen={tasksModal}
+                <ModalTasks isOpen={true}
                             userId={this.props.userId}
                             selectedDay={selectedDay}
                             tasks={this.props.tasksDays}

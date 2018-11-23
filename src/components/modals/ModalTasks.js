@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 
 import AddModal from './AddModal';
+import EditModal from './EditModal';
 
-import { firestore } from '../../firebase/config'
+import { firestore } from '../../firebase/config';
 
 class ModalTasks extends Component {
 
@@ -11,6 +12,10 @@ class ModalTasks extends Component {
         this.state = {
             loading: false,
             addModal: false,
+            editModal: false,
+            editTask: {
+                task: ''
+            },
             selectedDay: '',
             tasksOfDay: [],
             doneTasks: []
@@ -60,23 +65,17 @@ class ModalTasks extends Component {
             .catch(err => console.error(err))
     }
 
-    edit = (e, id) => {
-        e.preventDefault();
-        /*const elem = document.getElementById(id);
-
-        if(!elem.classList.contains('edit')){
-            elem.classList.add('edit')
-            elem.attributes.removeNamedItem('readonly')
-        } else{
-            elem.classList.remove('edit')
-            elem.setAttribute('readonly', true)
-        }*/
-    }
-
     showAddModal = (day) => {
         this.setState({
             addModal: !this.state.addModal,
             selectedDay: day
+        })
+    }
+
+    showEditModal = task => {
+        this.setState({
+            editModal: !this.state.editModal,
+            editTask: task,
         })
     }
 
@@ -85,7 +84,7 @@ class ModalTasks extends Component {
         //console.log('ModalTasks renders');
         return (
             <Fragment>
-                <div className={`tasks-display animated ${ this.props.isOpen ? "show fadeIn" : "hide" }`}>
+                <div className={`tasks-display animated show fadeIn`}>
                     <div className="header col col-12">
                         <h2 style={{'fontSize': '1.2em'}}>Tasks for <span className="color-red">{this.props.selectedDay}</span></h2>
                         <div className="add-btn" onClick={ () => this.showAddModal() }>
@@ -112,7 +111,7 @@ class ModalTasks extends Component {
                                             <i className="far fa-square"
                                                onClick={() => this.checkTask(task.id)}></i>
                                             <i className="far fa-edit"
-                                               onClick={e => this.edit(e, task.id)}></i>
+                                               onClick={e => this.showEditModal(task)}></i>
                                         </span>
                                         <input type="text" className="task-name" id={task.id} value={task.task} readOnly/>
                                     </p>
@@ -133,14 +132,18 @@ class ModalTasks extends Component {
                         
                     </div>
                 </div>
-    
-                {/* ADD TASK MODAL */}
+
                 <AddModal isOpen={this.state.addModal}
                           userId={this.props.userId}
                           selectedDay={this.props.selectedDay}
                           showAddModal={this.showAddModal}
-                          getData={this.props.getData}
                           realtimeUpdate={this.props.realtimeUpdate}/>
+
+                <EditModal isOpen={this.state.editModal}
+                           userId={this.props.userId}
+                           showEditModal={this.showEditModal}
+                           taskToEdit={this.state.editTask}
+                           realtimeUpdate={this.props.realtimeUpdate}/>
 
             </Fragment>
         );

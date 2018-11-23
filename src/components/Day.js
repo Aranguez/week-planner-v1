@@ -14,7 +14,7 @@ class Day extends PureComponent {
         let doneHeight = doneTasks.length * 12;
 
         return (
-            <div className="box" id={this.props.day}>
+            <div className={`box`} id={this.props.day} >
                 <div className={`day-box ${ this.props.today ? 'is-today' : '' /*|| props.over ? 'day-over' : ''*/ }`}
                         onClick={ () => this.props.onHandleModal(this.props.day, false) }> {/* evitar crear funciones en render*/}
                     <span className='day'>

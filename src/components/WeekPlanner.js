@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 //import { getUser } from '../redux/data/actions' 
 
@@ -75,10 +75,15 @@ export default class WeekPlanner extends Component {
             this.setState( prevState => ({
                 // eslint-disable-next-line
                 tasksDays: [...prevState.tasksDays], tasksDays: data,
-                loading: false,
-                logged: true,
                 loginModal: false,
+                loading: true,
             }))
+        })
+        .then( () => {
+            this.setState({
+                loading: false,
+                logged: true
+            })
         })
         .catch(err => console.error('error cargando tasks', err))
     }
@@ -91,40 +96,33 @@ export default class WeekPlanner extends Component {
                     case 'added':
 
                         let id = change.doc.data().id;
-                        let updatedTask = this.state.tasksDays.find( element => {
-                            return element.id === id;
-                        })
+                        let updatedTask = this.state.tasksDays.find(element => element.id === id)
 
-                        if(!updatedTask){ //update() return 'added'
+                        if(!updatedTask){ //fix update() return 'added'
                             this.setState( prevState => ({
                                 tasksDays: [...prevState.tasksDays, change.doc.data()]
                             }))
-                            console.log('agregado', change.doc.data())
                         } 
                         
                     break;
                     
                     case 'modified':
-                        
-                        //low performance
-                        let newList = this.state.tasksDays.map(task => {
-                            return task.id === change.doc.data().id ?
-                                   change.doc.data() :
-                                   task
-                        })
-
+                        //low performance ??
+                        let newList = this.state.tasksDays.map(task => 
+                                task.id === change.doc.data().id ?
+                                change.doc.data() :
+                                task
+                        )
                         this.setState({
                             tasksDays: newList
                         })
-
-                        console.log('modificado', change.doc.data())
                     break;
             
                     case 'removed':
                         this.setState( prevState => ({
-                            tasksDays: prevState.tasksDays.filter(task => task.id !== change.doc.data().id)
+                            tasksDays: prevState.tasksDays.filter(task => 
+                                task.id !== change.doc.data().id)
                         }))
-                        console.log('eliminado', change.doc.data())
                     break;
                 
                     default:
@@ -137,8 +135,6 @@ export default class WeekPlanner extends Component {
     logout = () => {
         firebase.auth().signOut().then( () => {
             this.setState({
-                loading: true, //no deberia cargar todo el tiempo
-                                // loading es solo para las promises
                 userId: '',
                 selectedDay: '',
                 tasksDays: [],
@@ -155,6 +151,7 @@ export default class WeekPlanner extends Component {
     }
 
     render() {
+        //console.log(this.state.tasksDays)
         
         const user = this.state.userName.split(' ').splice(0,1)
 
@@ -165,32 +162,48 @@ export default class WeekPlanner extends Component {
                             logOut={this.logout}
                             logged={this.state.logged}
                             handleShow={this.handleShow}/>
-
+                
                 <div className="container">
                     <Nav handleShow={this.handleShow}/>
-                    
-                    { 
-                        this.state.logged ? <Greeting user={user} /> : 
-                        (<button type="button"
-                                 onClick={() => this.handleShow('loginModal', true)}>Login</button>) 
-                    }
 
-                    { !this.state.loading &&
-                        <div className="row animated slideInUp">
-                            <TotalTasks tasksDays={this.state.tasksDays}/>
-                            <Clock/>
-                        </div>
+                    { this.state.logged ?
+
+                        <Fragment>
+                            <Greeting user={user} />
+                            <div className="row animated slideInUp">
+                                <TotalTasks tasksDays={this.state.tasksDays}/>
+                                <Clock/>
+                            </div>
+                        </Fragment>
+                    
+                    : this.state.loading ?
+                        
+                        <div className="loading animated fadeIn">
+                            <i className="fas fa-spinner fa-spin"></i>
+                        </div> 
+
+                    :
+                        
+                        <button type="button"
+                                onClick={() => this.handleShow('loginModal', true)}>
+                                Login</button> 
+
                     }
                     
                 </div>
                 
-                <Timeline tasksDays={this.state.tasksDays}
-                          getData={this.getData}
-                          userId={this.state.userId}
-                          loading={this.state.loading}
-                          realtimeUpdate={this.realtimeUpdate}/>
-                        
+                { this.state.logged &&
+
+                    <Timeline tasksDays={this.state.tasksDays}
+                              getData={this.getData}
+                              userId={this.state.userId}
+                              loading={this.state.loading}
+                              realtimeUpdate={this.realtimeUpdate}/>
+            
+                }
+                
                 <LoginModal isOpen={this.state.loginModal} getUser={this.getData}/>
+
             </div>
         )
     }

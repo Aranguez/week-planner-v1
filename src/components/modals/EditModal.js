@@ -3,72 +3,88 @@ import React, { Fragment, Component } from 'react'
 // eslint-disable-next-line
 import { firestore } from '../../firebase/config'
 
-export default class AddModal extends Component {
+export default class EditModal extends Component {
 
     constructor(props){
-        super(props);
+        super();
         this.state = {
-            task: '',
-            priority: false,
-            reminder: '',
-            day: '',
+            task: props.taskToEdit.task,
+            priority: props.taskToEdit.priority,
+            reminder: props.taskToEdit.reminder,
             isOpen: props.isOpen
         }
     }
 
+    /*static getDerivedStateFromProps(nextProps, prevState) {
+        return nextProps
+    }*/
+    
+
+    /*getSnapshotBeforeUpdate(e){
+        console.log(e)
+    }
+
+    componentDidUpdate(e){
+        console.log(e)
+        return null
+    }*/
+
     componentWillReceiveProps(newProps){
-        this.setState({
-            day: newProps.selectedDay
-        })
+
+        if (newProps.taskToEdit !== undefined) {
+            this.setState({
+                task: newProps.taskToEdit.task,
+                priority: newProps.taskToEdit.priority,
+                reminder: newProps.taskToEdit.reminder,
+                isOpen: newProps.isOpen
+            })
+        } else {
+            return 
+        }
     }
 
-    onChangeTask = (e) => {
+    onChangeTask = e => {
         const { value, maxLength } = e.target;
-        const message = value.slice(0, maxLength);
+        const task = value.slice(0, maxLength);
 
-        this.setState({
-            [e.target.name]: message
-        })
+        this.setState({ task })
     }
 
-    addTask = (e) => {
+    editTask = (e, id) => {
         e.preventDefault();
-        const { task, day, priority, reminder } = this.state
-        let id = new Date().valueOf()
 
-        firestore.collection(`users/${this.props.userId}/tasks`)
-            .add({
-                id,
-                task,
-                done: false,
-                priority,
-                reminder,
-                day
+        firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', id)
+            .get()
+            .then( snapshot => {
+                snapshot.forEach( doc => {
+                    doc.ref.update({
+                        task: this.state.task,
+                        priority: this.state.priority,
+                        reminder: this.state.reminder
+                    })
+                });
             })
             .then(this.props.realtimeUpdate(id))
             .catch(err => console.error(err))
         
-        this.setState({
-            task: '',
-            priority: false,
-            reminder: false,
-            day: ''
-        })
-        this.props.showAddModal()
+        this.props.showEditModal()
     }
 
     render() {
 
-        //console.log('AddModal renders')
+        //console.log('EditModal renders')
+        //console.log(this.state)
+
+        console.log(this.state.taskToEdit)
 
         return (
             <Fragment>
                 <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
                     <div className="modal-header">
-                        <h2 className="modal-title">Add a Task</h2>
+                        <h2 className="modal-title">Edit a Task</h2>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={e => this.addTask(e)}>
+                        <form onSubmit={e => this.editTask(e, this.props.taskToEdit.id)}>
                             <span className={`length-counter ${this.state.task.length === 25 ? 'red' : this.state.task.length > 12 && 'orange'}`}>
                                     {this.state.task.length}/25 left
                             </span>
@@ -81,9 +97,9 @@ export default class AddModal extends Component {
 
                             <div className="row">
                                 <div className="col col-6">
-                                    <label htmlFor="priority">Reminder</label>
+                                    <label htmlFor="reminder">Reminder</label>
                                     <input  type="checkbox"
-                                            name="priority"
+                                            name="reminder"
                                             onChange={() => this.setState({priority: !this.state.priority})}/>
                                 </div>
                                 <div className="col col-6">
@@ -97,9 +113,9 @@ export default class AddModal extends Component {
                             <div className="flex flex-center">
                                 <div>
                                     <button type="submit"
-                                            className="btn btn-confirm">Add</button>
+                                            className="btn btn-confirm">Save</button>
                                     <button type="button"
-                                            onClick={() => this.props.showAddModal()}
+                                            onClick={() => this.props.showEditModal()}
                                             className="btn btn-cancel">Cancel</button>
                                 </div>
                             </div>

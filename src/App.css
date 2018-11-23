@@ -87,6 +87,17 @@ span.logo .badge{
 
 
 @media (max-width: 400px) {
+  .flickity-viewport{
+    height: 120px !important;
+    padding-top: 20px;
+  }
+  .flickity-slider{
+    transform: translateX(0%);
+  }
+  .flickity-prev-next-button,
+  .flickity-page-dots{
+    display: none;
+  }
   .nav{
     display: flex;
   }
@@ -96,14 +107,15 @@ span.logo .badge{
     overflow-x: scroll;
   }
   .timeline{
-    width: 775px;
-    padding: 0 22px;
+    /*width: 775px;*/
+    /*padding: 0 22px;*/
     margin: 45px 0 45px 0;
   }
-  .timeline .box.active {
+  .timeline .box.is-selected {
     transform: scale(1.3);
+    position: relative;
     display: inline-block;
-    margin: 0 40px;
+    color: #222 !important;
   }
   .timeline .day-box {
     width: 80px;
@@ -117,7 +129,7 @@ span.logo .badge{
   .box > span.task{
     left: 7px !important;
   }
-  .box.active-day + span.task{
+  .box.is-selected + span.task{
     bottom: 0px !important;
   }
   .modal{
@@ -401,16 +413,7 @@ span.logo .badge{
   font-weight: bold;
 }
 
-.active-day{ 
-  position: relative;
-  transform: scale(1.3);
-}
-
-.active-day .day {
-  color: #222 !important;
-}
-
-.day-box.active-day + span.task{
+.day-box.is-selected + span.task{
   bottom: 3px;
 }
 
