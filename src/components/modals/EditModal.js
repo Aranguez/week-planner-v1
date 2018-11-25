@@ -75,7 +75,7 @@ export default class EditModal extends Component {
         //console.log('EditModal renders')
         //console.log(this.state)
 
-        console.log(this.state.taskToEdit)
+        //console.log(this.state.taskToEdit)
 
         return (
             <Fragment>

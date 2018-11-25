@@ -8,7 +8,7 @@ import 'flickity/dist/flickity.min.css';
 export default class Slider extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props)
     this.state = {
       flickityReady: false,
     };
@@ -21,6 +21,19 @@ export default class Slider extends React.Component {
 
     this.setState({
       flickityReady: true,
+    });
+
+    var flkty = new Flickity('.timeline')
+
+    this.props.children.forEach( child => {
+      if(child.props.today === true){
+        console.log('es true', child.props.day)
+        this.props.showTasksModal(child.props.day)
+      }
+    })
+
+    flkty.on('change', index => {
+      this.props.showTasksModal(this.props.children[index].props.day)
     });
   }
 
@@ -56,9 +69,10 @@ export default class Slider extends React.Component {
   }
 
   render() {
-    console.log('slider renders')
     return [
-      <div className='timeline animated slideInUp' key="flickityBase" ref={node => (this.flickityNode = node)} />,
+      <div className='timeline animated slideInUp'
+           key="flickityBase"
+           ref={node => (this.flickityNode = node)} />,
       this.renderPortal(),
     ].filter(Boolean);
   }

@@ -22,7 +22,6 @@ class Timeline extends Component {
     }
 
     showTasksModal = (day) => {
-        console.log(day)
         this.setState({
             selectedDay: day
         })

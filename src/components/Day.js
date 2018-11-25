@@ -8,7 +8,6 @@ class Day extends PureComponent {
             task.day === this.props.day && !task.done );
         let doneTasks = this.props.tasks.filter(task =>
             task.day === this.props.day && task.done)
-        console.log('Day renders');
 
         let undoneHeight = undoneTasks.length * 12;
         let doneHeight = doneTasks.length * 12;

@@ -151,8 +151,6 @@ export default class WeekPlanner extends Component {
     }
 
     render() {
-        //console.log(this.state.tasksDays)
-        
         const user = this.state.userName.split(' ').splice(0,1)
 
         return (
