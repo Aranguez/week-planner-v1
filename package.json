@@ -12,6 +12,7 @@
   "dependencies": {
     "firebase": "^5.5.1",
     "flickity": "^2.1.2",
+    "jest-cli": "^23.6.0",
     "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

@@ -56,6 +56,7 @@ export default class Slider extends React.Component {
   }
 
   render() {
+    console.log('slider renders')
     return [
       <div className='timeline animated slideInUp' key="flickityBase" ref={node => (this.flickityNode = node)} />,
       this.renderPortal(),

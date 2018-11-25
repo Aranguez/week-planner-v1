@@ -1,0 +1,18 @@
+@media (max-width: 400px) {
+    .flickity-viewport{
+      height: 120px !important;
+      padding-top: 20px;
+    }
+    .flickity-slider{
+      transform: translateX(0%);
+    }
+    .flickity-prev-next-button,
+    .flickity-page-dots{
+      display: none;
+    }
+    .slider {
+      width: 100%;
+      overflow-y: hidden;
+      overflow-x: scroll;
+    }
+  }

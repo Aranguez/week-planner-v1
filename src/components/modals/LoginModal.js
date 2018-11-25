@@ -72,7 +72,6 @@ class LoginModal extends PureComponent {
                         </div>
                     </div>
                 </div>
-                {/*<div className="shadow"></div>*/}
             </div>
         )
     }
