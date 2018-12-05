@@ -50,10 +50,17 @@ export default class EditModal extends Component {
         this.setState({ task })
     }
 
-    editTask = (e, id) => {
+    onChangeCheckbox = e => {
+        const name = e.target.name
+        this.setState( prevState => ({
+            name: !prevState[name]
+        }))
+    }
+
+    editTask = e => {
         e.preventDefault();
 
-        firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', id)
+        firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', this.props.taskToEdit.id)
             .get()
             .then( snapshot => {
                 snapshot.forEach( doc => {
@@ -64,7 +71,7 @@ export default class EditModal extends Component {
                     })
                 });
             })
-            .then(this.props.realtimeUpdate(id))
+            .then(this.props.realtimeUpdate(this.props.taskToEdit.id))
             .catch(err => console.error(err))
         
         this.props.showEditModal()
@@ -72,10 +79,7 @@ export default class EditModal extends Component {
 
     render() {
 
-        //console.log('EditModal renders')
-        //console.log(this.state)
-
-        //console.log(this.state.taskToEdit)
+        console.log(this.state.task)
 
         return (
             <Fragment>
@@ -84,14 +88,14 @@ export default class EditModal extends Component {
                         <h2 className="modal-title">Edit a Task</h2>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={e => this.editTask(e, this.props.taskToEdit.id)}>
+                        <form onSubmit={this.editTask}>
                             <span className={`length-counter ${this.state.task.length === 25 ? 'red' : this.state.task.length > 12 && 'orange'}`}>
                                     {this.state.task.length}/25 left
                             </span>
                             <input  type="text"
                                     name="task"
                                     value={this.state.task}
-                                    onChange={e => this.onChangeTask(e)}
+                                    onChange={this.onChangeTask}
                                     placeholder="Write your task"
                                     maxLength="25"/>
 
@@ -100,13 +104,13 @@ export default class EditModal extends Component {
                                     <label htmlFor="reminder">Reminder</label>
                                     <input  type="checkbox"
                                             name="reminder"
-                                            onChange={() => this.setState({priority: !this.state.priority})}/>
+                                            onChange={this.onChangeCheckbox}/>
                                 </div>
                                 <div className="col col-6">
                                     <label htmlFor="priority">Priority</label>
                                     <input  type="checkbox"
                                             name="priority"
-                                            onChange={() => this.setState({priority: !this.state.priority})}/>
+                                            onChange={this.onChangeCheckbox}/>
                                 </div>
                             </div>
 
@@ -115,7 +119,7 @@ export default class EditModal extends Component {
                                     <button type="submit"
                                             className="btn btn-confirm">Save</button>
                                     <button type="button"
-                                            onClick={() => this.props.showEditModal()}
+                                            onClick={this.props.showEditModal}
                                             className="btn btn-cancel">Cancel</button>
                                 </div>
                             </div>

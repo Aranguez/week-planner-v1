@@ -2,7 +2,7 @@
 import { firestore } from '../../firebase/config';
 import firebase from 'firebase/app';
 
-const getUser = () => {
+export const getUser = () => {
     return dispatch => { //no entra a la funcion
         firebase.auth().onAuthStateChanged( user => {
             if (user) {
@@ -27,13 +27,9 @@ const getUser = () => {
             }
         });
     }
-    
-    
 }
 
-const getData = data => ({
+export const getData = data => ({
     type: 'GET_USER_DATA',
     data
 })
-
-export { getUser, getData }

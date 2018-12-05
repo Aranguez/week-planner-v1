@@ -28,10 +28,7 @@ class Timeline extends Component {
     }
 
     render() {
-
-        //console.log('Timeline renders');
-
-        const { 
+        const {
             today,
             selectedDay,
             weekdays,

@@ -22,7 +22,7 @@ export default class AddModal extends Component {
         })
     }
 
-    onChangeTask = (e) => {
+    onChangeTask = e => {
         const { value, maxLength } = e.target;
         const message = value.slice(0, maxLength);
 
@@ -31,7 +31,7 @@ export default class AddModal extends Component {
         })
     }
 
-    addTask = (e) => {
+    addTask = e => {
         e.preventDefault();
         const { task, day, priority, reminder } = this.state
         let id = new Date().valueOf()
@@ -68,14 +68,14 @@ export default class AddModal extends Component {
                         <h2 className="modal-title">Add a Task</h2>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={e => this.addTask(e)}>
+                        <form onSubmit={this.addTask}>
                             <span className={`length-counter ${this.state.task.length === 25 ? 'red' : this.state.task.length > 12 && 'orange'}`}>
                                     {this.state.task.length}/25 left
                             </span>
                             <input  type="text"
                                     name="task"
                                     value={this.state.task}
-                                    onChange={e => this.onChangeTask(e)}
+                                    onChange={this.onChangeTask}
                                     placeholder="Write your task"
                                     maxLength="25"/>
 
@@ -84,7 +84,7 @@ export default class AddModal extends Component {
                                     <label htmlFor="priority">Reminder</label>
                                     <input  type="checkbox"
                                             name="priority"
-                                            onChange={() => this.setState({priority: !this.state.priority})}/>
+                                            onChange={() => this.setState({reminder: !this.state.priority})}/>
                                 </div>
                                 <div className="col col-6">
                                     <label htmlFor="priority">Priority</label>
@@ -99,7 +99,7 @@ export default class AddModal extends Component {
                                     <button type="submit"
                                             className="btn btn-confirm">Add</button>
                                     <button type="button"
-                                            onClick={() => this.props.showAddModal()}
+                                            onClick={this.props.showAddModal}
                                             className="btn btn-cancel">Cancel</button>
                                 </div>
                             </div>
