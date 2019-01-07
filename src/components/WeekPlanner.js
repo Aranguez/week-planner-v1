@@ -73,17 +73,11 @@ export default class WeekPlanner extends Component {
                 data.push(doc.data())
             })
             this.setState( prevState => ({
-                // eslint-disable-next-line
-                tasksDays: [...prevState.tasksDays], tasksDays: data,
+                tasksDays: data,
                 loginModal: false,
-                loading: true,
-            }))
-        })
-        .then( () => {
-            this.setState({
                 loading: false,
                 logged: true
-            })
+            }))
         })
         .catch(err => console.error('error cargando tasks', err))
     }
@@ -133,15 +127,20 @@ export default class WeekPlanner extends Component {
     }
 
     logout = () => {
-        firebase.auth().signOut().then( () => {
-            this.setState({
-                userId: '',
-                selectedDay: '',
-                tasksDays: [],
-                logged: false,
-                tasksModal: false,
-            })
-        })
+        firebase
+            .auth()
+            .signOut()
+            .then(() => 
+                this.setState({
+                    userId: '',
+                    userName: '',
+                    //selectedDay: '',
+                    //tasksDays: [],
+                    //logged: false,
+                    //tasksModal: false,
+                    loginModal: true
+                })
+            )
     }
 
     handleShow = (thingToShow, value) => {
@@ -164,7 +163,7 @@ export default class WeekPlanner extends Component {
                 <div className="container">
                     <Nav handleShow={this.handleShow}/>
 
-                    { this.state.logged ?
+                    { this.state.logged &&
 
                         <Fragment>
                             <Greeting user={user} />
@@ -174,17 +173,13 @@ export default class WeekPlanner extends Component {
                             </div>
                         </Fragment>
                     
-                    : this.state.loading ?
+                    }
+                    
+                    { this.state.loading &&
                         
                         <div className="loading animated fadeIn">
                             <i className="fas fa-spinner fa-spin"></i>
                         </div> 
-
-                    :
-                        
-                        <button type="button"
-                                onClick={() => this.handleShow('loginModal', true)}>
-                                Login</button> 
 
                     }
                     
