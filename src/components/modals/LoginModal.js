@@ -1,4 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { getUser } from '../../redux/actions/userAction';
+import { trueFalse } from '../../redux/actions/appAction';
 
 import firebase from 'firebase/app';
 const GoogleProvider = new firebase.auth.GoogleAuthProvider();
@@ -13,16 +16,16 @@ class LoginModal extends PureComponent {
             return firebase.auth().signInWithPopup(provider).then( result => {
                 var user = result.user;
                 this.props.getUser(user.uid, user.displayName)
+                this.props.trueFalse('loginModal')
+                this.props.trueFalse('slideMenu')
                 }).catch(err => console.error(err))
         }).catch(err => console.error(err))
     }
 
     render(){
 
-        //console.log('LoginModal renders');
-
         return (
-            <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
+            <div className={`modal ${ this.props.loginModal ? "show animated fadeIn" : "hide" }`}>
                 <div className="modal-header">
                     <div className="row">
                         <div className="col col-12">
@@ -78,4 +81,9 @@ class LoginModal extends PureComponent {
         
 }
 
-export default LoginModal
+const mapStateToProps = state => ({
+  loginModal: state.app.loginModal
+})
+
+
+export default connect(mapStateToProps, { getUser, trueFalse })(LoginModal)

@@ -1,9 +1,10 @@
 import React, { Fragment, Component } from 'react'
 
-// eslint-disable-next-line
-import { firestore } from '../../firebase/config'
+import { connect } from 'react-redux';
+import { addTask } from '../../redux/actions/taskAction';
+import { trueFalse } from '../../redux/actions/appAction';
 
-export default class AddModal extends Component {
+class AddModal extends Component {
 
     constructor(props){
         super(props);
@@ -36,34 +37,25 @@ export default class AddModal extends Component {
         const { task, day, priority, reminder } = this.state
         let id = new Date().valueOf()
 
-        firestore.collection(`users/${this.props.userId}/tasks`)
-            .add({
-                id,
-                task,
-                done: false,
-                priority,
-                reminder,
-                day
-            })
-            .then(this.props.realtimeUpdate(id))
-            .catch(err => console.error(err))
-        
-        this.setState({
-            task: '',
-            priority: false,
-            reminder: false,
-            day: ''
-        })
-        this.props.showAddModal()
+        const newTask = {
+            id,
+            task,
+            done: false,
+            priority,
+            reminder,
+            day
+        }
+
+        this.props.addTask(newTask)
+        this.props.trueFalse('addModal')
+        console.log(this.props)
     }
 
     render() {
 
-        //console.log('AddModal renders')
-
         return (
             <Fragment>
-                <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
+                <div className={`modal ${ this.props.addModal ? "show animated fadeIn" : "hide" }`}>
                     <div className="modal-header">
                         <h2 className="modal-title">Add a Task</h2>
                     </div>
@@ -99,7 +91,7 @@ export default class AddModal extends Component {
                                     <button type="submit"
                                             className="btn btn-confirm">Add</button>
                                     <button type="button"
-                                            onClick={this.props.showAddModal}
+                                            onClick={() => this.props.trueFalse('addModal')}
                                             className="btn btn-cancel">Cancel</button>
                                 </div>
                             </div>
@@ -107,8 +99,16 @@ export default class AddModal extends Component {
                         </form>
                     </div>
                 </div>
-                <div className={`blackout ${ this.props.isOpen ? 'show' : 'hide' }`}></div>
+                <div className={`blackout ${ this.props.addModal ? 'show' : 'hide' }`}></div>
             </Fragment>
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+  tasks: state.tasks,
+  addModal: state.app.addModal
+})
+
+
+export default connect(mapStateToProps, { addTask, trueFalse })(AddModal);

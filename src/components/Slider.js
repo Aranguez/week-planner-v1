@@ -8,7 +8,6 @@ import 'flickity/dist/flickity.min.css';
 export default class Slider extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {
       flickityReady: false,
     };
@@ -27,7 +26,6 @@ export default class Slider extends React.Component {
 
     this.props.children.forEach( child => {
       if(child.props.today === true){
-        console.log('es true', child.props.day)
         this.props.showTasksModal(child.props.day)
       }
     })

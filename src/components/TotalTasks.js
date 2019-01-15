@@ -1,14 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 const TotalTasks = props => {
     return (
         <div className="panel">
             <div>
-                <h1>{ props.tasksDays.length }</h1>
+                <h1>{ props.tasks.length }</h1>
                 <span>total tasks</span>
             </div>
         </div>
     );
 }
 
-export default TotalTasks;
+const mapStateToProps = state => ({
+  tasks: state.tasks
+})
+
+export default connect(mapStateToProps, null)(TotalTasks);

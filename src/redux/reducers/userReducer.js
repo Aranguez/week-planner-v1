@@ -1,10 +1,26 @@
-export default (state = [], action) => {
+const initialState = {
+    userId: '',
+    userName: '',
+    logged: false
+}
+
+const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'GET_USER':
-            return action.userId
-        case 'GET_USER_DATA':
-            return action.data
+            return {
+                ...state,
+                userId: action.payload.userId,
+                userName: action.payload.userName,
+                logged: true
+            }
+        case 'LOGOUT':
+            return {
+                ...state,
+                ...initialState
+            }
         default:
             return state;
     }
 }
+
+export default userReducer

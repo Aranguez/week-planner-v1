@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
 
+import { connect } from 'react-redux';
+
 //componentes
 import Day from './Day'
 import Slider from './Slider';
@@ -28,11 +30,7 @@ class Timeline extends Component {
     }
 
     render() {
-        const {
-            today,
-            selectedDay,
-            weekdays,
-        } = this.state
+        const { today, selectedDay, weekdays } = this.state
 
         return (
 
@@ -42,27 +40,31 @@ class Timeline extends Component {
                     <Slider showTasksModal={this.showTasksModal}>
                         { weekdays.map((day, i) => (
                             <Day key={i}
-                                today={today === day}
-                                over={todayDate > i ? true : false}
-                                day={day}
-                                tasks={this.props.tasksDays}
-                                onHandleModal={this.showTasksModal}/>
+                                 today={today === day}
+                                 over={todayDate > i ? true : false}
+                                 day={day}
+                                 tasks={this.props.tasks}
+                                 onHandleModal={this.showTasksModal}/>
                             ))} 
                     </Slider>
                     
                 }
 
-                <ModalTasks isOpen={true}
-                            userId={this.props.userId}
+                <ModalTasks userId={this.props.user.userId}
                             selectedDay={selectedDay}
-                            tasks={this.props.tasksDays}
-                            getData={this.props.getData}
-                            showTasksModal={this.showTasksModal}
-                            realtimeUpdate={this.props.realtimeUpdate}/>
+                            tasks={this.props.tasks}
+                            showTasksModal={this.showTasksModal}/>
             
             </Fragment>
         )
     }
 }
 
-export default Timeline
+const mapStateToProps = state => ({
+    loading: state.app.loading,
+    user: state.user,
+    tasks: state.tasks
+})
+
+
+export default connect(mapStateToProps, null)(Timeline)

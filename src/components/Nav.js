@@ -1,11 +1,13 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { trueFalse } from '../redux/actions/appAction';
 
- class Nav extends PureComponent {
+class Nav extends PureComponent {
 
     render(){
         return (
             <div className="nav">
-                <i className="fas fa-bars" onClick={() => this.props.handleShow('slideMenu', true)}></i>
+                <i className="fas fa-bars" onClick={() => this.props.trueFalse('slideMenu')}></i>
                 <span className="logo">WeeklyPlanner<small className="color-red badge">Alpha</small></span>
                 <i className="fas fa-bell"></i>
             </div>
@@ -13,4 +15,4 @@ import React, { PureComponent } from 'react'
     }   
 }
 
-export default Nav
+export default connect(null, { trueFalse })(Nav)

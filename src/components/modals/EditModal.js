@@ -1,9 +1,13 @@
 import React, { Fragment, Component } from 'react'
+import { connect } from 'react-redux';
+import { realtimeUpdate } from '../../redux/actions/taskAction';
+import { trueFalse } from '../../redux/actions/appAction';
 
 // eslint-disable-next-line
 import { firestore } from '../../firebase/config'
 
-export default class EditModal extends Component {
+
+class EditModal extends Component {
 
     constructor(props){
         super();
@@ -15,23 +19,9 @@ export default class EditModal extends Component {
         }
     }
 
-    /*static getDerivedStateFromProps(nextProps, prevState) {
-        return nextProps
-    }*/
-    
-
-    /*getSnapshotBeforeUpdate(e){
-        console.log(e)
-    }
-
-    componentDidUpdate(e){
-        console.log(e)
-        return null
-    }*/
-
     componentWillReceiveProps(newProps){
 
-        if (newProps.taskToEdit !== undefined) {
+        if (newProps.taskToEdit !== undefined) { 
             this.setState({
                 task: newProps.taskToEdit.task,
                 priority: newProps.taskToEdit.priority,
@@ -79,11 +69,9 @@ export default class EditModal extends Component {
 
     render() {
 
-        console.log(this.state.task)
-
         return (
             <Fragment>
-                <div className={`modal ${ this.props.isOpen ? "show animated fadeIn" : "hide" }`}>
+                <div className={`modal ${ this.props.editModal ? "show animated fadeIn" : "hide" }`}>
                     <div className="modal-header">
                         <h2 className="modal-title">Edit a Task</h2>
                     </div>
@@ -119,7 +107,7 @@ export default class EditModal extends Component {
                                     <button type="submit"
                                             className="btn btn-confirm">Save</button>
                                     <button type="button"
-                                            onClick={this.props.showEditModal}
+                                            onClick={() => this.props.trueFalse('editModal')}
                                             className="btn btn-cancel">Cancel</button>
                                 </div>
                             </div>
@@ -127,8 +115,15 @@ export default class EditModal extends Component {
                         </form>
                     </div>
                 </div>
-                <div className={`blackout ${ this.props.isOpen ? 'show' : 'hide' }`}></div>
+                <div className={`blackout ${ this.props.editModal ? 'show' : 'hide' }`}></div>
             </Fragment>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    editModal: state.app.editModal,
+    userId: state.user.userId
+})
+
+export default connect(mapStateToProps, { realtimeUpdate, trueFalse })(EditModal)

@@ -1,4 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { realtimeUpdate } from '../../redux/actions/taskAction';
+import { trueFalse } from '../../redux/actions/appAction';
 
 import AddModal from './AddModal';
 import EditModal from './EditModal';
@@ -10,7 +13,6 @@ class ModalTasks extends Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: false,
             addModal: false,
             editModal: false,
             editTask: {
@@ -29,7 +31,7 @@ class ModalTasks extends Component {
         })
     }
 
-    deleteTask = id => {
+    /*deleteTask = id => {
         firestore.collection(`users/${this.props.userId}/tasks`)
             .where('id', '==', id)
             .get()
@@ -42,7 +44,7 @@ class ModalTasks extends Component {
             })
             .then( () => this.props.realtimeUpdate(id))
             .catch(err => console.error(err))
-    }
+    }*/
 
     checkTask = id => {
         firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', id)
@@ -53,7 +55,6 @@ class ModalTasks extends Component {
                         doc.ref.update({
                             done: false
                         })
-
                     } else {
                         doc.ref.update({
                             done: true
@@ -61,7 +62,7 @@ class ModalTasks extends Component {
                     }
                 })
             })
-            .then(this.props.realtimeUpdate(id))
+            .then(() => realtimeUpdate(id))
             .catch(err => console.error(err))
     }
 
@@ -80,14 +81,12 @@ class ModalTasks extends Component {
     }
 
     render(){
-
-        //console.log('ModalTasks renders');
         return (
             <Fragment>
                 <div className={`tasks-display animated show fadeIn`}>
                     <div className="header col col-12">
                         <h2 style={{'fontSize': '1.2em'}}>Tasks for <span className="color-red">{this.props.selectedDay}</span></h2>
-                        <div className="add-btn" onClick={ () => this.showAddModal() }>
+                        <div className="add-btn" onClick={() => this.props.trueFalse('addModal') }>
                             <button type="button">
                                     <i className="fas fa-plus-circle"></i>
                             </button>
@@ -133,21 +132,14 @@ class ModalTasks extends Component {
                     </div>
                 </div>
 
-                <AddModal isOpen={this.state.addModal}
-                          userId={this.props.userId}
-                          selectedDay={this.props.selectedDay}
-                          showAddModal={this.showAddModal}
-                          realtimeUpdate={this.props.realtimeUpdate}/>
+                <AddModal selectedDay={this.props.selectedDay}/>
 
-                <EditModal isOpen={this.state.editModal}
-                           userId={this.props.userId}
-                           showEditModal={this.showEditModal}
-                           taskToEdit={this.state.editTask}
-                           realtimeUpdate={this.props.realtimeUpdate}/>
+                <EditModal taskToEdit={this.state.editTask}/>
 
             </Fragment>
         );
     }
 }
 
-export default ModalTasks;
+
+export default connect(null, { realtimeUpdate, trueFalse })(ModalTasks);
