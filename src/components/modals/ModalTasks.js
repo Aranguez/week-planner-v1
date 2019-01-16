@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { realtimeUpdate } from '../../redux/actions/taskAction';
-import { trueFalse } from '../../redux/actions/appAction';
+
+import { trueFalse, showEditModal } from '../../redux/actions/appAction';
+import { checkTask, deleteTask } from '../../redux/actions/taskAction';
 
 import AddModal from './AddModal';
 import EditModal from './EditModal';
-
-import { firestore } from '../../firebase/config';
 
 class ModalTasks extends Component {
 
@@ -24,10 +23,9 @@ class ModalTasks extends Component {
         }
     }
     
-    componentWillReceiveProps({selectedDay, tasks}){
+    componentWillReceiveProps({selectedDay}){
         this.setState({
             selectedDay,
-            tasksOfDay: tasks.filter(task => task.day === selectedDay)
         })
     }
 
@@ -46,7 +44,7 @@ class ModalTasks extends Component {
             .catch(err => console.error(err))
     }*/
 
-    checkTask = id => {
+    /*checkTask = id => {
         firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', id)
             .get()
             .then( snapshot => {
@@ -64,7 +62,7 @@ class ModalTasks extends Component {
             })
             .then(() => realtimeUpdate(id))
             .catch(err => console.error(err))
-    }
+    }*/
 
     showAddModal = (day) => {
         this.setState({
@@ -93,7 +91,7 @@ class ModalTasks extends Component {
                         </div>
                     </div>
                     <div className="body">
-                    { this.state.tasksOfDay.length === 0 ?
+                    { this.props.tasks.length === 0 ?
                         (<div className="row">
                             <div className="col col-12">
                                 <h3>It's empty!</h3>
@@ -103,21 +101,21 @@ class ModalTasks extends Component {
                         : (
                         <div className="row">
                             <div className="col col-12">
-                            {this.state.tasksOfDay.map((task, i) => (
+                            {this.props.tasks.map((task, i) => (
                                 !task.done ? (
                                     <p key={i}>
                                         <span className="delete-btn">
                                             <i className="far fa-square"
-                                               onClick={() => this.checkTask(task.id)}></i>
+                                               onClick={() => this.props.checkTask(this.props.userId, task.id)}></i>
                                             <i className="far fa-edit"
-                                               onClick={e => this.showEditModal(task)}></i>
+                                               onClick={e => this.props.showEditModal(task)}></i>
                                         </span>
                                         <input type="text" className="task-name" id={task.id} value={task.task} readOnly/>
                                     </p>
                                 ) : <p key={i}>
                                         <span className="delete-btn">
                                             <i className="far fa-check-square"
-                                               onClick={() => this.checkTask(task.id)}></i>
+                                               onClick={() => this.props.checkTask(this.props.userId, task.id)}></i>
                                             <i className="fa fa-trash"
                                                onClick={() => this.deleteTask(task.id)}></i>
                                         </span>
@@ -141,5 +139,18 @@ class ModalTasks extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+  tasks: state.tasks.tasksList,
+  userId: state.user.userId
+})
 
-export default connect(null, { realtimeUpdate, trueFalse })(ModalTasks);
+const mapDispatchToProps = {
+    trueFalse,
+    showEditModal,
+    checkTask,
+    deleteTask
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalTasks);

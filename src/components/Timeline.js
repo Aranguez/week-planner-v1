@@ -52,7 +52,6 @@ class Timeline extends Component {
 
                 <ModalTasks userId={this.props.user.userId}
                             selectedDay={selectedDay}
-                            tasks={this.props.tasks}
                             showTasksModal={this.showTasksModal}/>
             
             </Fragment>
@@ -63,7 +62,7 @@ class Timeline extends Component {
 const mapStateToProps = state => ({
     loading: state.app.loading,
     user: state.user,
-    tasks: state.tasks
+    tasks: state.tasks.tasksList
 })
 
 

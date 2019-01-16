@@ -65,7 +65,7 @@ class WeekPlanner extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.app.loading,
-        tasks: state.tasks,
+        tasks: state.tasks.tasksList,
         user: state.user
     }
 }
