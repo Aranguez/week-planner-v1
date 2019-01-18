@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const TotalTasks = props => {
-
-    console.log(props.tasks)
     return (
         <div className="panel">
             <div>
