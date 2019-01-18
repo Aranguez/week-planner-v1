@@ -23,7 +23,7 @@ class Timeline extends Component {
         }
     }
 
-    showTasksModal = (day) => {
+    showTasksModal = day => {
         this.setState({
             selectedDay: day
         })
