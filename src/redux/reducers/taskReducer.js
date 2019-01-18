@@ -1,20 +1,41 @@
-const taskReducer = (state = [], action) => {
+const initialState = {
+    tasksList: []
+}
+
+const taskReducer = (state = initialState , action) => {
     switch (action.type) {
         case 'GET_TASKS':
-            return action.payload
+            return {
+                ...state,
+                tasksList: action.payload
+            }
         case 'ADD_TASK':
-            return [...state, action.payload]
+            return {
+                ...state,
+                tasksList: [...state.tasksList, action.payload]
+            }
         case 'CHECK_TASK':
-
-            let newList = state.map(task => 
-                task.id === action.payload.id ?
-                action.payload :
+            action.payload.done = !action.payload.done
+            const checkedTask = action.payload;
+            let newList = state.tasksList.map(task => { 
+                return task.id === action.payload.id ?
+                checkedTask :
                 task
-            )
-
-            return newList
-        case 'EDIT_TASK ':
-            return state //por ahora
+            })
+            return {
+                ...state,
+                tasksList: newList
+            }
+        case 'EDIT_TASK':
+            const editedTask = action.payload
+            return {
+                ...state,
+                tasksList: state.tasksList.map(task => {
+                    return task.id === editedTask.id ?
+                           {...task, ...editedTask} : 
+                           task
+                })
+            }
         case 'REMOVE_TASK':
             return state.filter(task => task.id !== action.payload.id)
         default:

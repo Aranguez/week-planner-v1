@@ -46,9 +46,8 @@ class AddModal extends Component {
             day
         }
 
-        this.props.addTask(newTask)
+        this.props.addTask(newTask, this.props.userId)
         this.props.trueFalse('addModal')
-        console.log(this.props)
     }
 
     render() {
@@ -107,7 +106,8 @@ class AddModal extends Component {
 
 const mapStateToProps = (state) => ({
   tasks: state.tasks,
-  addModal: state.app.addModal
+  addModal: state.app.addModal,
+  userId: state.user.userId
 })
 
 

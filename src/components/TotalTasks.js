@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const TotalTasks = props => {
+
+    console.log(props.tasks)
     return (
         <div className="panel">
             <div>
@@ -13,7 +15,7 @@ const TotalTasks = props => {
 }
 
 const mapStateToProps = state => ({
-  tasks: state.tasks
+  tasks: state.tasks.tasksList
 })
 
 export default connect(mapStateToProps, null)(TotalTasks);

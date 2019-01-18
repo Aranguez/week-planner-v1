@@ -11,7 +11,7 @@ export const getTasks = userId => dispatch => {
                     snapshot.forEach( doc => {
                         data.push(doc.data())
                     })
-
+                    
                     return dispatch({
                         type: 'GET_TASKS',
                         payload: data
@@ -22,15 +22,21 @@ export const getTasks = userId => dispatch => {
 }
 
 export const addTask = (task, userId) => dispatch => {
+    console.log('task a añadir', task)
     firestore.collection(`users/${userId}/tasks`)
         .add(task)
         .then(() => {
-            return realtimeUpdate(userId, task.id)
+            console.log('añade')
+            return dispatch({
+                type: 'ADD_TASK',
+                payload: task
+            })
         })
         .catch(err => console.error(err))
+        //.then(() => realtimeUpdate(userId, task.id))
 }
 
-export const checkTask = (userId, taskId) => {
+export const checkTask = (userId, taskId) => dispatch => {
     firestore.collection(`users/${userId}/tasks`).where('id', '==', taskId)
             .get()
             .then( snapshot => {
@@ -38,16 +44,50 @@ export const checkTask = (userId, taskId) => {
                     if (doc.data().done) {
                         doc.ref.update({
                             done: false
+                        }).then(() => {
+                            return dispatch({
+                                type: 'CHECK_TASK',
+                                payload: doc.data()
+                            })
                         })
+                        
                     } else {
                         doc.ref.update({
                             done: true
+                        }).then(() => {
+                            return dispatch({ // se repite lo mismo
+                                type: 'CHECK_TASK',
+                                payload: doc.data()
+                            })
                         })
+                        
                     }
                 })
+                
             })
-            .then( realtimeUpdate(taskId) )
             .catch(err => console.error(err))
+            //.then(() => realtimeUpdate(taskId))
+}
+
+export const editTask = (userId, taskToEdit) => dispatch => {
+    firestore.collection(`users/${userId}/tasks`).where('id', '==', taskToEdit.id)
+            .get()
+            .then( snapshot => {
+                snapshot.forEach( doc => {
+                    doc.ref.update({
+                        task: taskToEdit.task,
+                        priority: taskToEdit.priority,
+                        reminder: taskToEdit.reminder
+                    })
+                });
+                return dispatch({
+                    type: 'EDIT_TASK',
+                    payload: taskToEdit
+                })
+            })
+            .catch(err => console.error(err))
+            //.then(() => realtimeUpdate(userId, taskToEdit.id))
+
 }
 
 export const deleteTask = (userId, taskId) => {
@@ -67,26 +107,28 @@ export const deleteTask = (userId, taskId) => {
         .catch(err => console.error(err))
 }
 
-export const realtimeUpdate = (userId, taskId) => {
+export const realtimeUpdate = (userId, taskId) => dispatch => {
+    console.log('realtime update')
     firestore.collection(`users/${userId}/tasks`).where('id', '==', taskId ).onSnapshot( snapshot => {
 
         snapshot.docChanges().forEach( change => {
             switch (change.type) {
                 case 'added':
-                    return {
+                    return dispatch({
                         type: 'ADD_TASK',
                         payload: change.doc.data()
-                    }
+                    })
                 case 'modified':
-                    return {
-                        type: 'EDIT_TASK',
+                console.log('fue modificado', change.doc.data())
+                    return dispatch({
+                        type: 'UPDATE_EDIT_TASK',
                         payload: change.doc.data()
-                    }
+                    })
                 case 'removed':
-                    return {
+                    return dispatch({
                         type: 'REMOVE_TASK',
                         payload: change.doc.data()
-                    }
+                    })
                 default:
                     return
             }

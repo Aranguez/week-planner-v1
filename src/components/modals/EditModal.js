@@ -1,32 +1,31 @@
 import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux';
-import { realtimeUpdate } from '../../redux/actions/taskAction';
-import { trueFalse } from '../../redux/actions/appAction';
 
-// eslint-disable-next-line
-import { firestore } from '../../firebase/config'
+import { trueFalse, showEditModal } from '../../redux/actions/appAction';
+import { editTask } from '../../redux/actions/taskAction';
 
 
 class EditModal extends Component {
 
     constructor(props){
-        super();
+        super(props);
         this.state = {
-            task: props.taskToEdit.task,
-            priority: props.taskToEdit.priority,
-            reminder: props.taskToEdit.reminder,
-            isOpen: props.isOpen
+            id: '',
+            task: '',
+            priority: false,
+            reminder: false,
         }
     }
 
     componentWillReceiveProps(newProps){
+        console.log(newProps.taskToEdit)
 
         if (newProps.taskToEdit !== undefined) { 
             this.setState({
+                id: newProps.taskToEdit.id,
                 task: newProps.taskToEdit.task,
                 priority: newProps.taskToEdit.priority,
                 reminder: newProps.taskToEdit.reminder,
-                isOpen: newProps.isOpen
             })
         } else {
             return 
@@ -49,25 +48,14 @@ class EditModal extends Component {
 
     editTask = e => {
         e.preventDefault();
-
-        firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', this.props.taskToEdit.id)
-            .get()
-            .then( snapshot => {
-                snapshot.forEach( doc => {
-                    doc.ref.update({
-                        task: this.state.task,
-                        priority: this.state.priority,
-                        reminder: this.state.reminder
-                    })
-                });
-            })
-            .then(this.props.realtimeUpdate(this.props.taskToEdit.id))
-            .catch(err => console.error(err))
-        
-        this.props.showEditModal()
+        this.props.editTask(this.props.userId, this.state)
+        this.props.showEditModal(this.state)
     }
 
     render() {
+
+        console.log(this.state)
+        console.log(this.props.tasks)
 
         return (
             <Fragment>
@@ -122,8 +110,11 @@ class EditModal extends Component {
 }
 
 const mapStateToProps = state => ({
-    editModal: state.app.editModal,
-    userId: state.user.userId
+    editModal: state.app.editModal.show,
+    taskToEdit: state.app.editModal.taskToEdit,
+    userId: state.user.userId,
+    //for debugging
+    tasks: state.tasks.tasksList
 })
 
-export default connect(mapStateToProps, { realtimeUpdate, trueFalse })(EditModal)
+export default connect(mapStateToProps, { trueFalse, editTask, showEditModal })(EditModal)
