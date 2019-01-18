@@ -18,7 +18,6 @@ class EditModal extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        console.log(newProps.taskToEdit)
 
         if (newProps.taskToEdit !== undefined) { 
             this.setState({
@@ -53,9 +52,6 @@ class EditModal extends Component {
     }
 
     render() {
-
-        console.log(this.state)
-        console.log(this.props.tasks)
 
         return (
             <Fragment>

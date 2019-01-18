@@ -90,7 +90,7 @@ export const editTask = (userId, taskToEdit) => dispatch => {
 
 }
 
-export const deleteTask = (userId, taskId) => {
+export const deleteTask = (userId, taskId) => dispatch => {
 
     firestore.collection(`users/${userId}/tasks`).where('id', '==', taskId)
         .get()
@@ -99,7 +99,10 @@ export const deleteTask = (userId, taskId) => {
                 if (doc.data().done) {
                     doc.ref.delete()
                         .then(() => {
-                            realtimeUpdate(userId, taskId)
+                            return dispatch({
+                                type: 'DELETE_TASK',
+                                payload: doc.data().id
+                            })
                         }).catch(err => console.error(err))
                 }
             })
