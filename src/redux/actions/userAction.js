@@ -30,11 +30,13 @@ export const getUser = (userId, userName) => dispatch => {
 }
 
 export const logOut = () => dispatch => {
-    firebase.auth().signOut().then(() => {
-                console.log('sesion terminada')
-                return dispatch({
-                    type: 'LOGOUT',
-                    payload: null
-                })
+    firebase.auth().signOut()
+        .then(() => {
+            console.log('sesion terminada')
+            return dispatch({
+                type: 'LOGOUT',
+                payload: null
             })
+        })
+        .catch(err => console.log('error al desloguear', err))
 }

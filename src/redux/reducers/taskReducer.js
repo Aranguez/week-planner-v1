@@ -37,7 +37,6 @@ const taskReducer = (state = initialState , action) => {
                 })
             }
         case 'DELETE_TASK':
-        //console.log('remove reducer')
             return {
                 ...state,
                 tasksList: state.tasksList.filter(task => {

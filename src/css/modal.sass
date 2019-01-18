@@ -1,0 +1,58 @@
+.show
+  display: block !important
+
+.hide
+  display: none !important
+
+.modal-title
+  color: #ff3a69
+  font-weight: 700
+  font-size: 1.2em
+
+.modal
+  animation-duration: .5s
+  display: none
+  background-color: white
+  padding: 35px
+  border-radius: 8px
+  z-index: 5
+  position: fixed
+  top: 25%
+  left: 10%
+  width: 80%
+  .modal-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 20px
+    h2
+      margin: 0
+  .modal-body
+    p
+      color: #868686
+      margin-bottom: 8px
+      text-transform: capitalize
+    input[type="text"]
+      width: 100%
+      font-size: 1em
+      font-family: 'Nunito', sans-serif
+      outline: none
+      padding: 10px 0px
+      border: none
+      border-bottom: 1px solid #ddd
+      display: inline-block
+      margin: 0 auto 10px auto
+
+.blackout
+  display: none
+  width: 100vw
+  height: 100vh
+  position: fixed
+  left: 0
+  top: 0
+  z-index: 2
+  background-color: rgba(0, 0, 0, 0.4)
+
+@media (max-width: 400px)
+  .modal
+    padding: 35px 30px

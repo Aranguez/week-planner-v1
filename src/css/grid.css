@@ -1,13 +1,18 @@
 .row {
-    padding: 0;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .col-12 {
-    width: 100%;
-  }
-  
-  .col-6 {
-    width: 50%;
-  }
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.col-12 {
+  width: 100%;
+}
+
+.col-6 {
+  width: 50%;
+}
+/*# sourceMappingURL=grid.css.map */
