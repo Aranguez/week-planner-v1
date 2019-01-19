@@ -14,55 +14,17 @@ class ModalTasks extends Component {
         this.state = {
             addModal: false,
             editModal: false,
-            editTask: {
-                task: ''
-            },
+            editTask: '',
             selectedDay: '',
-            tasksOfDay: [],
-            doneTasks: []
+            tasksOfDay: []
         }
     }
     
     componentWillReceiveProps({selectedDay}){
         this.setState({
-            selectedDay,
+            selectedDay
         })
     }
-
-    /*deleteTask = id => {
-        firestore.collection(`users/${this.props.userId}/tasks`)
-            .where('id', '==', id)
-            .get()
-            .then( snapshot => {
-                snapshot.forEach(doc => {
-                    if (doc.data().done) {
-                        doc.ref.delete()
-                    }
-                })
-            })
-            .then( () => this.props.realtimeUpdate(id))
-            .catch(err => console.error(err))
-    }*/
-
-    /*checkTask = id => {
-        firestore.collection(`users/${this.props.userId}/tasks`).where('id', '==', id)
-            .get()
-            .then( snapshot => {
-                snapshot.forEach(doc => {
-                    if (doc.data().done) {
-                        doc.ref.update({
-                            done: false
-                        })
-                    } else {
-                        doc.ref.update({
-                            done: true
-                        })
-                    }
-                })
-            })
-            .then(() => realtimeUpdate(id))
-            .catch(err => console.error(err))
-    }*/
 
     showAddModal = (day) => {
         this.setState({
@@ -79,6 +41,10 @@ class ModalTasks extends Component {
     }
 
     render(){
+        const tasksOfDay = this.props.tasks.filter(task => {
+            return task.day === this.state.selectedDay //puede ser mejor
+        })
+
         return (
             <Fragment>
                 <div className={`tasks-display animated show fadeIn`}>
@@ -91,7 +57,7 @@ class ModalTasks extends Component {
                         </div>
                     </div>
                     <div className="body">
-                    { this.props.tasks.length === 0 ?
+                    { tasksOfDay.length === 0 ?
                         (<div className="row">
                             <div className="col col-12">
                                 <h3>It's empty!</h3>
@@ -101,7 +67,7 @@ class ModalTasks extends Component {
                         : (
                         <div className="row">
                             <div className="col col-12">
-                            {this.props.tasks.map((task, i) => (
+                            {tasksOfDay.map((task, i) => (
                                 !task.done ? (
                                     <p key={i}>
                                         <span className="delete-btn">
@@ -117,7 +83,7 @@ class ModalTasks extends Component {
                                             <i className="far fa-check-square"
                                                onClick={() => this.props.checkTask(this.props.userId, task.id)}></i>
                                             <i className="fa fa-trash"
-                                               onClick={() => this.deleteTask(task.id)}></i>
+                                               onClick={() => this.props.deleteTask(this.props.userId, task.id)}></i>
                                         </span>
                                         <input type="text" className="task-name" id={task.id} value={task.task} readOnly/>
                                     </p>
@@ -131,7 +97,6 @@ class ModalTasks extends Component {
                 </div>
 
                 <AddModal selectedDay={this.props.selectedDay}/>
-
                 <EditModal taskToEdit={this.state.editTask}/>
 
             </Fragment>
@@ -139,9 +104,9 @@ class ModalTasks extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-  tasks: state.tasks.tasksList,
-  userId: state.user.userId
+const mapStateToProps = state => ({
+    tasks: state.tasks.tasksList,
+    userId: state.user.userId
 })
 
 const mapDispatchToProps = {
