@@ -17,3 +17,10 @@ export const showEditModal = taskToEdit => {
         }
     }
 }
+
+export const configure = changes => {
+    return {
+        type: 'CONFIGURE',
+        payload: changes
+    }
+}

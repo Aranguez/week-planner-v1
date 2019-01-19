@@ -9,6 +9,7 @@ import Timeline from './Timeline';
 import Clock from './Clock';
 import LoginModal from './modals/LoginModal';
 import Greeting from './Greeting';
+import Config from './Config';
 
 //firebase
 import firebase from 'firebase/app';
@@ -28,11 +29,12 @@ class WeekPlanner extends Component {
     }
 
     render() {
-
+        console.log(this.props.app)
         return (
             <Fragment>
                 <SlideMenu/>
                 <LoginModal/>
+                <Config/>
 
                 <div className="container">
                     <Nav/>
@@ -55,15 +57,15 @@ class WeekPlanner extends Component {
                         <i className="fas fa-spinner fa-spin"></i>
                     </div> 
                 }
-
             </Fragment>
-            
         )
     }
 }
 
 const mapStateToProps = state => {
+
     return {
+        app: state.app,
         loading: state.app.loading,
         tasks: state.tasks.tasksList,
         user: state.user
