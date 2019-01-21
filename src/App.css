@@ -18,6 +18,10 @@ body {
   background-color: #F1F1F1;
 }
 
+button {
+  outline: none;
+}
+
 .container {
   width: 80%;
   max-width: 1300px;

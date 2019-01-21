@@ -9,8 +9,10 @@ class SlideMenu extends PureComponent {
         //console.log('SlideMenu renders');
         return (
             <Fragment>
-                <div className={`slideMenu animated ${ this.props.slideMenu ? "slideInLeft" : "hide slideOutLeft" }`}>
+                <div className={`slideMenu animated ${ this.props.slideMenu ? "slideInLeft" : "hide" }`}>
                     <h3>WeeklyPlanner</h3>
+                    <i className="far fa-times-circle"
+                       onClick={() => this.props.trueFalse('slideMenu')}></i>
                     <div>
                       <button><i className="fas fa-cog"></i>Configuration</button>
                       <button><i className="fas fa-check"></i>Done Tasks</button>

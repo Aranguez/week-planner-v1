@@ -9,7 +9,7 @@ class Nav extends PureComponent {
             <div className="nav">
                 <i className="fas fa-bars" onClick={() => this.props.trueFalse('slideMenu')}></i>
                 <span className="logo">WeeklyPlanner<small className="color-red badge">Alpha</small></span>
-                <i className="fas fa-bell"></i>
+                <i className="fas fa-bell" onClick={() => console.log('click')}></i>
             </div>
         )
     }   
