@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux';
+import { compose } from 'redux'
+
+import { translate  } from 'react-i18next';
 import { trueFalse, configure } from '../redux/actions/appAction';
 
 class Config extends Component {
@@ -8,15 +11,20 @@ class Config extends Component {
     constructor(props){
         super(props);
         this.state = {
-            lang: 'EN',
+            lang: '',
             dark: false
         }
     }
 
     submitChanges = e => {
         e.preventDefault();
-        this.props.configure(this.state)
+
+        const { i18n } = this.props;
+        i18n.changeLanguage(this.state.lang)
+        this.props.configure(this.state.lang, this.state.dark)
+        console.log('cambia a ', this.state.lang)
         this.props.trueFalse('config')
+        this.props.trueFalse('slideMenu')
     }
 
     handleOnChange = e => {
@@ -33,9 +41,9 @@ class Config extends Component {
             <div className="list-item">
                 <span>Language</span>
                 <select name="lang" onChange={this.handleOnChange}>
-                    <option defaultValue="EN">EN</option>
-                    <option value="ES">ES</option>
-                    <option value="JP">JP</option>
+                    <option defaultValue value="en">EN</option>
+                    <option value="es">ES</option>
+                    <option value="jp">JP</option>
                 </select>
             </div>
             <div className="list-item">
@@ -57,4 +65,7 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { trueFalse, configure })(Config);
+export default compose(
+    connect(mapStateToProps, { trueFalse, configure }),
+    translate('common')
+)(Config);

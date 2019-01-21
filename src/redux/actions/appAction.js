@@ -18,9 +18,12 @@ export const showEditModal = taskToEdit => {
     }
 }
 
-export const configure = changes => {
+export const configure = (lang, dark) => {
     return {
         type: 'CONFIGURE',
-        payload: changes
+        payload: {
+            lang,
+            dark
+        }
     }
 }

@@ -1,0 +1,14 @@
+{
+    "greeting": {
+        "hello": "ようこそ {{user}}さん",
+        "message": "良い一週を！"
+    },
+    "home": {
+        "totalTasks": "タスクの数",
+        "timeLeft" : "この日を終える時間",
+        "taskFor" : "{{day}}のタスク",
+        "itsEmpty": "何もありません",
+        "itsEmptyMessage": "この一日の中でタスクはありません"
+    }
+
+}

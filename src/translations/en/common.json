@@ -1,0 +1,13 @@
+{
+    "greeting": {
+        "hello": "Hello {{user}}",
+        "message": "Hope you have a great week"
+    },
+    "home": {
+        "totalTasks": "total tasks",
+        "timeLeft" : "to finish this day",
+        "taskFor" : "tasks for {{day}}",
+        "itsEmpty": "it's empty",
+        "itsEmptyMessage": "there is no tasks for this day"
+    }
+}

@@ -1,7 +1,7 @@
 let initialState = {
     //config
     config: false,
-    language: 'EN',
+    language: 'en',
     darkTheme: false,
     //modals
     loginModal: false,

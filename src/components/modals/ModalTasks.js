@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { translate, Trans } from 'react-i18next';
 
 import { trueFalse, showEditModal } from '../../redux/actions/appAction';
 import { checkTask, deleteTask } from '../../redux/actions/taskAction';
@@ -49,7 +51,8 @@ class ModalTasks extends Component {
             <Fragment>
                 <div className={`tasks-display animated show fadeIn`}>
                     <div className="header col col-12">
-                        <h2 style={{'fontSize': '1.2em'}}>Tasks for <span className="color-red">{this.props.selectedDay}</span></h2>
+                        <h2 style={{'fontSize': '1.2em'}}>
+                            {this.props.t('home.taskFor', { day:this.props.selectedDay })}</h2>
                         <div className="add-btn" onClick={() => this.props.trueFalse('addModal') }>
                             <button type="button">
                                     <i className="fas fa-plus-circle"></i>
@@ -60,8 +63,8 @@ class ModalTasks extends Component {
                     { tasksOfDay.length === 0 ?
                         (<div className="row">
                             <div className="col col-12">
-                                <h3>It's empty!</h3>
-                                <p>There is no tasks for this day</p>
+                                <h3><Trans i18nKey="home.itsEmpty">It's empty!</Trans></h3>
+                                <p><Trans i18nKey="home.itsEmptyMessage">There is no tasks for this day</Trans></p>
                             </div>
                         </div>)
                         : (
@@ -118,4 +121,7 @@ const mapDispatchToProps = {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalTasks);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate('common')
+)(ModalTasks);

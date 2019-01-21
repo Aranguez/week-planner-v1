@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { translate, Trans  } from 'react-i18next';
 
-export default class Clock extends Component {
+class Clock extends Component {
 
     constructor(){
         super();
@@ -52,9 +53,11 @@ export default class Clock extends Component {
                         <span>:{this.state.mins}</span>
                         <span>:{this.state.secs}</span>
                     </h1>
-                    <span>to finish this day</span>
+                    <Trans i18nKey='home.timeLeft'>to finish this day</Trans>
                 </div>
             </div>
         );
     }
 };
+
+export default translate('common')(Clock)
