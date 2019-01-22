@@ -4,8 +4,7 @@ import { compose } from 'redux'
 
 import { translate, Trans  } from 'react-i18next';
 
-const Greeting = (props) => {
-    console.log(props)
+const Greeting = props => {
     const user = props.userName.split(' ').splice(0,1)
     return (
         <h3 style={{'marginBottom': '40px'}}>

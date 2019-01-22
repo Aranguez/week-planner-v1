@@ -1,4 +1,9 @@
 let initialState = {
+    weekDays: {
+        en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        es: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"],
+        jp: ["日曜", "月曜", "火曜", "水曜", "木曜", "金曜", "土曜"]
+    },
     //config
     config: false,
     language: 'en',

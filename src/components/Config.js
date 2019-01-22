@@ -18,11 +18,8 @@ class Config extends Component {
 
     submitChanges = e => {
         e.preventDefault();
-
-        const { i18n } = this.props;
-        i18n.changeLanguage(this.state.lang)
+        this.props.i18n.changeLanguage(this.state.lang)
         this.props.configure(this.state.lang, this.state.dark)
-        console.log('cambia a ', this.state.lang)
         this.props.trueFalse('config')
         this.props.trueFalse('slideMenu')
     }
@@ -34,7 +31,6 @@ class Config extends Component {
     }
 
     render() {
-        console.log(this.state)
         return (
         <form onSubmit={this.submitChanges} className={`config-panel animated ${this.props.show ? 'show' : 'hide'}`}>
             <h3 className="color-red"><b>Configuration</b></h3>

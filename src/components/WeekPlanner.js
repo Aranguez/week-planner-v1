@@ -29,7 +29,7 @@ class WeekPlanner extends Component {
     }
 
     render() {
-        console.log(this.props.app)
+        console.log(this.props.state)
         return (
             <Fragment>
                 <SlideMenu/>
@@ -49,7 +49,7 @@ class WeekPlanner extends Component {
                                 <Clock/>
                             </div>
                         </div>
-                        <Timeline realtimeUpdate={this.realtimeUpdate}/>
+                        <Timeline/>
                     </Fragment>
                     
                     :
@@ -63,12 +63,12 @@ class WeekPlanner extends Component {
 }
 
 const mapStateToProps = state => {
-
     return {
         app: state.app,
         loading: state.app.loading,
         tasks: state.tasks.tasksList,
-        user: state.user
+        user: state.user,
+        state: state
     }
 }
 
