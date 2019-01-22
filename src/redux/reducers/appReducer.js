@@ -1,4 +1,16 @@
 let initialState = {
+    weekDays: {
+        en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        es: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"],
+        jp: ["日曜", "月曜", "火曜", "水曜", "木曜", "金曜", "土曜"]
+    },
+    //config
+    config: false,
+    language: 'en',
+    darkTheme: false,
+    //modals
+    loginModal: false,
+    slideMenu: false,
     editModal: {
         show: false,
         taskToEdit: {
@@ -7,12 +19,11 @@ let initialState = {
             priority: false
         }
     },
-    loginModal: false,
-    slideMenu: false,
-    loading: false
+    //loader
+    loading: false,
 }
 
-const modalReducer = (state = initialState, action) => {
+const appReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'OPEN_CLOSE':
             return {
@@ -27,9 +38,15 @@ const modalReducer = (state = initialState, action) => {
                     taskToEdit: action.payload.taskToEdit
                 }
             }
+        case 'CONFIGURE':
+            return {
+                ...state,
+                language: action.payload.lang,
+                darkTheme: action.payload.dark,
+            }
         default:
             return state;
     }
 }
 
-export default modalReducer
+export default appReducer

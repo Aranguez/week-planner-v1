@@ -6,6 +6,7 @@
 @import './css/modal.css';
 @import './css/SlideMenu.css';
 @import './css/tasksDisplay.css';
+@import './css/ConfigPanel.css';
 
 * {
   margin: 0;
@@ -33,6 +34,13 @@ h1, h2, h3, h4, h5{
   color: #444;
   font-weight: 400;
   margin-bottom: 10px;
+}
+
+select {
+  border: none;
+  padding: 3px 12px;
+  border-radius: 4px;
+  outline: none;
 }
 
 /* BUTTONS */

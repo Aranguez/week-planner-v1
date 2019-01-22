@@ -17,3 +17,13 @@ export const showEditModal = taskToEdit => {
         }
     }
 }
+
+export const configure = (lang, dark) => {
+    return {
+        type: 'CONFIGURE',
+        payload: {
+            lang,
+            dark
+        }
+    }
+}

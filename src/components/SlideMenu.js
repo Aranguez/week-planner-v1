@@ -6,7 +6,6 @@ import { logOut } from '../redux/actions/userAction';
 class SlideMenu extends PureComponent {
 
     render(){
-        //console.log('SlideMenu renders');
         return (
             <Fragment>
                 <div className={`slideMenu animated ${ this.props.slideMenu ? "slideInLeft" : "hide" }`}>
@@ -14,7 +13,9 @@ class SlideMenu extends PureComponent {
                     <i className="far fa-times-circle"
                        onClick={() => this.props.trueFalse('slideMenu')}></i>
                     <div>
-                      <button><i className="fas fa-cog"></i>Configuration</button>
+                      <button onClick={() => this.props.trueFalse('config')}>
+                          <i className="fas fa-cog"></i>
+                          Configuration</button>
                       <button><i className="fas fa-check"></i>Done Tasks</button>
                       { this.props.user.logged ?
                           <button onClick={ this.props.logOut }>

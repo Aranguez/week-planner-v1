@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import WeekPlanner from './components/WeekPlanner';
+// eslint-disable-next-line
+import { translate, Trans } from 'react-i18next';
 
 class App extends Component {
-
   render() {
-    //console.log('App renders');
     return (<WeekPlanner/>);
   }
 }
 
-export default App;
+export default translate('common')(App);

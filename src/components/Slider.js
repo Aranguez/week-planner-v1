@@ -24,14 +24,8 @@ export default class Slider extends React.Component {
 
     var flkty = new Flickity('.timeline')
 
-    this.props.children.forEach( child => {
-      if(child.props.today === true){
-        this.props.showTasksModal(child.props.day)
-      }
-    })
-
     flkty.on('change', index => {
-      this.props.showTasksModal(this.props.children[index].props.day)
+      this.props.showTasksModal(this.props.children[index].props.engDay)
     });
   }
 
@@ -39,6 +33,8 @@ export default class Slider extends React.Component {
     this.flickity.reloadCells();
     this.flickity.resize();
     this.flickity.updateDraggable();
+    this.flickity.selectCell(this.props.today);
+    console.log(this.props.today)
   }
 
   componentWillUnmount() {
@@ -52,6 +48,17 @@ export default class Slider extends React.Component {
     if (flickityDidBecomeActive || childrenDidChange) {
       this.refreshFlickity();
     }
+
+    //var flkty = new Flickity('.timeline')
+    //flkty.selectCell(3)
+
+    /*this.props.children.forEach( child => {
+      if(child.props.today === true){
+        this.props.showTasksModal(child.props.engDay)
+      }
+    })*/
+
+    
   }
 
   renderPortal() {
@@ -67,6 +74,7 @@ export default class Slider extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return [
       <div className='timeline animated slideInUp'
            key="flickityBase"
