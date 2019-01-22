@@ -6,7 +6,7 @@
 @import './css/modal.css';
 @import './css/tasksDisplay.css';
 @import './css/ConfigPanel.css';
-@import './css/SlideMenu.css';
+@import '/src/css/SlideMenu.css';
 
 * {
   margin: 0;
