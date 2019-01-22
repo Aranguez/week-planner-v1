@@ -4,9 +4,9 @@
 @import './css/Timeline.css';
 @import './css/grid.css';
 @import './css/modal.css';
-@import '/src/css/SlideMenu.css';
 @import './css/tasksDisplay.css';
 @import './css/ConfigPanel.css';
+@import './css/SlideMenu.css';
 
 * {
   margin: 0;
