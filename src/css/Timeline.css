@@ -86,11 +86,18 @@
 }
 
 .box > span.task {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
   position: absolute;
   z-index: 1;
   max-height: 80%;
   width: 10px;
   border-radius: 5px;
+}
+
+.box span.task {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
 }
 
 .box span.task.undone {

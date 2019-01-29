@@ -135,7 +135,7 @@ select {
 }
 
 /* loader */
-.loading{
+.loading {
   text-align: center;
   font-size: 2em;
   color: #FF3A69;
@@ -146,16 +146,38 @@ select {
 }
 
 .slideMenu {
-  -webkit-animation-duration: .6s;
-          animation-duration: .6s;
-  -webkit-animation-timing-function: ease;
-          animation-timing-function: ease;
-  width: 70%;
-  padding: 30px;
+  transition: all .3s ease;
+  width: 0%;
   position: absolute;
   z-index: 5;
   background-color: #fff;
   height: 100%;
+}
+
+.slideMenu.show {
+  width: 70%;
+  padding: 30px;
+}
+
+.slideMenu * {
+  transition: all .1s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+.slideMenu.show * {
+  opacity: 1;
+  visibility: visible
+}
+
+.slideMenu .close{
+  position: absolute;
+  right: -22px;
+  top: 302px;
+  color: #ff3a69;
+  padding: 6px;
+  background-color: white;
+  font-size: 2em;
+  border-radius: 50%;
 }
 
 .slideMenu > div {

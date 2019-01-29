@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { compose } from 'redux'
 
-import { translate  } from 'react-i18next';
+import { translate, Trans } from 'react-i18next';
 import { trueFalse, configure } from '../redux/actions/appAction';
 
 class Config extends Component {
@@ -33,9 +33,9 @@ class Config extends Component {
     render() {
         return (
         <form onSubmit={this.submitChanges} className={`config-panel animated ${this.props.show ? 'show' : 'hide'}`}>
-            <h3 className="color-red"><b>Configuration</b></h3>
+            <h3 className="color-red"><b><Trans i18nKey="slideMenu.configuration">Configuration</Trans></b></h3>
             <div className="list-item">
-                <span>Language</span>
+                <span><Trans i18nKey="configuration.language">Language</Trans></span>
                 <select name="lang" onChange={this.handleOnChange}>
                     <option defaultValue value="en">EN</option>
                     <option value="es">ES</option>
@@ -43,14 +43,26 @@ class Config extends Component {
                 </select>
             </div>
             <div className="list-item">
-                <span>Dark theme</span>
+                <span><Trans i18nKey="configuration.darkTheme">Dark theme</Trans></span>
                 <select name="dark" onChange={this.handleOnChange}>
-                    <option defaultValue={false}>No</option>
-                    <option value={true}>Yes</option>
+                    <option defaultValue={false}>
+                        <Trans i18nKey="configuration.no">No</Trans>
+                    </option>
+                    <option value={true}>
+                        <Trans i18nKey="configuration.yes">Yes</Trans>
+                    </option>
                 </select>
             </div>
-            <button className="btn btn-confirm" type="submit">Apply</button>
-            <button className="btn btn-cancel" type="button" onClick={() => this.props.trueFalse('config')}>Cancel</button>
+            <button
+                className="btn btn-confirm"
+                type="submit">
+                    <Trans i18nkey="button.apply">Apply</Trans>
+            </button>
+            <button
+                className="btn btn-cancel"
+                type="button" onClick={() => this.props.trueFalse('config')}>
+                    <Trans i18nkey="button.cancel">Cancel</Trans>
+            </button>
         </form>
         )
     }

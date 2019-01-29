@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux'
 
-import { translate, Trans  } from 'react-i18next';
+import { translate, Trans } from 'react-i18next';
 
 const Greeting = props => {
     const user = props.userName.split(' ').splice(0,1)

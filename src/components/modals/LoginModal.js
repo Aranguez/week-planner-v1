@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from '../../redux/actions/userAction';
 import { trueFalse } from '../../redux/actions/appAction';
@@ -17,7 +17,7 @@ class LoginModal extends PureComponent {
                 var user = result.user;
                 this.props.getUser(user.uid, user.displayName)
                 this.props.trueFalse('loginModal')
-                this.props.trueFalse('slideMenu')
+                //this.props.trueFalse('slideMenu')
                 }).catch(err => console.error(err))
         }).catch(err => console.error(err))
     }
@@ -25,6 +25,7 @@ class LoginModal extends PureComponent {
     render(){
 
         return (
+        <Fragment>
             <div className={`modal ${ this.props.loginModal ? "show animated fadeIn" : "hide" }`}>
                 <div className="modal-header">
                     <div className="row">
@@ -76,6 +77,8 @@ class LoginModal extends PureComponent {
                     </div>
                 </div>
             </div>
+            <div className={`blackout ${ this.props.loginModal ? 'show' : 'hide' }`}></div>
+        </Fragment>
         )
     }
         

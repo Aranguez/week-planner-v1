@@ -1,31 +1,41 @@
 import React, { Fragment, PureComponent } from 'react'
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 import { trueFalse } from '../redux/actions/appAction';
 import { logOut } from '../redux/actions/userAction';
+
+import { translate, Trans } from 'react-i18next';
 
 class SlideMenu extends PureComponent {
 
     render(){
         return (
             <Fragment>
-                <div className={`slideMenu animated ${ this.props.slideMenu ? "slideInLeft" : "hide" }`}>
+                <div className={`slideMenu ${ this.props.slideMenu ? 'show' : '' }`}>
                     <h3>WeeklyPlanner</h3>
-                    <i className="far fa-times-circle"
+                    <i className="far fa-times-circle close"
                        onClick={() => this.props.trueFalse('slideMenu')}></i>
                     <div>
-                      <button onClick={() => this.props.trueFalse('config')}>
-                          <i className="fas fa-cog"></i>
-                          Configuration</button>
-                      <button><i className="fas fa-check"></i>Done Tasks</button>
+                        <button onClick={() => this.props.trueFalse('config')}>
+                            <i className="fas fa-cog"></i>
+                            <Trans i18nKey="slideMenu.configuration">configuration</Trans>
+                        </button>
+                        <button>
+                            <i className="fas fa-check"></i>
+                            <Trans i18nKey="slideMenu.doneTasks">Done tasks</Trans>
+                        </button>
                       { this.props.user.logged ?
-                          <button onClick={ this.props.logOut }>
-                                  <i className="fas fa-sign-out-alt"></i>Logout
-                          </button>
+                        <button onClick={ this.props.logOut }>
+                            <i className="fas fa-sign-out-alt"></i>
+                            <Trans i18nKey="slideMenu.logOut">Logout</Trans>
+                        </button>
                           :
-                          <button type="button" 
-                                  onClick={ () => this.props.trueFalse('loginModal')}>
-                                      <i className="fas fa-sign-in-alt"></i>Login
-                          </button>
+                        <button type="button" 
+                                onClick={ () => this.props.trueFalse('loginModal')}>
+                                      <i className="fas fa-sign-in-alt"></i>
+                                      <Trans i18nKey="slideMenu.login">Login</Trans>
+                        </button>
                       }
                     </div>
                 </div>
@@ -42,4 +52,7 @@ const mapStateToProps = state => ({
   slideMenu: state.app.slideMenu
 })
 
-export default connect(mapStateToProps, { trueFalse, logOut })(SlideMenu)
+export default compose(
+    connect(mapStateToProps, { trueFalse, logOut }),
+    translate('common')
+)(SlideMenu)

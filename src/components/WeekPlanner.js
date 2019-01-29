@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from '../redux/actions/userAction';
 import { getTasks } from '../redux/actions/taskAction';
+import { trueFalse } from '../redux/actions/appAction';
 
 //components
 import Timeline from './Timeline';
@@ -20,12 +21,16 @@ import TotalTasks from './TotalTasks';
 class WeekPlanner extends Component {
 
     componentDidMount(){
+
         firebase.auth().onAuthStateChanged( user => {
             if (user){
                 this.props.getUser(user.uid, user.displayName)
                 this.props.getTasks(user.uid)
-            } 
+            } else {
+                this.props.trueFalse('loginModal')
+            }
         });
+
     }
 
     render() {
@@ -40,7 +45,7 @@ class WeekPlanner extends Component {
                     <Nav/>
                 </div>
                 
-                { this.props.user.logged && !this.props.loading ?
+                { this.props.user.logged && !this.props.loading &&
                     <Fragment>
                         <div className="container">
                             <Greeting/>
@@ -51,11 +56,11 @@ class WeekPlanner extends Component {
                         </div>
                         <Timeline/>
                     </Fragment>
-                    
-                    :
-                    <div className="loading animated fadeIn">
-                        <i className="fas fa-spinner fa-spin"></i>
-                    </div> 
+
+                    // {<div className="loading animated fadeIn">
+                    //     Please Login
+                    //     <i className="fas fa-spinner fa-spin"></i>
+                    // </div> }
                 }
             </Fragment>
         )
@@ -73,4 +78,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, { getUser, getTasks })(WeekPlanner);
+export default connect(mapStateToProps, { getUser, getTasks, trueFalse })(WeekPlanner);

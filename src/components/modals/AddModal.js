@@ -1,8 +1,11 @@
-import React, { Fragment, Component } from 'react'
-
+import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 import { addTask } from '../../redux/actions/taskAction';
 import { trueFalse } from '../../redux/actions/appAction';
+
+import { translate } from 'react-i18next';
 
 class AddModal extends Component {
 
@@ -12,8 +15,7 @@ class AddModal extends Component {
             task: '',
             priority: false,
             reminder: '',
-            day: '',
-            isOpen: props.isOpen
+            day: ''
         }
     }
 
@@ -111,4 +113,7 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default connect(mapStateToProps, { addTask, trueFalse })(AddModal);
+export default compose(
+    connect(mapStateToProps, { addTask, trueFalse }),
+    translate('common')
+)(AddModal);
