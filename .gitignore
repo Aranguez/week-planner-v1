@@ -1,7 +1,7 @@
 # dependencies
 /node_modules
 
-/css/*.css.map
+*.css.map
 
 # testing
 /coverage
