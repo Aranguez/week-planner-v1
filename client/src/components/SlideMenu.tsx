@@ -7,7 +7,7 @@ import { logOut } from '../redux/actions/userAction';
 
 import { translate, Trans } from 'react-i18next';
 
-class SlideMenu extends PureComponent {
+class SlideMenu extends PureComponent<any, any> {
 
     render(){
         return (
@@ -47,7 +47,7 @@ class SlideMenu extends PureComponent {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user,
   slideMenu: state.app.slideMenu
 })

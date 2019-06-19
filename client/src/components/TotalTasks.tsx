@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux'
+import { compose } from 'redux';
 import { translate, Trans  } from 'react-i18next';
 
-const TotalTasks = props => {
+const TotalTasks = (props) => {
     return (
         <div className="panel">
             <div>
@@ -14,7 +14,7 @@ const TotalTasks = props => {
     );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   tasks: state.tasks.tasksList
 })
 

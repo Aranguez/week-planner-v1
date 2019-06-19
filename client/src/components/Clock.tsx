@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { translate, Trans  } from 'react-i18next';
 
-class Clock extends Component {
+class Clock extends Component<any, any> {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             hours: '',
             mins: '',
@@ -19,20 +19,20 @@ class Clock extends Component {
 
     clock = () => {
         let time = new Date();
-        let hours = Math.abs(time.getHours() - 23);
-        let mins = Math.abs(time.getMinutes() - 60);
-        let secs = Math.abs(time.getSeconds() - 60);
+        let hours: number = Math.abs(time.getHours() - 23);
+        let mins: number = Math.abs(time.getMinutes() - 60);
+        let secs: number = Math.abs(time.getSeconds() - 60);
     
         if (hours < 10) {
-            hours = '0' + hours
+            hours = parseInt('0' + hours);
         }
 
         if (mins < 10) {
-            mins = '0' + mins
+            mins = parseInt('0' + mins)
         }
 
         if (secs < 10) {
-            secs = '0' + secs
+            secs = parseInt('0' + secs)
         }
 
         this.setState({
@@ -43,8 +43,6 @@ class Clock extends Component {
     }
     
     render(){
-        //console.log('Clock renders');
-
         return (
             <div className="panel">
                 <div>

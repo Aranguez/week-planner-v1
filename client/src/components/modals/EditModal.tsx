@@ -5,7 +5,7 @@ import { trueFalse, showEditModal } from '../../redux/actions/appAction';
 import { editTask } from '../../redux/actions/taskAction';
 
 
-class EditModal extends Component {
+class EditModal extends Component<any, any> {
 
     constructor(props){
         super(props);

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { trueFalse } from '../redux/actions/appAction';
 
-class Nav extends PureComponent {
+class Nav extends PureComponent<any, any> {
 
     render(){
         return (

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Flickity from 'flickity';
 import 'flickity/dist/flickity.min.css';
 
 
 
-export default class Slider extends React.Component {
+export default class Slider extends Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {

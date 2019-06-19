@@ -8,7 +8,7 @@ const GoogleProvider = new firebase.auth.GoogleAuthProvider();
 const FacebookProvider = new firebase.auth.FacebookAuthProvider()
 
 //COMPONENTE
-class LoginModal extends PureComponent {
+class LoginModal extends PureComponent<any, any> {
 
     login = provider => {
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)

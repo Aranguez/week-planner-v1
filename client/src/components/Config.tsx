@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, ChangeEvent } from 'react'
 
 import { connect } from 'react-redux';
-import { compose } from 'redux'
+import { compose } from 'redux';
 
 import { translate, Trans } from 'react-i18next';
 import { trueFalse, configure } from '../redux/actions/appAction';
 
-class Config extends Component {
+class Config extends Component<any, IConfigState> {
 
     constructor(props){
         super(props);
@@ -16,17 +16,18 @@ class Config extends Component {
         }
     }
 
-    submitChanges = e => {
+    submitChanges = (e) => {
         e.preventDefault();
-        this.props.i18n.changeLanguage(this.state.lang)
-        this.props.configure(this.state.lang, this.state.dark)
-        this.props.trueFalse('config')
-        this.props.trueFalse('slideMenu')
+        this.props.i18n.changeLanguage(this.state.lang);
+        this.props.configure(this.state.lang, this.state.dark);
+        this.props.trueFalse('config');
+        this.props.trueFalse('slideMenu');
     }
 
-    handleOnChange = e => {
+    handleOnChange = (e: ChangeEvent) => {
+        const element = e.target as HTMLElement;
         this.setState({
-            [e.target.name]: e.target.value,
+            [element.name]: element.value,
         })
     }
 
@@ -37,7 +38,7 @@ class Config extends Component {
             <div className="list-item">
                 <span><Trans i18nKey="configuration.language">Language</Trans></span>
                 <select name="lang" onChange={this.handleOnChange}>
-                    <option defaultValue value="en">EN</option>
+                    <option defaultValue="en">EN</option>
                     <option value="es">ES</option>
                     <option value="jp">JP</option>
                 </select>
@@ -45,10 +46,10 @@ class Config extends Component {
             <div className="list-item">
                 <span><Trans i18nKey="configuration.darkTheme">Dark theme</Trans></span>
                 <select name="dark" onChange={this.handleOnChange}>
-                    <option defaultValue={false}>
+                    <option selected defaultValue="no">
                         <Trans i18nKey="configuration.no">No</Trans>
                     </option>
-                    <option value={true}>
+                    <option value="yes">
                         <Trans i18nKey="configuration.yes">Yes</Trans>
                     </option>
                 </select>
@@ -77,3 +78,12 @@ export default compose(
     connect(mapStateToProps, { trueFalse, configure }),
     translate('common')
 )(Config);
+
+interface IConfigState {
+    lang: string,
+    dark: boolean
+}
+
+interface IConfigProps {
+    
+}

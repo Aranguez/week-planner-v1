@@ -7,7 +7,7 @@ import { trueFalse } from '../../redux/actions/appAction';
 
 import { translate } from 'react-i18next';
 
-class AddModal extends Component {
+class AddModal extends Component<any, any> {
 
     constructor(props){
         super(props);

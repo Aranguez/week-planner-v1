@@ -9,7 +9,7 @@ import { checkTask, deleteTask } from '../../redux/actions/taskAction';
 import AddModal from './AddModal';
 import EditModal from './EditModal';
 
-class ModalTasks extends Component {
+class ModalTasks extends Component<any, any> {
 
     constructor(props){
         super(props);

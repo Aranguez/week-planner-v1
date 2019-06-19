@@ -9,7 +9,7 @@ import ModalTasks from './modals/ModalTasks';
 const todayDate = new Date().getDay() //returns a number
 let today; //no tiene ninguna funcionalidad
 
-class Timeline extends Component {
+class Timeline extends Component<any, any> {
 
     constructor(props){
         super(props);
