@@ -22,6 +22,10 @@ class WeekPlanner extends Component {
 
     componentDidMount(){
 
+        fetch('http://localhost:5000/api')
+            .then(res => res.json())
+            .then(res => console.log(res))
+
         firebase.auth().onAuthStateChanged( user => {
             if (user){
                 this.props.getUser(user.uid, user.displayName)

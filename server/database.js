@@ -1,17 +1,32 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const MONGO_URL = "mongodb://arantar:arantarps2@ds213715.mlab.com:13715/weekly-planner";
 
-const URI = 'mongodb://localhost/weekly-planner';
-
-mongoose.connect(URI)
-  .then(db => console.log('db is connected'))
+// Connect to database
+mongoose
+  .connect(MONGO_URL, {useNewUrlParser: true})
   .catch(err => console.error(err));
 
-//mongoose.Promise = global.Promise;
+// When successfully connected
+mongoose.connection.on('connected', () => { 
+  console.log('Mongoose default connection open to ' + MONGO_URL);
+});
 
-// const db = mongoose.connection
+// // If the connection throws an error
+mongoose.connection.on('error', (err) => {  
+  console.log('Mongoose default connection error: ' + err);
+});
 
-// db.onerror = err => {
-//   console.log(err)
-// }
+// // When the connection is disconnected
+mongoose.connection.on('disconnected', () => {  
+  console.log('Mongoose default connection disconnected'); 
+});
 
-module.exports = mongoose
+// If the Node process ends, close the Mongoose connection 
+process.on('SIGINT', () => {  
+  mongoose.connection.close(() => { 
+    console.log('Mongoose default connection disconnected through app termination'); 
+    process.exit(0); 
+  }).catch(err => console.error(err)); 
+});
+
+module.exports = mongoose;
