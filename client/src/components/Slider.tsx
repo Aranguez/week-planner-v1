@@ -3,17 +3,24 @@ import ReactDOM from 'react-dom';
 import Flickity from 'flickity';
 import 'flickity/dist/flickity.min.css';
 
+// type Props = () => {
+//   showTasksModal: (day) => void;
+//   children: ReactNode[];
+//   today: number;
+//   options: any;
+// }
 
-
-export default class Slider extends React.Component {
+export default class Slider extends React.Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
       flickityReady: false,
     };
-
     this.refreshFlickity = this.refreshFlickity.bind(this);
   }
+
+  flickity;
+  flickityNode;
 
   componentDidMount() {
     this.flickity = new Flickity(this.flickityNode, this.props.options || {});
@@ -22,7 +29,7 @@ export default class Slider extends React.Component {
       flickityReady: true,
     });
 
-    var flkty = new Flickity('.timeline')
+    var flkty = new Flickity('.timeline') as any;
 
     flkty.on('change', index => {
       this.props.showTasksModal(this.props.children[index].props.engDay)
@@ -34,7 +41,6 @@ export default class Slider extends React.Component {
     this.flickity.resize();
     this.flickity.updateDraggable();
     this.flickity.selectCell(this.props.today);
-    console.log(this.props.today)
   }
 
   componentWillUnmount() {
@@ -43,7 +49,7 @@ export default class Slider extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const flickityDidBecomeActive = !prevState.flickityReady && this.state.flickityReady;
-    const childrenDidChange = prevProps.children.length !== this.props.children.length;
+    const childrenDidChange = prevProps.children.length !== 7;
 
     if (flickityDidBecomeActive || childrenDidChange) {
       this.refreshFlickity();
@@ -52,16 +58,14 @@ export default class Slider extends React.Component {
     //var flkty = new Flickity('.timeline')
     //flkty.selectCell(3)
 
-    /*this.props.children.forEach( child => {
-      if(child.props.today === true){
-        this.props.showTasksModal(child.props.engDay)
-      }
-    })*/
-
-    
+    // props.children.forEach( child => {
+    //   if(child.props.today === true){
+    //     this.props.showTasksModal(child.props.engDay)
+    //   }
+    // })
   }
 
-  renderPortal() {
+  renderPortal(): any {
     if (!this.flickityNode) {
       return null;
     }
@@ -74,7 +78,6 @@ export default class Slider extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return [
       <div className='timeline animated slideInUp'
            key="flickityBase"
