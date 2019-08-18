@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { /*useTranslation,*/ Trans } from 'react-i18next';
 
-const Greeting: React.FC<any> = props => {
+type greetingProps = {
+  userName: string;
+}
+
+const Greeting: React.FC<greetingProps> = props => {
   //const [t/*, i18n*/] = useTranslation();
   const user = props.userName.split(" ").splice(0, 1);
   return (

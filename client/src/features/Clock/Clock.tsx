@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Trans, withTranslation } from 'react-i18next';
+import { Trans/*, withTranslation*/ } from 'react-i18next';
+
+//TODO: types with translation when fixed
 
 const Clock: React.FC<any> = props => {
   const [clockState, setClockState] = useState({
@@ -55,4 +57,4 @@ const Clock: React.FC<any> = props => {
   );
 }
 
-export default withTranslation("common")(Clock);
+export default /*withTranslation("common")*/Clock;

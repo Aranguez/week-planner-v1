@@ -5,15 +5,31 @@ import { connect } from "react-redux";
 import Day from "../Day/Day";
 import Slider from "../Slider/Slider";
 import ModalTasks from "../../components/modals/ModalTasks";
+import { Task, User } from '../../types';
 
 const todayDate = new Date().getDay(); //returns a number
-let today; //no tiene ninguna funcionalidad
+//let today; //no tiene ninguna funcionalidad
 
-const Timeline: React.FC<any> = props => {
+// type weekDays = {
+//   en: Object;
+//   es: Object;
+//   jp: Object;
+// };
+
+type TimelineProps = {
+  dispatch: (action) => any;
+  lang: String;
+  loading: Boolean;
+  tasks: Task[];
+  user: User;
+  weekDays: any;
+};
+
+const Timeline: React.FC<TimelineProps> = props => {
   const [timelineState, setTimelineState] = useState({
-    today,
+    today: "",
     weekDays: [],
-    selectedDay: ''
+    selectedDay: ""
   });
 
   useEffect(() => {
@@ -58,7 +74,7 @@ const Timeline: React.FC<any> = props => {
           {timelineState.weekDays.map((day, i) => (
             <Day
               key={i}
-              today={today === props.weekDays.en[i]}
+              today={timelineState.today === props.weekDays.en[i]}
               over={todayDate > i ? true : false}
               day={day}
               engDay={props.weekDays.en[i]}
@@ -71,7 +87,7 @@ const Timeline: React.FC<any> = props => {
 
       <ModalTasks
         userId={props.user.userId}
-        selectedDay={timelineState.selectedDay}
+        selectedDay={timelineState.selectedDay || props.weekDays.en[todayDate]}
         showTasksModal={showTasksModal}
       />
     </>
