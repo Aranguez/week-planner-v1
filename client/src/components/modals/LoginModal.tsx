@@ -7,7 +7,13 @@ import firebase from "firebase/app";
 const GoogleProvider = new firebase.auth.GoogleAuthProvider();
 const FacebookProvider = new firebase.auth.FacebookAuthProvider();
 
-const LoginModal: React.FC<any> = props => {
+type Props = {
+  getUser: (a, b) => void;
+  loginModal: Boolean;
+  trueFalse: (a) => void;
+};
+
+const LoginModal: React.FC<Props> = ({ getUser, trueFalse, loginModal }) => {
   const login = provider => {
     firebase
       .auth()
@@ -18,9 +24,9 @@ const LoginModal: React.FC<any> = props => {
           .signInWithPopup(provider)
           .then(result => {
             var user = result.user;
-            props.getUser(user.uid, user.displayName);
-            props.trueFalse("loginModal");
-            //props.trueFalse('slideMenu')
+            getUser(user.uid, user.displayName);
+            trueFalse("loginModal");
+            //trueFalse('slideMenu')
           })
           .catch(err => console.error(err));
       })
@@ -29,11 +35,7 @@ const LoginModal: React.FC<any> = props => {
 
   return (
     <>
-      <div
-        className={`modal ${
-          props.loginModal ? "show animated fadeIn" : "hide"
-        }`}
-      >
+      <div className={`modal ${loginModal ? "show animated fadeIn" : "hide"}`}>
         <div className="modal-header">
           <div className="row">
             <div className="col col-12">
@@ -74,7 +76,7 @@ const LoginModal: React.FC<any> = props => {
               </div>
             </div>
           </form>
-          <hr style={{ marginTop: "20px", opacity: .5 }} />
+          <hr style={{ marginTop: "20px", opacity: 0.5 }} />
           <div className="row">
             <div className="col col-6">
               <button
@@ -97,12 +99,10 @@ const LoginModal: React.FC<any> = props => {
           </div>
         </div>
       </div>
-      <div
-        className={`blackout ${props.loginModal ? "show" : "hide"}`}
-      />
+      <div className={`blackout ${loginModal ? "show" : "hide"}`} />
     </>
   );
-}
+};
 
 const mapStateToProps = state => ({
   loginModal: state.app.loginModal

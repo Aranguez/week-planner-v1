@@ -6,7 +6,13 @@ import { compose } from 'redux';
 import { /*translate*/ Trans } from "react-i18next";
 import { trueFalse, configure } from "../redux/actions/appAction";
 
-const Config: React.FC<any> = props => {
+type ConfigProps = {
+  configure: (a, b) => void;
+  show: Boolean;
+  trueFalse: (a: string) => void;
+}
+
+const Config: React.FC<ConfigProps> = ({ trueFalse, show, configure }) => {
   const [configState, setConfigState] = useState({
     lang: "",
     dark: false
@@ -14,10 +20,10 @@ const Config: React.FC<any> = props => {
 
   const submitChanges = e => {
     e.preventDefault();
-    props.i18n.changeLanguage(configState.lang);
-    props.configure(configState.lang, configState.dark);
-    props.trueFalse("config");
-    props.trueFalse("slideMenu");
+    // props.i18n.changeLanguage(configState.lang);
+    configure(configState.lang, configState.dark);
+    trueFalse("config");
+    trueFalse("slideMenu");
   };
 
   const handleOnChange = e => {
@@ -30,7 +36,7 @@ const Config: React.FC<any> = props => {
   return (
     <form
       onSubmit={submitChanges}
-      className={`config-panel animated ${props.show ? "show" : "hide"}`}
+      className={`config-panel animated ${show ? "show" : "hide"}`}
     >
       <h3 className="color-red">
         <b>
@@ -68,7 +74,7 @@ const Config: React.FC<any> = props => {
       <button
         className="btn btn-cancel"
         type="button"
-        onClick={() => props.trueFalse("config")}
+        onClick={() => trueFalse("config")}
       >
         {/* <Trans i18nkey="button.cancel">Cancel</Trans> */}
       </button>

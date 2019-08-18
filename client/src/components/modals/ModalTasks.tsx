@@ -5,16 +5,28 @@ import { /*translate*/ Trans } from "react-i18next";
 
 import { trueFalse, showEditModal } from "../../redux/actions/appAction";
 import { checkTask, deleteTask } from "../../redux/actions/taskAction";
+import { Task } from '../../types';
 
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
 
-const ModalTasks: React.FC<any> = props => {
+type ModalTasksProps = {
+  checkTask: (a, b) => void;
+  deleteTask: (a, b) => void;
+  selectedDay: any;
+  showEditModal: (a) => void;
+  showTasksModal: (day) => void;
+  tasks: Task[];
+  trueFalse: (a: string) => void;
+  userId: String;
+}
+
+const ModalTasks: React.FC<ModalTasksProps> = props => {
   const [modalTasks, setModalTasks] = useState({
     addModal: false,
     editModal: false,
-    editTask: "",
-    selectedDay: "",
+    editTask: '',
+    selectedDay: props.selectedDay,
     tasksOfDay: []
   })
 
@@ -97,7 +109,7 @@ const ModalTasks: React.FC<any> = props => {
                       <input
                         type="text"
                         className="task-name"
-                        id={task.id}
+                        id={(task.id).toString()}
                         value={task.task}
                         readOnly
                       />
@@ -121,7 +133,7 @@ const ModalTasks: React.FC<any> = props => {
                       <input
                         type="text"
                         className="task-name"
-                        id={task.id}
+                        id={(task.id).toString()}
                         value={task.task}
                         readOnly
                       />

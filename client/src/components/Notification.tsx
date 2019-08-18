@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 //import { showNotification } from 'redux/actions/appAction';
 
 const Notification = ({ notification }) => {
-  console.log(notification);
+  //console.log('notification', notification);
   return (
     <>
       <div

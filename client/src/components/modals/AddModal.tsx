@@ -7,7 +7,22 @@ import { trueFalse } from "../../redux/actions/appAction";
 
 //import { translate } from "react-i18next";
 
-const AddModal: React.FC<any> = props => {
+type Props = {
+  addModal: undefined;
+  addTask: (a, b) => void;
+  selectedDay: any;
+  tasks: any; //{tasksList: Array(6)}
+  trueFalse: (a) => void;
+  userId: String;
+};
+
+const AddModal: React.FC<Props> = ({
+  addModal,
+  addTask,
+  selectedDay,
+  trueFalse,
+  userId
+}) => {
   const [modalState, setModalState] = useState({
     task: "",
     priority: false,
@@ -18,9 +33,9 @@ const AddModal: React.FC<any> = props => {
   useEffect(() => {
     setModalState({
       ...modalState,
-      day: props.selectedDay
+      day: selectedDay
     });
-  }, [props]);
+  }, [selectedDay]);
 
   const onChangeTask = e => {
     const { value, maxLength } = e.target;
@@ -32,7 +47,7 @@ const AddModal: React.FC<any> = props => {
     });
   };
 
-  const addTask = e => {
+  const onAddTask = e => {
     e.preventDefault();
     const { task, day, priority, reminder } = modalState;
     let id = new Date().valueOf();
@@ -46,20 +61,18 @@ const AddModal: React.FC<any> = props => {
       day
     };
 
-    props.addTask(newTask, props.userId);
-    props.trueFalse("addModal");
+    addTask(newTask, userId);
+    trueFalse("addModal");
   };
 
   return (
     <Fragment>
-      <div
-        className={`modal ${props.addModal ? "show animated fadeIn" : "hide"}`}
-      >
+      <div className={`modal ${addModal ? "show animated fadeIn" : "hide"}`}>
         <div className="modal-header">
           <h2 className="modal-title">Add a Task</h2>
         </div>
         <div className="modal-body">
-          <form onSubmit={addTask}>
+          <form onSubmit={onAddTask}>
             <span
               className={`length-counter ${
                 modalState.task.length === 25
@@ -97,7 +110,12 @@ const AddModal: React.FC<any> = props => {
                 <input
                   type="checkbox"
                   name="priority"
-                  onChange={() => setModalState({ ...modalState, priority: !modalState.priority })}
+                  onChange={() =>
+                    setModalState({
+                      ...modalState,
+                      priority: !modalState.priority
+                    })
+                  }
                 />
               </div>
             </div>
@@ -109,7 +127,7 @@ const AddModal: React.FC<any> = props => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => props.trueFalse("addModal")}
+                  onClick={() => trueFalse("addModal")}
                   className="btn btn-cancel"
                 >
                   Cancel
@@ -119,7 +137,7 @@ const AddModal: React.FC<any> = props => {
           </form>
         </div>
       </div>
-      <div className={`blackout ${props.addModal ? "show" : "hide"}`} />
+      <div className={`blackout ${addModal ? "show" : "hide"}`} />
     </Fragment>
   );
 };
@@ -134,6 +152,6 @@ export default compose(
   connect(
     mapStateToProps,
     { addTask, trueFalse }
-  ),
+  )
   //translate("common")
 )(AddModal);

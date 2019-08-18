@@ -6,8 +6,16 @@ import { trueFalse } from "../redux/actions/appAction";
 import { logOut } from "../redux/actions/userAction";
 
 import { Trans } from "react-i18next";
+import { User } from '../types';
 
-const SlideMenu: React.FC<any> = props => {
+type SlidMenuProps = {
+  logOut: () => void;
+  slideMenu: boolean;
+  trueFalse: (a: string) => void;
+  user: User;
+}
+
+const SlideMenu: React.FC<SlidMenuProps> = props => {
   console.log(props);
 
   return (

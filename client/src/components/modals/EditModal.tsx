@@ -3,27 +3,45 @@ import { connect } from "react-redux";
 
 import { trueFalse, showEditModal } from "../../redux/actions/appAction";
 import { editTask } from "../../redux/actions/taskAction";
+import { Task } from '../../types';
 
-const EditModal: React.FC<any> = props => {
+type Props = {
+  editModal: Boolean;
+  editTask: (a, b) => void;
+  showEditModal: (a) => void;
+  taskToEdit: Task; //Task
+  tasks: Task[]; //Task[]
+  trueFalse: (a) => void;
+  userId: String;
+};
+
+const EditModal: React.FC<Props> = ({
+  taskToEdit,
+  editTask,
+  userId,
+  showEditModal,
+  editModal,
+  trueFalse
+}) => {
   const [modalState, setModalState] = useState({
-    id: '',
-    task: '',
+    id: "",
+    task: "",
     priority: false,
     reminder: false
   });
 
   useEffect(() => {
-    if (props.taskToEdit !== undefined) {
+    if (taskToEdit !== undefined) {
       setModalState({
-        id: props.taskToEdit.id,
-        task: props.taskToEdit.task,
-        priority: props.taskToEdit.priority,
-        reminder: props.taskToEdit.reminder
+        id: taskToEdit.id,
+        task: taskToEdit.task,
+        priority: taskToEdit.priority,
+        reminder: taskToEdit.reminder
       });
     } else {
       return;
     }
-  }, [props.taskToEdit]);
+  }, [taskToEdit]);
 
   const onChangeTask = e => {
     const { value, maxLength } = e.target;
@@ -39,24 +57,20 @@ const EditModal: React.FC<any> = props => {
     });
   };
 
-  const editTask = e => {
+  const onEditTask = e => {
     e.preventDefault();
-    props.editTask(props.userId, modalState);
-    props.showEditModal(modalState);
+    editTask(userId, modalState);
+    showEditModal(modalState);
   };
 
   return (
     <>
-      <div
-        className={`modal ${
-          props.editModal ? "show animated fadeIn" : "hide"
-        }`}
-      >
+      <div className={`modal ${editModal ? "show animated fadeIn" : "hide"}`}>
         <div className="modal-header">
           <h2 className="modal-title">Edit a Task</h2>
         </div>
         <div className="modal-body">
-          <form onSubmit={editTask}>
+          <form onSubmit={onEditTask}>
             <span
               className={`length-counter ${
                 modalState.task.length === 25
@@ -101,7 +115,7 @@ const EditModal: React.FC<any> = props => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => props.trueFalse("editModal")}
+                  onClick={() => trueFalse("editModal")}
                   className="btn btn-cancel"
                 >
                   Cancel
@@ -111,7 +125,7 @@ const EditModal: React.FC<any> = props => {
           </form>
         </div>
       </div>
-      <div className={`blackout ${props.editModal ? "show" : "hide"}`} />
+      <div className={`blackout ${editModal ? "show" : "hide"}`} />
     </>
   );
 };

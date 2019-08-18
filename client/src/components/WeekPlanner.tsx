@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 import { connect } from "react-redux";
 import { getUser } from "../redux/actions/userAction";
@@ -13,19 +13,37 @@ import Greeting from "./Greeting";
 import Config from "./Config";
 
 //firebase
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 import Nav from "./Nav";
 import SlideMenu from "./SlideMenu";
 import TotalTasks from "./TotalTasks";
+import { Task, User } from '../types';
 
-const WeekPlanner: React.FC<any> = props => {
+type WeekPlannerProps = {
+  app: any;
+  getTasks: (a: String) => void;
+  getUser: (a: String, b: String) => void;
+  loading: Boolean;
+  state: any;
+  tasks: Task[];
+  trueFalse: (a: string) => void;
+  user: User;
+};
+
+const WeekPlanner: React.FC<WeekPlannerProps> = ({
+  user,
+  getUser,
+  getTasks,
+  trueFalse,
+  loading
+}) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        props.getUser(user.uid, user.displayName);
-        props.getTasks(user.uid);
+        getUser(user.uid, user.displayName);
+        getTasks(user.uid);
       } else {
-        props.trueFalse("loginModal");
+        trueFalse("loginModal");
       }
     });
   }, []);
@@ -40,7 +58,7 @@ const WeekPlanner: React.FC<any> = props => {
         <Nav />
       </div>
 
-      {props.user.logged && !props.loading && (
+      {user.logged && !loading && (
         <>
           <div className="container">
             <Greeting />

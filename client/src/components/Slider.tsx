@@ -10,6 +10,8 @@ import 'flickity/dist/flickity.min.css';
 //   options: any;
 // }
 
+//TODO: refactor to modern react and pass types.
+
 export default class Slider extends React.Component<any, any> {
   constructor(props) {
     super(props);
