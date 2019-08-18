@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { trueFalse } from "../redux/actions/appAction";
-import { logOut } from "../redux/actions/userAction";
+import { trueFalse } from "../../redux/actions/appAction";
+import { logOut } from "../../redux/actions/userAction";
 
 import { Trans } from "react-i18next";
 

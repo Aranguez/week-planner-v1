@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { /*translate*/ Trans } from "react-i18next";
-import { trueFalse, configure } from "../redux/actions/appAction";
+import { trueFalse, configure } from "../../redux/actions/appAction";
 
 const Config: React.FC<any> = props => {
   const [configState, setConfigState] = useState({

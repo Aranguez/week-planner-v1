@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import WeekPlanner from './components/WeekPlanner';
+import WeekPlanner from './features/WeekPlanner/WeekPlanner';
 // eslint-disable-next-line
 import { withTranslation } from 'react-i18next';
 

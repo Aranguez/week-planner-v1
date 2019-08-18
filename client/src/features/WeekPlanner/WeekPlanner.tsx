@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 
 import { connect } from "react-redux";
-import { getUser } from "../redux/actions/userAction";
-import { getTasks } from "../redux/actions/taskAction";
-import { trueFalse } from "../redux/actions/appAction";
+import { getUser } from "../../redux/actions/userAction";
+import { getTasks } from "../../redux/actions/taskAction";
+import { trueFalse } from "../../redux/actions/appAction";
 
 //components
-import Timeline from "./Timeline";
-import Clock from "./Clock";
-import LoginModal from "./modals/LoginModal";
-import Greeting from "./Greeting";
-import Config from "./Config";
+import Timeline from "../Timeline/Timeline";
+import Clock from "../Clock/Clock";
+import LoginModal from "../../components/modals/LoginModal";
+import Greeting from "../Greeting/Greeting";
+import Config from "../Config/Config";
 
 //firebase
 import firebase from 'firebase/app';
-import Nav from "./Nav";
-import SlideMenu from "./SlideMenu";
-import TotalTasks from "./TotalTasks";
+import Nav from "../Nav/Nav";
+import SlideMenu from "../SlideMenu/SlideMenu";
+import TotalTasks from "../TotalTasks/TotalTasks";
 
 const WeekPlanner: React.FC<any> = props => {
   useEffect(() => {

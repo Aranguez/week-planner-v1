@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { trueFalse } from "../redux/actions/appAction";
+import { trueFalse } from "../../redux/actions/appAction";
 
 const Nav: React.FC<any> = props => {
   return (

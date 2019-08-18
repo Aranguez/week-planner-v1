@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 //componentes
-import Day from "./Day";
-import Slider from "./Slider";
-import ModalTasks from "./modals/ModalTasks";
+import Day from "../Day/Day";
+import Slider from "../Slider/Slider";
+import ModalTasks from "../../components/modals/ModalTasks";
 
 const todayDate = new Date().getDay(); //returns a number
 let today; //no tiene ninguna funcionalidad
