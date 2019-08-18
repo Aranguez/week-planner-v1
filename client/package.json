@@ -39,9 +39,11 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
+    "coverage": "test -- --coverage",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
-    "enzyme-adapter-react-16": "^1.7.0"
+    "enzyme-adapter-react-16": "^1.7.0",
+    "redux-mock-store": "^1.5.3"
   }
 }

@@ -57,4 +57,6 @@ const Clock: React.FC<any> = props => {
   );
 }
 
-export default /*withTranslation("common")*/Clock;
+export default Clock;
+
+//export default /*withTranslation("common")*/Clock;

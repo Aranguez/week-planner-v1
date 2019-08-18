@@ -1,11 +1,12 @@
 # dependencies
 /*/node_modules
-package-lock.json
+/client/package-lock.json
 
 *.css.map
 
 # testing
-/coverage
+**/coverage
+**/__snapshots__/*.test.tsx.snap
 
 # production
 /build
